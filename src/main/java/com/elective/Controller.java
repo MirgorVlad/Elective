@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
@@ -43,7 +44,7 @@ public class Controller extends HttpServlet {
         resp.sendRedirect(address);
     }
 
-    private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp) {
+    private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         String commandName = req.getParameter("command");
         Command command = CommandContainer.getCommand(commandName);
         return command.execute(req, resp);
