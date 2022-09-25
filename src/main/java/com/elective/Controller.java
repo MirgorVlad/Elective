@@ -24,7 +24,7 @@ public class Controller extends HttpServlet {
         try {
             address = getAndExecuteCommand(req, resp);
         } catch (Exception ex){
-            req.setAttribute("ex", ex);
+            req.setAttribute("exception", ex);
             //log
         }
         req.getRequestDispatcher(address).forward(req, resp);
@@ -37,7 +37,7 @@ public class Controller extends HttpServlet {
         try {
             address = getAndExecuteCommand(req, resp);
         } catch (Exception ex){
-            req.getSession().setAttribute("ex", ex);
+            req.getSession().setAttribute("exception", ex);
             //log
         }
         resp.sendRedirect(address);

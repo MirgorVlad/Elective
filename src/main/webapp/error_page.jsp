@@ -1,7 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <body>
-     Error
-
+     <p>${exception.getMessage()}</p>
 </body>
 </html>
