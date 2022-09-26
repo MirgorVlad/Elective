@@ -1,5 +1,6 @@
 package com.elective.db.dao.mysql;
 
+import com.elective.db.dao.ConnectionFactory;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
@@ -13,7 +14,7 @@ public class MysqlUserDAO implements UserDAO {
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        try(Connection con = DAOFactory.getConnection()) {
+        try(Connection con = ConnectionFactory.getConnection()) {
             pstmt = con.prepareStatement(SQLQueris.INSERT_USER,
                     Statement.RETURN_GENERATED_KEYS);
             int k = 1;
