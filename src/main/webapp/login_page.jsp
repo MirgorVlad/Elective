@@ -4,7 +4,7 @@
 
     <form action="controller?" method="post">
         <input name="command" value="login" type="hidden">
-        <input name="login"><br>
+        <input name="email"><br>
         <input name="password" type="password"><br>
         <input value="Login" type="submit">
 

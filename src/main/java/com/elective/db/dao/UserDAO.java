@@ -6,6 +6,10 @@ import java.sql.SQLException;
 
 public interface UserDAO {
 
-    void insert(User user) throws SQLException;
+    String TEACHER_ROLE = "teacher";
+    String STUDENT_ROLE = "student";
+    void insert(User user) throws SQLException, DBException;
+    User find(String email) throws SQLException, DBException;
 
+    void getRole(User user) throws SQLException, DBException;
 }

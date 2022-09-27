@@ -1,6 +1,7 @@
 package com.elective.commad;
 
 import com.elective.db.dao.DAOFactory;
+import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.dao.mysql.MysqlDAOFactory;
 import com.elective.db.entity.User;
@@ -16,23 +17,34 @@ public class LoginCommand implements Command{
         daoFactory = MysqlDAOFactory.getInstance();
     }
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         UserDAO userDAO = daoFactory.getUserDAO();
-        String login = req.getParameter("login");
-        System.out.println("LOGIN: " + login);
+        String page = "";
+
+        String email = req.getParameter("email");
+        System.out.println("LOGIN: " + email);
         String password = req.getParameter("password");
         System.out.println("PASSWORD: " + password);
 
         //DB get User
         //Logic if admin -> admin.jsp if clien -> client.jsp
         //User to session
-        User user = new User();
-        user.setEmail(login);
-        user.setPassword(password);
-        user.setFirstName("Vlad");
-        user.setLastName("Mirhorodskyi");
-        userDAO.insert(user);
 
-        return "";
+        User user = userDAO.find(email);
+        userDAO.getRole(user);
+
+        if(user != null){
+            if(user.getPassword().equals(password)) {
+                req.getSession().setAttribute("user", user);
+                if(user.getRole().equals("student"))
+                    return "student.jsp";
+                if(user.getRole().equals("teacher"))
+                    return "teacher.jsp";
+            } else
+                throw new DBException("wrong password");
+        } else
+            throw new DBException("cannot find user");
+
+        return null;
     }
 }

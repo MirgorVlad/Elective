@@ -3,6 +3,7 @@ package com.elective;
 
 import com.elective.commad.Command;
 import com.elective.commad.CommandContainer;
+import com.elective.db.dao.DBException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,7 @@ public class Controller extends HttpServlet {
         String address = ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
-        } catch (Exception ex){
+        } catch (Exception | DBException ex){
             req.setAttribute("exception", ex);
             //log
         }
@@ -37,14 +38,15 @@ public class Controller extends HttpServlet {
         String address = ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
-        } catch (Exception ex){
+        } catch (Exception | DBException ex){
             req.getSession().setAttribute("exception", ex);
             //log
         }
         resp.sendRedirect(address);
     }
 
-    private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp)
+            throws SQLException, DBException {
         String commandName = req.getParameter("command");
         Command command = CommandContainer.getCommand(commandName);
         return command.execute(req, resp);

@@ -2,6 +2,7 @@ package com.elective.db.dao.mysql;
 
 import com.elective.db.dao.ConnectionFactory;
 import com.elective.db.dao.DAOFactory;
+import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
 
@@ -10,7 +11,7 @@ import java.sql.*;
 public class MysqlUserDAO implements UserDAO {
 
     @Override
-    public void insert(User user) throws SQLException {
+    public void insert(User user) throws SQLException, DBException {
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -24,12 +25,11 @@ public class MysqlUserDAO implements UserDAO {
             pstmt.setString(k++, user.getPassword());
 
             if (pstmt.executeUpdate() > 0) {
-                rs = pstmt.getGeneratedKeys();
-                if (rs.next()) {
-                    int userId = rs.getInt(1);
-                    user.setId(userId);
-                }
+               setUserID(rs, pstmt, user);
             }
+
+            insertRole(user);
+
         } finally {
             if (rs != null) {
                 rs.close();
@@ -37,6 +37,95 @@ public class MysqlUserDAO implements UserDAO {
             if (pstmt != null) {
                 pstmt.close();
             }
+        }
+    }
+
+    @Override
+    public User find(String email) throws SQLException {
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER)) {
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                return createUser(rs);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void getRole(User user) throws SQLException, DBException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String role = null;
+        try(Connection con = ConnectionFactory.getConnection()) {
+            pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER);
+            pstmt.setInt(1, user.getId());
+            rs = pstmt.executeQuery();
+            if(rs.next()) role = TEACHER_ROLE;
+            else {
+                pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT);
+                pstmt.setInt(1, user.getId());
+                rs = pstmt.executeQuery();
+                if(rs.next()) role = STUDENT_ROLE;
+            }
+        }
+        if(role == null)
+            throw new DBException("cannot find roll");
+        user.setRole(role);
+    }
+
+    private User createUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setId(rs.getInt("id"));
+        return user;
+    }
+
+    private void insertStudent(User user) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_STUDENT)) {
+            pstmt.setInt(1, user.getId());
+            int upd = pstmt.executeUpdate();
+            if(upd < 0){
+                throw new DBException("Can not insert student");
+            }
+        }
+    }
+
+    private void insertTeacher(User user) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_TEACHER)) {
+            pstmt.setInt(1, user.getId());
+            int upd = pstmt.executeUpdate();
+            if(upd < 0){
+                throw new DBException("Can not insert teacher");
+            }
+        }
+    }
+
+
+    private void insertRole(User user) throws SQLException, DBException {
+        if(user.getRole().equals(TEACHER_ROLE)){
+            insertTeacher(user);
+        }
+        else if(user.getRole().equals(STUDENT_ROLE)){
+            insertStudent(user);
+        }
+        else {
+            throw new DBException("Unknown role");
+        }
+    }
+    private void setUserID(ResultSet rs, PreparedStatement pstmt, User user) throws SQLException {
+        rs = pstmt.getGeneratedKeys();
+        if (rs.next()) {
+            int userId = rs.getInt(1);
+            user.setId(userId);
         }
     }
 }
