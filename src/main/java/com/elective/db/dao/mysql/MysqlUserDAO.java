@@ -57,24 +57,64 @@ public class MysqlUserDAO implements UserDAO {
 
     @Override
     public void getRole(User user) throws SQLException, DBException {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         String role = null;
         try(Connection con = ConnectionFactory.getConnection()) {
-            pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER);
-            pstmt.setInt(1, user.getId());
-            rs = pstmt.executeQuery();
-            if(rs.next()) role = TEACHER_ROLE;
-            else {
-                pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT);
-                pstmt.setInt(1, user.getId());
-                rs = pstmt.executeQuery();
-                if(rs.next()) role = STUDENT_ROLE;
-            }
+//            pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER);
+//            pstmt.setInt(1, user.getId());
+//            rs = pstmt.executeQuery();
+//            if(rs.next()) role = TEACHER_ROLE;
+//            else {
+//                pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT);
+//                pstmt.setInt(1, user.getId());
+//                rs = pstmt.executeQuery();
+//                if(rs.next()) role = STUDENT_ROLE;
+//            }
+            if(getStudent(con, user)) role = STUDENT_ROLE;
+            else if(getTeacher(con, user)) role = TEACHER_ROLE;
+            else if(getManager(con, user)) role = MANAGER_ROLE;
         }
         if(role == null)
             throw new DBException("cannot find roll");
         user.setRole(role);
+    }
+
+    private boolean getManager(Connection con, User user) throws SQLException {
+        ResultSet rs = null;
+        try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
+            pstmt.setInt(1, user.getId());
+            rs = pstmt.executeQuery();
+            return rs.next();
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+        }
+    }
+
+    private boolean getTeacher(Connection con, User user) throws SQLException {
+        ResultSet rs = null;
+        try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
+            pstmt.setInt(1, user.getId());
+            rs = pstmt.executeQuery();
+            return rs.next();
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+        }
+    }
+
+    private boolean getStudent(Connection con, User user) throws SQLException {
+        ResultSet rs = null;
+        try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
+            pstmt.setInt(1, user.getId());
+            rs = pstmt.executeQuery();
+            return rs.next();
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+        }
     }
 
     private User createUser(ResultSet rs) throws SQLException {

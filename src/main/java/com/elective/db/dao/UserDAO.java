@@ -8,6 +8,7 @@ public interface UserDAO {
 
     String TEACHER_ROLE = "teacher";
     String STUDENT_ROLE = "student";
+    String MANAGER_ROLE = "manager";
     void insert(User user) throws SQLException, DBException;
     User find(String email) throws SQLException, DBException;
 

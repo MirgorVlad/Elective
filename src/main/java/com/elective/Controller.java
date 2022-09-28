@@ -16,13 +16,12 @@ import java.sql.SQLException;
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
 
-    private static final String ERROR_PAGE = "error_page.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String address = ERROR_PAGE;
+        String address = ReferencesPages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
         } catch (Exception | DBException ex){
@@ -35,7 +34,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String address = ERROR_PAGE;
+        String address = ReferencesPages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
         } catch (Exception | DBException ex){

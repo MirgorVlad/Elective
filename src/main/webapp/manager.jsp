@@ -2,10 +2,10 @@
 <%@page isELIgnored="false" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Manager</title>
 </head>
 <body>
-<h1>You are TEACHER</h1>
-${sessionScope.user}
+  <h1>YOU ARE MANAGER</h1>
+  ${sessionScope.user}
 </body>
 </html>

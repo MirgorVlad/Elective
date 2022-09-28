@@ -8,6 +8,7 @@ public class SQLQueris {
     public static final String FIND_USER = "SELECT * FROM users WHERE email = ?";
     public static final String FIND_TEACHER = "SELECT * FROM students WHERE user_id = ?";
     public static final String FIND_STUDENT = "SELECT * FROM teachers WHERE user_id = ?";
+    public static final String FIND_MANAGER = "SELECT * FROM managers WHERE user_id = ?";
 
     private SQLQueris(){
     }
