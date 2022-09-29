@@ -4,6 +4,7 @@ import com.elective.db.dao.ConnectionFactory;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
+import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
 import java.sql.*;
@@ -59,16 +60,6 @@ public class MysqlUserDAO implements UserDAO {
     public void getRole(User user) throws SQLException, DBException {
         String role = null;
         try(Connection con = ConnectionFactory.getConnection()) {
-//            pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER);
-//            pstmt.setInt(1, user.getId());
-//            rs = pstmt.executeQuery();
-//            if(rs.next()) role = TEACHER_ROLE;
-//            else {
-//                pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT);
-//                pstmt.setInt(1, user.getId());
-//                rs = pstmt.executeQuery();
-//                if(rs.next()) role = STUDENT_ROLE;
-//            }
             if(getStudent(con, user)) role = STUDENT_ROLE;
             else if(getTeacher(con, user)) role = TEACHER_ROLE;
             else if(getManager(con, user)) role = MANAGER_ROLE;
@@ -91,7 +82,7 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    private boolean getTeacher(Connection con, User user) throws SQLException {
+    public boolean getTeacher(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
             pstmt.setInt(1, user.getId());
@@ -104,7 +95,7 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    private boolean getStudent(Connection con, User user) throws SQLException {
+    public boolean getStudent(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
             pstmt.setInt(1, user.getId());

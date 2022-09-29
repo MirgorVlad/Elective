@@ -14,6 +14,7 @@ public class CommandContainer {
         commands = new HashMap<>();
         commands.put("login", new LoginCommand());
         commands.put("registr", new RegistrCommand());
+        commands.put("createCourse", new CreateCourseCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

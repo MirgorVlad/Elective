@@ -6,6 +6,6 @@
 </head>
 <body>
   <h1>YOU ARE MANAGER</h1>
-  ${sessionScope.user}
+  <a href="create_course.jsp">Create course</a>
 </body>
 </html>
