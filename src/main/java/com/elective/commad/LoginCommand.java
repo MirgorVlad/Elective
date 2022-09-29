@@ -31,7 +31,7 @@ public class LoginCommand implements Command{
         //Logic if admin -> admin.jsp if clien -> client.jsp
         //User to session
 
-        User user = userDAO.find(email);
+        User user = userDAO.findByEmail(email);
         userDAO.getRole(user);
 
         if(user != null){

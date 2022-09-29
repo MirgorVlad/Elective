@@ -8,16 +8,18 @@ import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MysqlCourseDAO implements CourseDAO {
+
+    UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
     @Override
-    public void create(Course course) throws SQLException, DBException {
+    public void create(Course course, User teacher) throws SQLException, DBException {
         ResultSet rs = null;
         try(Connection con = ConnectionFactory.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_COURSE,
                     Statement.RETURN_GENERATED_KEYS)){
-
-            User teacher = getTeacher(con, course.getTeacherEmail());
 
             int k = 1;
             pstmt.setString(k++, course.getName());
@@ -37,17 +39,44 @@ public class MysqlCourseDAO implements CourseDAO {
         }
     }
 
-    private User getTeacher(Connection con, String email) throws DBException, SQLException {
-        UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
-        User user = userDAO.find(email);
+    @Override
+    public List<Course> getAll() throws SQLException, DBException {
+        List<Course> courses = new ArrayList<>();
+        try(Connection con = ConnectionFactory.getConnection();
+        Statement statement = con.createStatement();
+        ResultSet rs = statement.executeQuery(SQLQueris.SELECT_ALL_COURSES)) {
+            while (rs.next()){
+                courses.add(getCourse(rs));
+            }
+        }
+        return courses;
+    }
+
+    private Course getCourse(ResultSet rs) throws SQLException, DBException {
+        Course course = new Course();
+        int teacherId = rs.getInt("teacher");
+        User teacher = userDAO.findById(teacherId);
+
+        course.setId(rs.getInt("id"));
+        course.setName(rs.getString("name"));
+        course.setDescription(rs.getString("description"));
+        course.setStartDate(rs.getDate("start"));
+        course.setFinishDate(rs.getDate("finish"));
+        course.setTeacher(teacher);
+        return course;
+    }
+
+    public User getTeacher(User user) throws DBException, SQLException {
         System.out.println(user);
-        if(user != null){
-            if(userDAO.getTeacher(con, user))
-                return user;
-            else
-                throw new DBException(email + " is not teacher");
-        } else {
-            throw new DBException("Cannot find user");
+        try(Connection con = ConnectionFactory.getConnection()) {
+            if (user != null) {
+                if (userDAO.isTeacher(con, user))
+                    return user;
+                else
+                    throw new DBException(user.getEmail() + " is not teacher");
+            } else {
+                throw new DBException("Cannot find user");
+            }
         }
     }
 

@@ -8,10 +8,29 @@ public class Course implements Serializable {
     private int id;
     private String name;
     private String description;
-    private String teacherEmail;
+    private User teacher;
     private Date startDate;
     private Date finishDate;
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", teacher =" + teacher +
+                ", startDate=" + startDate +
+                ", finishDate=" + finishDate +
+                '}';
+    }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
 
     public int getId() {
         return id;
@@ -37,13 +56,7 @@ public class Course implements Serializable {
         this.description = description;
     }
 
-    public String getTeacherEmail() {
-        return teacherEmail;
-    }
 
-    public void setTeacherEmail(String teacherEmail) {
-        this.teacherEmail = teacherEmail;
-    }
 
     public Date getStartDate() {
         return startDate;

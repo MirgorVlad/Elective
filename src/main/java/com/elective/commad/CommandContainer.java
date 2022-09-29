@@ -15,6 +15,7 @@ public class CommandContainer {
         commands.put("login", new LoginCommand());
         commands.put("registr", new RegistrCommand());
         commands.put("createCourse", new CreateCourseCommand());
+        commands.put("viewCourses", new ViewCoursesCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

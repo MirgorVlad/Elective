@@ -1,10 +1,8 @@
 package com.elective.db.dao.mysql;
 
 import com.elective.db.dao.ConnectionFactory;
-import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
-import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
 import java.sql.*;
@@ -42,11 +40,26 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     @Override
-    public User find(String email) throws SQLException {
+    public User findByEmail(String email) throws SQLException {
         ResultSet rs = null;
         try(Connection con = ConnectionFactory.getConnection();
-            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER)) {
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER_BY_EMAIL)) {
             pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                return createUser(rs);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User findById(int id) throws SQLException {
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER_BY_ID)) {
+            pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
 
             while (rs.next()){
@@ -60,16 +73,16 @@ public class MysqlUserDAO implements UserDAO {
     public void getRole(User user) throws SQLException, DBException {
         String role = null;
         try(Connection con = ConnectionFactory.getConnection()) {
-            if(getStudent(con, user)) role = STUDENT_ROLE;
-            else if(getTeacher(con, user)) role = TEACHER_ROLE;
-            else if(getManager(con, user)) role = MANAGER_ROLE;
+            if(isStudent(con, user)) role = STUDENT_ROLE;
+            else if(isTeacher(con, user)) role = TEACHER_ROLE;
+            else if(isManager(con, user)) role = MANAGER_ROLE;
         }
         if(role == null)
             throw new DBException("cannot find roll");
         user.setRole(role);
     }
 
-    private boolean getManager(Connection con, User user) throws SQLException {
+    private boolean isManager(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
             pstmt.setInt(1, user.getId());
@@ -82,7 +95,7 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public boolean getTeacher(Connection con, User user) throws SQLException {
+    public boolean isTeacher(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
             pstmt.setInt(1, user.getId());
@@ -95,7 +108,7 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public boolean getStudent(Connection con, User user) throws SQLException {
+    public boolean isStudent(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
             pstmt.setInt(1, user.getId());
