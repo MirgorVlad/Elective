@@ -14,4 +14,6 @@ public interface CourseDAO {
     User getTeacher(User user) throws DBException, SQLException;
 
     void deleteById(int courseId) throws SQLException, DBException;
+
+    Course findById(int id) throws SQLException, DBException;
 }

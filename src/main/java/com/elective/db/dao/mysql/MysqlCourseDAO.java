@@ -52,6 +52,25 @@ public class MysqlCourseDAO implements CourseDAO {
         return courses;
     }
 
+    @Override
+    public Course findById(int id) throws SQLException, DBException {
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_ID)) {
+            pstmt.setInt(1, id);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                return getCourse(rs);
+            }
+        }
+        finally {
+            if(rs != null)
+                rs.close();
+        }
+        return null;
+    }
+
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");
@@ -98,4 +117,5 @@ public class MysqlCourseDAO implements CourseDAO {
             course.setId(courseID);
         }
     }
+
 }

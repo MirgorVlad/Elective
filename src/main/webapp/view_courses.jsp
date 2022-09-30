@@ -19,13 +19,13 @@
         </tr>
         <c:forEach var="course" items="${sessionScope.coursesList}">
             <tr>
-                <th><c:out value="${course.name}"/> </th>
+                <th><a href="controller?command=viewCourse&courseId=${course.id}"><c:out value="${course.name}"/></a></th>
                 <th><c:out value="${course.startDate}"/></th>
                 <th><c:out value="${course.finishDate}"/></th>
                 <th><c:out value="${course.teacher.fullName}"/></th>
                 <th><c:out value="${course.teacher.email}"/></th>
                 <th><a href="controller?command=editCourse">EDIT</a></th>
-                <th><a href="controller?command=deleteCourse&courseId=${course.id}" methods="POST">DELETE</a></th>
+                <th><a href="controller?command=deleteCourse&courseId=${course.id}">DELETE</a></th>
             </tr>
         </c:forEach>
     </table>

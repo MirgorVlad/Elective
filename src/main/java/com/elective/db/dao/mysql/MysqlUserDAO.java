@@ -66,6 +66,10 @@ public class MysqlUserDAO implements UserDAO {
                 return createUser(rs);
             }
         }
+        finally {
+            if(rs != null)
+                rs.close();
+        }
         return null;
     }
 
