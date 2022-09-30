@@ -80,6 +80,17 @@ public class MysqlCourseDAO implements CourseDAO {
         }
     }
 
+    @Override
+    public void deleteById(int courseId) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_COURSE_BY_ID)){
+            pstmt.setInt(1, courseId);
+            if(pstmt.executeUpdate() == 0){
+                throw new DBException("Cannot delete course");
+            }
+        }
+    }
+
     private void setCourseID(ResultSet rs, PreparedStatement pstmt, Course course) throws SQLException {
         rs = pstmt.getGeneratedKeys();
         if (rs.next()) {

@@ -12,6 +12,7 @@ public class SQLQueris {
     public static final String FIND_MANAGER = "SELECT * FROM managers WHERE user_id = ?";
     public static final String INSERT_COURSE = "INSERT INTO courses values(DEFAULT, ?, ?, ?, ?, ?)";
     public static final String SELECT_ALL_COURSES = "SELECT * FROM courses";
+    public static final String DELETE_COURSE_BY_ID = "DELETE FROM courses WHERE id = ?";
 
     private SQLQueris(){
     }

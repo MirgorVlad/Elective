@@ -58,6 +58,10 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString() {
         return "User{" +

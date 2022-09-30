@@ -15,11 +15,7 @@ import java.sql.SQLException;
 
 public class CreateCourseCommand implements Command{
 
-    private final DAOFactory daoFactory;
 
-    public CreateCourseCommand(){
-        daoFactory = MysqlDAOFactory.getInstance();
-    }
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();

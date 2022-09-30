@@ -12,11 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
 public class RegistrCommand implements Command{
-    private final DAOFactory daoFactory;
 
-    public RegistrCommand(){
-        daoFactory = MysqlDAOFactory.getInstance();
-    }
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         UserDAO userDAO = daoFactory.getUserDAO();

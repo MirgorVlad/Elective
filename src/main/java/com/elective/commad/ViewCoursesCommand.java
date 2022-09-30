@@ -14,11 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewCoursesCommand implements Command{
-    private final DAOFactory daoFactory;
-
-    public ViewCoursesCommand(){
-        daoFactory = MysqlDAOFactory.getInstance();
-    }
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
