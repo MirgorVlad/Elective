@@ -15,6 +15,6 @@ public class DeleteCourseCommand implements Command{
         System.out.println("Dlete course  ==> " + courseId);
         courseDAO.deleteById(courseId);
 
-        return "controller?command=viewAllCourses";
+        return "controller?command=manageCourses";
     }
 }

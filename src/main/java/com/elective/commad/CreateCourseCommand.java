@@ -1,5 +1,6 @@
 package com.elective.commad;
 
+import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
@@ -32,7 +33,7 @@ public class CreateCourseCommand implements Command{
 
         System.out.println(startDate);
 
-        return "manager.jsp";
+        return ReferencesPages.MANAGER_PAGE;
     }
 
     private  Course createCourse(String name, String desc, Date startDate, Date finishDate, User teacher) {

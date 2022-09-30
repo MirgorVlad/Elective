@@ -45,7 +45,7 @@ public class Controller extends HttpServlet {
     }
 
     private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp)
-            throws SQLException, DBException {
+            throws SQLException, DBException, IllegalAccessException {
         String commandName = req.getParameter("command");
         Command command = CommandContainer.getCommand(commandName);
         return command.execute(req, resp);

@@ -15,7 +15,8 @@ public class CommandContainer {
         commands.put("login", new LoginCommand());
         commands.put("registr", new RegistrCommand());
         commands.put("createCourse", new CreateCourseCommand());
-        commands.put("viewAllCourses", new ViewAllCoursesCommand());
+        commands.put("manageCourses", new ViewAllCoursesCommand());
+        commands.put("viewCoursesList", new ViewAllCoursesCommand());
         commands.put("deleteCourse", new DeleteCourseCommand());
         commands.put("viewCourse", new ViewCourseCommand());
         commands.put("updateCourse", new UpdateCourseCommand());

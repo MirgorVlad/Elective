@@ -11,5 +11,5 @@ import java.sql.SQLException;
 public interface Command {
 
     DAOFactory daoFactory = MysqlDAOFactory.getInstance();
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException;
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException;
 }

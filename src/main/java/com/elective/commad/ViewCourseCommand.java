@@ -1,5 +1,6 @@
 package com.elective.commad;
 
+import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -17,6 +18,6 @@ public class ViewCourseCommand implements Command{
         Course course = courseDAO.findById(courseId);
         System.out.println(course);
         req.setAttribute("course", course);
-        return "course.jsp";
+        return ReferencesPages.COURSE;
     }
 }

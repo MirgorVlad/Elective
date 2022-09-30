@@ -7,6 +7,6 @@
 <body>
   <h1>YOU ARE MANAGER</h1>
   <a href="create_course.jsp">Create course</a><br/>
-  <a href="controller?command=viewAllCourses">View courses</a>
+  <a href="controller?command=manageCourses">View courses</a>
 </body>
 </html>

@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1>You are STUDENT</h1>
-  ${sessionScope.user}
+    <a href="controller?command=viewCoursesList">All courses</a>
 
 </body>
 </html>

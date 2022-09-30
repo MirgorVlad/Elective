@@ -1,5 +1,6 @@
 package com.elective.commad;
 
+import com.elective.ReferencesPages;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -39,9 +40,9 @@ public class RegistrCommand implements Command{
         userDAO.insert(user);
 
         if(user.getRole().equals("teacher"))
-            page =  "teacher.jsp";
+            page = ReferencesPages.TEACHER_PAGE;
         if(user.getRole().equals("student"))
-            page =  "student.jsp";
+            page =  ReferencesPages.STUDENT_PAGE;
 
         return page;
     }
