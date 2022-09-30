@@ -18,6 +18,7 @@ public class CommandContainer {
         commands.put("viewAllCourses", new ViewAllCoursesCommand());
         commands.put("deleteCourse", new DeleteCourseCommand());
         commands.put("viewCourse", new ViewCourseCommand());
+        commands.put("updateCourse", new UpdateCourseCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

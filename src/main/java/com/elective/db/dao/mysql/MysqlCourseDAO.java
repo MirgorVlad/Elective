@@ -71,6 +71,25 @@ public class MysqlCourseDAO implements CourseDAO {
         return null;
     }
 
+    @Override
+    public void update(Course course, User teacher) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.UPDATE_COURSE)){
+
+            int k = 1;
+            pstmt.setString(k++, course.getName());
+            pstmt.setString(k++, course.getDescription());
+            pstmt.setDate(k++, course.getStartDate());
+            pstmt.setDate(k++, course.getFinishDate());
+            pstmt.setInt(k++, teacher.getId());
+            pstmt.setInt(k++, course.getId());
+
+            if (pstmt.executeUpdate() == 0) {
+                throw new DBException("Can't update course");
+            }
+        }
+    }
+
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");
