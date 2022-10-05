@@ -90,6 +90,54 @@ public class MysqlCourseDAO implements CourseDAO {
         }
     }
 
+    @Override
+    public void jointStudentToCourse(int studentId, int courseId) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.JOIN_TO_COURSE)){
+
+            int k = 1;
+            pstmt.setInt(k++, courseId);
+            pstmt.setInt(k++, studentId);
+
+            if (pstmt.executeUpdate() == 0) {
+                throw new DBException("Cant join student to course");
+            }
+        }
+    }
+
+    @Override
+    public boolean isStudentJoined(int userId, int courseId) throws SQLException {
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT_IN_COURSE_BY_ID)) {
+            int k = 1;
+            pstmt.setInt(k++, userId);
+            pstmt.setInt(k++, courseId);
+            rs = pstmt.executeQuery();
+
+            return rs.next();
+        }
+        finally {
+            if(rs != null)
+                rs.close();
+        }
+    }
+
+    @Override
+    public void unfollowCourse(int studentId, int courseId) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.UNFOLLOW_COURSE)){
+
+            int k = 1;
+            pstmt.setInt(k++, studentId);
+            pstmt.setInt(k++, courseId);
+
+            if (pstmt.executeUpdate() == 0) {
+                throw new DBException("Cannot unfollow from course");
+            }
+        }
+    }
+
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");

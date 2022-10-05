@@ -11,17 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
-public class ViewCourseCommand implements Command{
+public class UnfollowCourseCommand implements Command{
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
-        int userId = ((User)req.getSession().getAttribute("user")).getId();
+        int studentId = Integer.parseInt(req.getParameter("userId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
-        System.out.println("View course  ==> " + courseId);
         Course course = courseDAO.findById(courseId);
-        System.out.println(course);
+        User user = (User) req.getSession().getAttribute("user");
+        req.setAttribute("isJoined", courseDAO.isStudentJoined(user.getId(), courseId));
         req.setAttribute("course", course);
-        req.setAttribute("isJoined", courseDAO.isStudentJoined(userId, courseId));
-        return ReferencesPages.COURSE;
+
+        courseDAO.unfollowCourse(studentId, courseId);
+        return ReferencesPages.ACCESS_JOINED;
     }
 }

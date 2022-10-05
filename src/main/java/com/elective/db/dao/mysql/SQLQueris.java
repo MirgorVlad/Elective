@@ -15,6 +15,9 @@ public class SQLQueris {
     public static final String DELETE_COURSE_BY_ID = "DELETE FROM courses WHERE id = ?";
     public static final String FIND_COURSE_BY_ID = "SELECT * FROM courses WHERE id = ?";
     public static final String UPDATE_COURSE = "UPDATE courses SET name = ?, description = ?, start = ?, finish = ?, teacher = ? WHERE id = ?";
+    public static final String JOIN_TO_COURSE = "INSERT INTO sections values (?, ?)";
+    public static final String FIND_STUDENT_IN_COURSE_BY_ID = "SELECT * FROM sections where student_id = ? AND course_id = ?";
+    public static final String UNFOLLOW_COURSE = "DELETE FROM sections WHERE student_id = ? AND course_id = ?";
 
     private SQLQueris(){
     }

@@ -2,6 +2,8 @@ package com.elective.db.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.Duration;
+import java.time.LocalDate;
 
 public class Course implements Serializable {
 
@@ -72,5 +74,11 @@ public class Course implements Serializable {
 
     public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public long countDays(){
+        LocalDate start = startDate.toLocalDate();
+        LocalDate finish = finishDate.toLocalDate();
+        return Duration.between(start.atStartOfDay(), finish.atStartOfDay()).toDays();
     }
 }

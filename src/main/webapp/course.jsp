@@ -12,6 +12,15 @@
     <p>Teacher: <c:out value="${course.teacher.fullName}"/></p>
     <h2>Description</h2>
     <p><c:out value="${course.description}"/></p>
+        <c:if test="${user.role eq 'student'}" >
+            <c:if test="${isJoined ne true}" >
+                <a href = "controller?command=joinToCourse&userId=${user.id}&courseId=${course.id}">Join to course</a>
+            </c:if>
+            <c:if test="${isJoined eq true}" >
+                <a href = "controller?command=unfollowCourse&userId=${user.id}&courseId=${course.id}">Unfollow course</a>
+                <a href = "controller?command=showJournal&courseId=${course.id}">Show journal</a>
+            </c:if>
+        </c:if>
     </div>
 </body>
 </html>

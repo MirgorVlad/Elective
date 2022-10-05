@@ -18,4 +18,9 @@ public interface CourseDAO {
     Course findById(int id) throws SQLException, DBException;
 
     void update(Course course, User teacher) throws SQLException, DBException;
+
+    void jointStudentToCourse(int studentId, int courseId) throws SQLException, DBException;
+    boolean isStudentJoined(int userId, int courseId) throws SQLException;
+
+    void unfollowCourse(int studentId, int courseId) throws SQLException, DBException;
 }
