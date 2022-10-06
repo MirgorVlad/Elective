@@ -40,7 +40,7 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     @Override
-    public User findByEmail(String email) throws SQLException {
+    public User findByEmail(String email) throws SQLException, DBException {
         ResultSet rs = null;
         try(Connection con = ConnectionFactory.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER_BY_EMAIL)) {
@@ -55,7 +55,7 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     @Override
-    public User findById(int id) throws SQLException {
+    public User findById(int id) throws SQLException, DBException {
         ResultSet rs = null;
         try(Connection con = ConnectionFactory.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER_BY_ID)) {
@@ -125,13 +125,14 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    private User createUser(ResultSet rs) throws SQLException {
+    public  User createUser(ResultSet rs) throws SQLException, DBException {
         User user = new User();
         user.setFirstName(rs.getString("first_name"));
         user.setLastName(rs.getString("last_name"));
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
         user.setId(rs.getInt("id"));
+        getRole(user);
         return user;
     }
 

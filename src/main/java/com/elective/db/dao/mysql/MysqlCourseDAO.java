@@ -157,6 +157,45 @@ public class MysqlCourseDAO implements CourseDAO {
         return courses;
     }
 
+    @Override
+    public List<Course> findCoursesByTeacher(int id) throws SQLException, DBException {
+        List<Course> courses = new ArrayList<>();
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_TEACHER_ID)) {
+            pstmt.setInt(1, id);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                courses.add(getCourse(rs));
+            }
+        }
+        finally {
+            if(rs != null)
+                rs.close();
+        }
+        return courses;
+    }
+
+    @Override
+    public List<Integer> findStudentsInCourse(int courseId) throws SQLException {
+        List<Integer> usersId = new ArrayList<>();
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_ALL_STUDENTS_IN_COURSE)){
+            statement.setInt(1, courseId);
+            rs = statement.executeQuery();
+            while (rs.next()){
+                usersId.add(rs.getInt("id"));
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+        }
+        return usersId;
+    }
+
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");

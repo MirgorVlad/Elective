@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<h1>You are TEACHER</h1>
-${sessionScope.user}
+    <h1>You are TEACHER</h1>
+    <a href="controller?command=viewTeacherAvailableCourses">My courses</a>
 </body>
 </html>

@@ -19,6 +19,8 @@ public class SQLQueris {
     public static final String FIND_STUDENT_IN_COURSE_BY_ID = "SELECT * FROM sections where student_id = ? AND course_id = ?";
     public static final String UNFOLLOW_COURSE = "DELETE FROM sections WHERE student_id = ? AND course_id = ?";
     public static final String SELECT_ALL_AVAILABLE_COURSES_FOR_STUDENT = "SELECT * FROM sections where student_id = ?";
+    public static final String FIND_COURSE_BY_TEACHER_ID = "SELECT * FROM courses WHERE teacher = ?";
+    public static final String SELECT_ALL_STUDENTS_IN_COURSE = "SELECT id, first_name, last_name,email,password FROM sections INNER JOIN users u ON sections.student_id = u.id WHERE course_id = ?";
 
     private SQLQueris(){
     }

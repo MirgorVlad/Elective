@@ -3,10 +3,7 @@ package com.elective.tags;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
-
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +46,9 @@ public class ShowCourses extends TagSupport {
         if(user.getRole().equals(UserDAO.STUDENT_ROLE)){
             outTable = studentTable();
         }
+        if(user.getRole().equals(UserDAO.TEACHER_ROLE)){
+            outTable = teacherTable();
+        }
         return outTable;
     }
 
@@ -62,7 +62,7 @@ public class ShowCourses extends TagSupport {
                     "      <th>"+course.getStartDate()+"</th>\n" +
                     "      <th>"+course.getFinishDate()+"</th>\n" +
                     "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
-                    "      <th>"+course.getTeacher().getEmail()+"</th>\n" +
+                    "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
                     "      <th><a href=\"edit_course.jsp?courseId="+course.getId() +
                                                         "&name="+course.getName() +
                                                         "&description=" + course.getDescription() +
@@ -85,9 +85,27 @@ public class ShowCourses extends TagSupport {
                     "      <th>"+course.getStartDate()+"</th>\n" +
                     "      <th>"+course.getFinishDate()+"</th>\n" +
                     "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
-                    "      <th>"+course.getTeacher().getEmail()+"</th>\n" +
+                    "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
                     "      <th><a href=\"controller?command=unfollowCourse&userId="+user.getId()+"&courseId="+course.getId()+"\">UNFOLLOW</a></th>\n" +
                     "      <th><a href=\"controller?command=showJournal&courseId="+course.getId()+"\">JOURNAL</a></th>\n" +
+                    " </tr>";
+        }
+        return table;
+    }
+
+    private String teacherTable(){
+        String table = "<th>STUDENTS</th>\n" +
+                "<th>JOURNAL</th>\n" +
+                "</tr>";
+        for(Course course : coursesList){
+            table += " <tr>\n" +
+                    "      <th><a href=\"controller?command=viewCourse&courseId="+course.getId()+"\">"+course.getName()+"</a></th>\n" +
+                    "      <th>"+course.getStartDate()+"</th>\n" +
+                    "      <th>"+course.getFinishDate()+"</th>\n" +
+                    "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
+                    "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
+                    "      <th><a href=\"controller?command=showStudentsInCourse&courseId="+course.getId()+"\">STUDENTS</a></th>\n" +
+                    "      <th><a href=\"controller?command=showJournalForTeacher&courseId="+course.getId()+"\">JOURNAL</a></th>\n" +
                     " </tr>";
         }
         return table;

@@ -24,6 +24,9 @@ public class CommandContainer {
         commands.put("unfollowCourse", new UnfollowCourseCommand());
         commands.put("showJournal", new ShowJournalCommand());
         commands.put("viewStudentAvailableCourses", new ViewStudentAvailableCoursesCommand());
+        commands.put("viewTeacherAvailableCourses", new ViewTeacherAvailableCoursesCommand());
+        commands.put("showStudentsInCourse", new ShowStudentsInCourseCommand());
+        commands.put("viewProfile", new ViewProfileCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

@@ -25,4 +25,8 @@ public interface CourseDAO {
     void unfollowCourse(int studentId, int courseId) throws SQLException, DBException;
 
     List<Course> availableCourses(int userId) throws SQLException, DBException;
+
+    List<Course> findCoursesByTeacher(int id) throws SQLException, DBException;
+
+    List<Integer> findStudentsInCourse(int courseId) throws SQLException;
 }

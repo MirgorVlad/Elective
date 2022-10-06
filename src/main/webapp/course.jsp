@@ -9,7 +9,7 @@
     <div>
         <img src="files/course_img.webp" alt="course_img">
     <h1><c:out value="${course.name}"/></h1>
-    <p>Teacher: <c:out value="${course.teacher.fullName}"/></p>
+        <p>Teacher: <a href = "controller?command=viewProfile&userId=${course.teacher.id}"> <c:out value="${course.teacher.fullName}"/></a></p>
     <h2>Description</h2>
     <p><c:out value="${course.description}"/></p>
         <c:if test="${user.role eq 'student'}" >
