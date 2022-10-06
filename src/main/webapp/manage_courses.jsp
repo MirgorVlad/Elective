@@ -31,6 +31,6 @@
             </tr>
         </c:forEach>
     </table> --%>
-    <co:showcourses coursesList="${coursesList}" role="manager"/>
+    <co:showcourses coursesList="${coursesList}"/>
 </body>
 </html>

@@ -11,5 +11,6 @@ public abstract class ReferencesPages {
     public static final String COURSE = "course.jsp";
     public static final String ACCESS_JOINED = "access_joined.jsp";
     public static final String JOURNAL_PAGE = "journal.jsp";
+    public static final String AVAILABLE_COURSES_FOR_STUDENT = "available_courses_for_student.jsp";
 }
 

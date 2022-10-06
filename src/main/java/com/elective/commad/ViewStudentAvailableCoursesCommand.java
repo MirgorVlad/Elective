@@ -19,6 +19,7 @@ public class ViewStudentAvailableCoursesCommand implements Command{
         User student = (User)req.getSession().getAttribute("user");
         List<Course> availableCourses =  courseDAO.availableCourses(student.getId());
         availableCourses.forEach(System.out::println);
-        return ReferencesPages.VIEW_COURSES_LIST;
+        req.setAttribute("coursesList", availableCourses);
+        return ReferencesPages.AVAILABLE_COURSES_FOR_STUDENT;
     }
 }

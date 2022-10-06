@@ -2,8 +2,11 @@ package com.elective.tags;
 
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
+import com.elective.db.entity.User;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
 public class ShowCourses extends TagSupport {
 
     private List<Course> coursesList;
-    private String role;
+    private User user = null;
     private final String out = "  <table border=\"1\">\n" +
             "        <caption>All Courses</caption>\n" +
             "        <tr>\n" +
@@ -24,13 +27,10 @@ public class ShowCourses extends TagSupport {
     public void setCoursesList(List<Course> courseList){
         this.coursesList = courseList;
     }
-    public void setRole(String role){
-        this.role = role;
-    }
 
     @Override
     public int doStartTag() throws JspException {
-
+        user = (User)pageContext.getSession().getAttribute("user");
         try {
             pageContext.getOut().write(
                    out +  getOutTable()
@@ -43,8 +43,11 @@ public class ShowCourses extends TagSupport {
 
     private String getOutTable() {
         String outTable = "Empty set";
-        if(role.equals(UserDAO.MANAGER_ROLE)){
+        if(user.getRole().equals(UserDAO.MANAGER_ROLE)){
            outTable = managerTable();
+        }
+        if(user.getRole().equals(UserDAO.STUDENT_ROLE)){
+            outTable = studentTable();
         }
         return outTable;
     }
@@ -67,6 +70,24 @@ public class ShowCourses extends TagSupport {
                                                         "&start="+course.getStartDate() +
                                                         "&finish="+course.getFinishDate()+"\">EDIT</a></th>\n" +
                     "      <th><a href=\"controller?command=deleteCourse&courseId="+course.getId()+"\">DELETE</a></th>\n" +
+                    " </tr>";
+        }
+        return table;
+    }
+
+    private String studentTable(){
+        String table = "<th>UNFOLLOW</th>\n" +
+                "<th>JOURNAL</th>\n" +
+                "</tr>";
+        for(Course course : coursesList){
+            table += " <tr>\n" +
+                    "      <th><a href=\"controller?command=viewCourse&courseId="+course.getId()+"\">"+course.getName()+"</a></th>\n" +
+                    "      <th>"+course.getStartDate()+"</th>\n" +
+                    "      <th>"+course.getFinishDate()+"</th>\n" +
+                    "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
+                    "      <th>"+course.getTeacher().getEmail()+"</th>\n" +
+                    "      <th><a href=\"controller?command=unfollowCourse&userId="+user.getId()+"&courseId="+course.getId()+"\">UNFOLLOW</a></th>\n" +
+                    "      <th><a href=\"controller?command=showJournal&courseId="+course.getId()+"\">JOURNAL</a></th>\n" +
                     " </tr>";
         }
         return table;
