@@ -14,6 +14,7 @@
 <body>
     <h1>You are STUDENT</h1>
     <a href="controller?command=viewCoursesList">All courses</a>
+    <a href="controller?command=viewStudentAvailableCourses">My courses</a>
 
 </body>
 </html>

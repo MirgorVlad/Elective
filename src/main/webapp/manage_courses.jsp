@@ -1,12 +1,13 @@
 <%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "co" uri = "/WEB-INF/showCourses.tld"%>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>Courses</title>
 </head>
 <body>
-    <table border="1">
+    <%--<table border="1">
         <caption>All Courses</caption>
         <tr>
             <th>Name</th>
@@ -29,6 +30,7 @@
                 <th><a href="controller?command=deleteCourse&courseId=${course.id}">DELETE</a></th>
             </tr>
         </c:forEach>
-    </table>
+    </table> --%>
+    <co:showcourses coursesList="${coursesList}" role="manager"/>
 </body>
 </html>

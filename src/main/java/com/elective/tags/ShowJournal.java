@@ -31,15 +31,20 @@ public class ShowJournal extends TagSupport {
     }
 
     private String printTestDays(long step, long days) {
-        String out = "";
+        String out = "<th>DATE</th>";
+        String outGrades = "<tr><th>GRADE</th>";
         LocalDate startDate = course.getStartDate().toLocalDate().plusDays(step);
         //LocalDate finishDate = course.getFinishDate().toLocalDate();
         //System.out.println(finishDate.compareTo(startDate));
-        for(int i = 0; i < days; i+=step){
+        for(int i = 0; i < days - step; i+=step){
             System.out.println(startDate);
             out += "<th>" + startDate + "</th>";
+            outGrades += "<th>"+i+"</th>";  //instead i -> date.getGrade
             startDate = startDate.plusDays(step);
         }
-        return out;
+        out += "<th>Final Test</th>" +
+                "<th>TOTAL</th>";
+        outGrades += "</tr>";
+        return out + outGrades;
     }
 }

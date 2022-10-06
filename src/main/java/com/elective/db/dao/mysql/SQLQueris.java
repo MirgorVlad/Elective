@@ -18,6 +18,7 @@ public class SQLQueris {
     public static final String JOIN_TO_COURSE = "INSERT INTO sections values (?, ?)";
     public static final String FIND_STUDENT_IN_COURSE_BY_ID = "SELECT * FROM sections where student_id = ? AND course_id = ?";
     public static final String UNFOLLOW_COURSE = "DELETE FROM sections WHERE student_id = ? AND course_id = ?";
+    public static final String SELECT_ALL_AVAILABLE_COURSES_FOR_STUDENT = "SELECT * FROM sections where student_id = ?";
 
     private SQLQueris(){
     }

@@ -23,4 +23,6 @@ public interface CourseDAO {
     boolean isStudentJoined(int userId, int courseId) throws SQLException;
 
     void unfollowCourse(int studentId, int courseId) throws SQLException, DBException;
+
+    List<Course> availableCourses(int userId) throws SQLException, DBException;
 }

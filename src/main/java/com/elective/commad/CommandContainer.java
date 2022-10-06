@@ -23,6 +23,7 @@ public class CommandContainer {
         commands.put("joinToCourse", new JoinToCourseCommand());
         commands.put("unfollowCourse", new UnfollowCourseCommand());
         commands.put("showJournal", new ShowJournalCommand());
+        commands.put("viewStudentAvailableCourses", new ViewStudentAvailableCoursesCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);
