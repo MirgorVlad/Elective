@@ -2,6 +2,7 @@ package com.elective.db.dao.mysql;
 
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
+import com.elective.db.dao.JournalDAO;
 import com.elective.db.dao.UserDAO;
 
 public class MysqlDAOFactory extends DAOFactory {
@@ -13,5 +14,10 @@ public class MysqlDAOFactory extends DAOFactory {
     @Override
     public CourseDAO getCourseDAO() {
         return new MysqlCourseDAO();
+    }
+
+    @Override
+    public JournalDAO getJournalDAO() {
+        return new MysqlJournalDAO();
     }
 }

@@ -21,6 +21,9 @@ public class SQLQueris {
     public static final String SELECT_ALL_AVAILABLE_COURSES_FOR_STUDENT = "SELECT * FROM sections where student_id = ?";
     public static final String FIND_COURSE_BY_TEACHER_ID = "SELECT * FROM courses WHERE teacher = ?";
     public static final String SELECT_ALL_STUDENTS_IN_COURSE = "SELECT id, first_name, last_name,email,password FROM sections INNER JOIN users u ON sections.student_id = u.id WHERE course_id = ?";
+    public static final String INSERT_GRADE = "INSERT INTO journal VALUES (?,?,?,?)";
+    public static final String FIND_GRADE_BY_KEY = "SELECT grade from journal WHERE course_id=? AND student_id=? AND date=?";
+    public static final String SUM_OF_STUDENT_GRADE = "SELECT SUM(grade) FROM journal WHERE course_id=? AND student_id=?;";
 
     private SQLQueris(){
     }

@@ -31,7 +31,7 @@ public class ShowJournalCommand implements Command{
                 studentsList.add(userDAO.findById(id));
             }
 
-            req.setAttribute("studentsList", studentsList);
+            req.getSession().setAttribute("studentsList", studentsList);
 
             page = ReferencesPages.TEACHER_JOURNAL;
         }

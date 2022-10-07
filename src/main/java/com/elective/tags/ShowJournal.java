@@ -1,11 +1,18 @@
 package com.elective.tags;
+import com.elective.ReferencesPages;
+import com.elective.db.dao.DAOFactory;
+import com.elective.db.dao.DBException;
+import com.elective.db.dao.JournalDAO;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
+import javax.servlet.ServletException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +20,7 @@ public class ShowJournal extends TagSupport {
     private List<User> studentsList;
     private static final int COUNT_OF_TEST = 10;
     private Course course;
+    private final JournalDAO journalDAO = DAOFactory.getInstance().getJournalDAO();
 
     public void setCourse(Course course){
         this.course = course;
@@ -28,51 +36,59 @@ public class ShowJournal extends TagSupport {
                                 printTable() +
                             "</table>"
             );
-        } catch (IOException e) {
+        } catch (IOException | DBException | SQLException | ServletException e) {
             throw new RuntimeException("Problem is here", e);
         }
         return SKIP_BODY;
     }
 
-    private String printTable(){
+    private String printTable() throws DBException, SQLException, ServletException, IOException {
         long courseContinueDays = course.countDays();
         long step = courseContinueDays / COUNT_OF_TEST;
         User user = (User) pageContext.getSession().getAttribute("user");
 
-        if(user.getRole().equals(UserDAO.STUDENT_ROLE)){
-            return printStudentJournal(step, courseContinueDays);
+        try {
+            if(user.getRole().equals(UserDAO.STUDENT_ROLE)){
+                return printStudentJournal(step, courseContinueDays);
+            }
+            if(user.getRole().equals(UserDAO.TEACHER_ROLE)){
+                return printTeacherJournal(step, courseContinueDays);
+            }
+        } catch (DBException | SQLException ex){
+            pageContext.forward(ReferencesPages.ERROR_PAGE);
         }
-        if(user.getRole().equals(UserDAO.TEACHER_ROLE)){
-            return printTeacherJournal(step, courseContinueDays);
-        }
+
         return "No data";
     }
 
-    private String printStudentJournal(long step, long days) {
+    private String printStudentJournal(long step, long days) throws DBException, SQLException {
+        User student = (User)pageContext.getSession().getAttribute("user");
         LocalDate startDate = course.getStartDate().toLocalDate().plusDays(step);
+        LocalDate finishDate = course.getFinishDate().toLocalDate();
         String out = createDates(startDate, step, days, "DATE");
         String outGrades = "<tr><th>GRADE</th>";
-        for(int i = 0; i < days - step; i+=step){
-            System.out.println(startDate);
-            outGrades += "<th>"+i+"</th>";  //instead i -> date.getGrade
-            startDate = startDate.plusDays(step);
+        for(LocalDate s = startDate; s.isBefore(finishDate); s = s.plusDays(step)){
+            outGrades += "<th>"+journalDAO.getGrade(course.getId(), student.getId(), Date.valueOf(s))+"</th>";  //instead i -> date.getGrade
+            //startDate = startDate.plusDays(step);
         }
-        outGrades += "</tr>";
+        outGrades += "<th>-</th>"; //finalTest;
+        outGrades += "<th>"+journalDAO.sumOfStudentGrades(course.getId(), student.getId())+"</th></tr>"; //total;
         return out + outGrades;
     }
 
-    private String printTeacherJournal(long step, long days){
+    private String printTeacherJournal(long step, long days) throws DBException, SQLException {
         LocalDate startDate = course.getStartDate().toLocalDate().plusDays(step);
+        LocalDate finishDate = course.getFinishDate().toLocalDate();
         String out = createDates(startDate, step, days, "Student\\Date");
         String studentRow = "";
         for(User user : studentsList) {
-            studentRow += "<tr><th>"+user.getFullName()+"</th>";
-            for (int i = 0; i < days - step; i += step) {
-                studentRow += "<th>" + i + "</th>";  //instead i -> date.getGrade
-                startDate = startDate.plusDays(step);
+            studentRow += "<tr><th><a href=\"controller?command=viewProfile&userId="+user.getId()+"\">"+user.getFullName()+"</a></th>";
+            for(LocalDate s = startDate; s.isBefore(finishDate); s = s.plusDays(step)){
+                studentRow += "<th>"+journalDAO.getGrade(course.getId(), user.getId(), Date.valueOf(s))+"</th>";  //instead i -> date.getGrade
+                //startDate = startDate.plusDays(step);
             }
-
-            studentRow += "</tr>";
+            studentRow += "<th>-</th>"; //finalTest;
+            studentRow += "<th>"+journalDAO.sumOfStudentGrades(course.getId(), user.getId())+"</th></tr>"; //total;
             startDate = course.getStartDate().toLocalDate().plusDays(step);
         }
         return out + studentRow;

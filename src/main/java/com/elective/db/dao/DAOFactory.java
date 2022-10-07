@@ -34,6 +34,7 @@ public abstract class DAOFactory {
 
     public abstract UserDAO getUserDAO();
     public abstract CourseDAO getCourseDAO();
+    public abstract JournalDAO getJournalDAO();
 
 
 }
