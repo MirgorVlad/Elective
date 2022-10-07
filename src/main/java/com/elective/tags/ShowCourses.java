@@ -105,7 +105,7 @@ public class ShowCourses extends TagSupport {
                     "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
                     "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
                     "      <th><a href=\"controller?command=showStudentsInCourse&courseId="+course.getId()+"\">STUDENTS</a></th>\n" +
-                    "      <th><a href=\"controller?command=showJournalForTeacher&courseId="+course.getId()+"\">JOURNAL</a></th>\n" +
+                    "      <th><a href=\"controller?command=showJournal&courseId="+course.getId()+"\">JOURNAL</a></th>\n" +
                     " </tr>";
         }
         return table;
