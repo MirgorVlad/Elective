@@ -10,19 +10,35 @@ import java.sql.*;
 public class MysqlJournalDAO implements JournalDAO {
     @Override
     public void setGrade(Journal journal) throws SQLException, DBException {
-        try(Connection con = ConnectionFactory.getConnection();
-            PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_GRADE)){
+        PreparedStatement pstmt=null;
+        try(Connection con = ConnectionFactory.getConnection()){
+            if(getGrade(journal.getCourse().getId(), journal.getStudent().getId(), journal.getDate()) == 0){
+                pstmt = con.prepareStatement(SQLQueris.INSERT_GRADE);
+                int k = 1;
+                pstmt.setInt(k++, journal.getCourse().getId());
+                pstmt.setInt(k++, journal.getStudent().getId());
+                pstmt.setDate(k++, journal.getDate());
+                pstmt.setInt(k++, journal.getGrade());
 
-            int k = 1;
-            pstmt.setInt(k++, journal.getCourse().getId());
-            pstmt.setInt(k++, journal.getStudent().getId());
-            pstmt.setDate(k++, journal.getDate());
-            pstmt.setInt(k++, journal.getGrade());
+                if (pstmt.executeUpdate() == 0) {
+                    throw new DBException("Cannot insert grade");
+                }
+            } else {
+                pstmt = con.prepareStatement(SQLQueris.UPDATE_GRADE);
+                int k = 1;
+                pstmt.setInt(k++, journal.getGrade());
+                pstmt.setInt(k++, journal.getCourse().getId());
+                pstmt.setInt(k++, journal.getStudent().getId());
+                pstmt.setDate(k++, journal.getDate());
 
-            if (pstmt.executeUpdate() == 0) {
-                throw new DBException("Cannot insert grade");
+                if (pstmt.executeUpdate() == 0) {
+                    throw new DBException("Cannot update grade");
+                }
             }
-
+        } finally {
+            if(pstmt != null){
+                pstmt.close();
+            }
         }
     }
 

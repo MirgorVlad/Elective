@@ -24,6 +24,7 @@ public class SQLQueris {
     public static final String INSERT_GRADE = "INSERT INTO journal VALUES (?,?,?,?)";
     public static final String FIND_GRADE_BY_KEY = "SELECT grade from journal WHERE course_id=? AND student_id=? AND date=?";
     public static final String SUM_OF_STUDENT_GRADE = "SELECT SUM(grade) FROM journal WHERE course_id=? AND student_id=?;";
+    public static final String UPDATE_GRADE = "UPDATE journal SET grade = ? WHERE course_id=? AND student_id=? AND date=?";
 
     private SQLQueris(){
     }
