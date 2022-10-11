@@ -17,5 +17,14 @@
   </div>
 
 </c:forEach>
+<br/>
+<div id="sort">
+    <p><a href="controller?command=sortCourses&sample=az" >Sort by name (a-z)</a></p>
+    <p><a href="controller?command=sortCourses&sample=za" >Sort by name (z-a)</a></p>
+    <p>Sort by duration: <a href="controller?command=sortCourses&sample=duration&method=asc" >(asc)</a> |
+        <a href="controller?command=sortCourses&sample=duration&method=desc" >(desc)</a></p>
+    <p>Sort by students count: <a href="controller?command=sortCourses&sample=students&method=asc" >(asc)</a> |
+        <a href="controller?command=sortCourses&sample=students&method=desc" >(desc)</a></p>
+</div>
 </body>
 </html>

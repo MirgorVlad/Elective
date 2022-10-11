@@ -81,4 +81,8 @@ public class Course implements Serializable {
         LocalDate finish = finishDate.toLocalDate();
         return Duration.between(start.atStartOfDay(), finish.atStartOfDay()).toDays();
     }
+
+    public long duration(){
+        return Duration.between(startDate.toLocalDate().atStartOfDay(), finishDate.toLocalDate().atStartOfDay()).toDays();
+    }
 }

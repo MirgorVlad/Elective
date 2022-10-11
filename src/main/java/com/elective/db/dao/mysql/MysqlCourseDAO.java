@@ -196,6 +196,24 @@ public class MysqlCourseDAO implements CourseDAO {
         return usersId;
     }
 
+    public int countStudentsInCourse(int courseId) throws SQLException, DBException {
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement statement = con.prepareStatement(SQLQueris.COUNT_STUDENTS_IN_COURSE)){
+            statement.setInt(1, courseId);
+            rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getInt("students");
+            } else {
+                throw new DBException("Cannot find students");
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+        }
+    }
+
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");

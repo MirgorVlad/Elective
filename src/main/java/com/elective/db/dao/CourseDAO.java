@@ -29,4 +29,6 @@ public interface CourseDAO {
     List<Course> findCoursesByTeacher(int id) throws SQLException, DBException;
 
     List<Integer> findStudentsInCourse(int courseId) throws SQLException;
+
+    int countStudentsInCourse(int courseId) throws SQLException, DBException;
 }
