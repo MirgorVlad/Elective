@@ -9,6 +9,7 @@ public class Course implements Serializable {
 
     private int id;
     private String name;
+    private String topic;
     private String description;
     private User teacher;
     private Date startDate;
@@ -19,11 +20,20 @@ public class Course implements Serializable {
         return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", topic='" + topic + '\'' +
                 ", description='" + description + '\'' +
-                ", teacher =" + teacher +
+                ", teacher=" + teacher +
                 ", startDate=" + startDate +
                 ", finishDate=" + finishDate +
                 '}';
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public User getTeacher() {

@@ -1,6 +1,7 @@
 package com.elective.commad;
 
 import com.elective.ReferencesPages;
+import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -16,7 +17,8 @@ public class LoginCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         UserDAO userDAO = daoFactory.getUserDAO();
-        String page = "";
+
+        System.out.println("LOGIN:");
 
         String email = req.getParameter("email");
         System.out.println("LOGIN: " + email);
@@ -31,14 +33,16 @@ public class LoginCommand implements Command{
         userDAO.getRole(user);
 
         if(user != null){
+            req.getSession().setAttribute("topicList", CourseDAO.topicList);
             if(user.getPassword().equals(password)) {
                 req.getSession().setAttribute("user", user);
                 if(user.getRole().equals(UserDAO.STUDENT_ROLE))
                     return ReferencesPages.STUDENT_PAGE;
                 if(user.getRole().equals(UserDAO.TEACHER_ROLE))
                     return ReferencesPages.TEACHER_PAGE;
-                if(user.getRole().equals(UserDAO.MANAGER_ROLE))
+                if(user.getRole().equals(UserDAO.MANAGER_ROLE)) {
                     return ReferencesPages.MANAGER_PAGE;
+                }
             } else
                 throw new DBException("wrong password");
         } else

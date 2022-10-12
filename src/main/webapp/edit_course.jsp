@@ -17,6 +17,17 @@
     <input name="command" value="updateCourse" type="hidden">
     <input name="courseId" value="${param.courseId}" type="hidden">
     <p>Title: <input name="name" value="${param.name}"></p>
+    <label for="topics">Topic: </label>
+    <select name="topics" id="topics" sele>
+        <c:forEach items="${topicList}" var="topic">
+            <c:if test="${topic eq param.topic}">
+                <option value="${topic}" selected="selected">${topic}</option>
+            </c:if>
+            <c:if test="${topic ne param.topic}">
+                <option value="${topic}">${topic}</option>
+            </c:if>
+        </c:forEach>
+    </select>
     <p>Teacher email: <input name="teacherEmail" value="${param.teacher}" type="email" ></p>
     <p>Description: <input name="description" value="${param.description}"></p> <br/>
     <%--teachers list --%>

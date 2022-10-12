@@ -65,6 +65,7 @@ public class ShowCourses extends TagSupport {
                     "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
                     "      <th><a href=\"edit_course.jsp?courseId="+course.getId() +
                                                         "&name="+course.getName() +
+                                                        "&topic="+course.getTopic() +
                                                         "&description=" + course.getDescription() +
                                                         "&teacher="+course.getTeacher().getEmail() +
                                                         "&start="+course.getStartDate() +

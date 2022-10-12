@@ -15,7 +15,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
     UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
     @Override
-    public void create(Course course, User teacher) throws SQLException, DBException {
+    public void create(Course course) throws SQLException, DBException {
         ResultSet rs = null;
         try(Connection con = ConnectionFactory.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_COURSE,
@@ -26,7 +26,8 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, course.getDescription());
             pstmt.setDate(k++, course.getStartDate());
             pstmt.setDate(k++, course.getFinishDate());
-            pstmt.setInt(k++, teacher.getId());
+            pstmt.setInt(k++, course.getTeacher().getId());
+            pstmt.setString(k++, course.getTopic());
 
             if (pstmt.executeUpdate() > 0) {
                 setCourseID(rs, pstmt, course);
@@ -72,7 +73,7 @@ public class MysqlCourseDAO implements CourseDAO {
     }
 
     @Override
-    public void update(Course course, User teacher) throws SQLException, DBException {
+    public void update(Course course) throws SQLException, DBException {
         try(Connection con = ConnectionFactory.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.UPDATE_COURSE)){
 
@@ -81,7 +82,8 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, course.getDescription());
             pstmt.setDate(k++, course.getStartDate());
             pstmt.setDate(k++, course.getFinishDate());
-            pstmt.setInt(k++, teacher.getId());
+            pstmt.setInt(k++, course.getTeacher().getId());
+            pstmt.setString(k++, course.getTopic());
             pstmt.setInt(k++, course.getId());
 
             if (pstmt.executeUpdate() == 0) {
@@ -225,6 +227,7 @@ public class MysqlCourseDAO implements CourseDAO {
         course.setStartDate(rs.getDate("start"));
         course.setFinishDate(rs.getDate("finish"));
         course.setTeacher(teacher);
+        course.setTopic(rs.getString("topic"));
         return course;
     }
 
@@ -259,6 +262,19 @@ public class MysqlCourseDAO implements CourseDAO {
             int courseID = rs.getInt(1);
             course.setId(courseID);
         }
+    }
+
+    public static Course createCourse(int id, String name,String topic, String desc, Date startDate, Date finishDate, User teacher) {
+        Course course= new Course();
+
+        course.setId(id);
+        course.setName(name);
+        course.setTopic(topic);
+        course.setDescription(desc);
+        course.setTeacher(teacher);
+        course.setStartDate(startDate);
+        course.setFinishDate(finishDate);
+        return course;
     }
 
 }

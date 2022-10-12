@@ -3,6 +3,7 @@ package com.elective;
 
 import com.elective.commad.Command;
 import com.elective.commad.CommandContainer;
+import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -34,6 +34,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         String address = ReferencesPages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);

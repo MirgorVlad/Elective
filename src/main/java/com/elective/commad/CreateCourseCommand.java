@@ -5,6 +5,7 @@ import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
+import com.elective.db.dao.mysql.MysqlCourseDAO;
 import com.elective.db.dao.mysql.MysqlDAOFactory;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
@@ -21,29 +22,23 @@ public class CreateCourseCommand implements Command{
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
         UserDAO userDAO = daoFactory.getUserDAO();
+
         String name = req.getParameter("name");
+        String topic = req.getParameter("topics");
+        System.out.println(topic);
         String desc = req.getParameter("description");
         String tEmail = req.getParameter("teacherEmail");
         Date startDate = Date.valueOf(req.getParameter("startDate"));
         Date finishDate = Date.valueOf(req.getParameter("finishDate"));
 
         User teacher = courseDAO.getTeacher(userDAO.findByEmail(tEmail));
+        Course course = MysqlCourseDAO.createCourse(0, name, topic, desc, startDate, finishDate, teacher);
+        System.out.println(course);
+        courseDAO.create(course);
 
-        courseDAO.create(createCourse(name, desc, startDate, finishDate, teacher), teacher);
-
-        System.out.println(startDate);
 
         return ReferencesPages.MANAGER_PAGE;
     }
 
-    private  Course createCourse(String name, String desc, Date startDate, Date finishDate, User teacher) {
-        Course course= new Course();
 
-        course.setName(name);
-        course.setDescription(desc);
-        course.setTeacher(teacher);
-        course.setStartDate(startDate);
-        course.setFinishDate(finishDate);
-        return course;
-    }
 }
