@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CourseDAO {
 
+    String ALL_COURSES = "all";
+
     List<String> topicList = Arrays.asList("programming", "languages", "science", "soft skills");
 
     void create(Course course) throws SQLException, DBException;
@@ -35,4 +37,7 @@ public interface CourseDAO {
     List<Integer> findStudentsInCourse(int courseId) throws SQLException;
 
     int countStudentsInCourse(int courseId) throws SQLException, DBException;
+
+    List<Course> getCoursesByTopic(String topic) throws SQLException, DBException;
+
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Course implements Serializable {
 
@@ -14,6 +15,15 @@ public class Course implements Serializable {
     private User teacher;
     private Date startDate;
     private Date finishDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id;
+    }
+
 
     @Override
     public String toString() {

@@ -29,6 +29,7 @@ public class CommandContainer {
         commands.put("viewProfile", new ViewProfileCommand());
         commands.put("editJournal", new EditJournalCommand());
         commands.put("sortCourses", new SortCoursesCommand());
+        commands.put("selectCourses", new SelectCoursesCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

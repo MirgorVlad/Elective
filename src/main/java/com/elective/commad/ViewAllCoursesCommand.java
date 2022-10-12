@@ -16,9 +16,15 @@ public class ViewAllCoursesCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
+        UserDAO userDAO = daoFactory.getUserDAO();
+
         List<Course> courseList = courseDAO.getAll();
+        List<User> teacherList = userDAO.getAllTeachers();
+
         String page = null;
-        System.out.println(courseList);
+
+
+       req.setAttribute("teacherList", teacherList);
         req.getSession().setAttribute("coursesList", courseList);
 
         if(req.getParameter("command").equals("viewCoursesList")){

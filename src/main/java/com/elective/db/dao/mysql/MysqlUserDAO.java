@@ -3,9 +3,12 @@ package com.elective.db.dao.mysql;
 import com.elective.db.dao.ConnectionFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
+import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MysqlUserDAO implements UserDAO {
 
@@ -86,6 +89,19 @@ public class MysqlUserDAO implements UserDAO {
         user.setRole(role);
     }
 
+    @Override
+    public List<User> getAllTeachers() throws SQLException, DBException {
+        List<User> teachers = new ArrayList<>();
+        try(Connection con = ConnectionFactory.getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(SQLQueris.SELECT_ALL_TEACHERS)) {
+            while (rs.next()){
+                teachers.add(createUser(rs));
+            }
+        }
+        return teachers;
+    }
+
     private boolean isManager(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
@@ -99,7 +115,7 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public boolean isTeacher(Connection con, User user) throws SQLException {
+    public static boolean isTeacher(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
             pstmt.setInt(1, user.getId());
@@ -112,7 +128,7 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public boolean isStudent(Connection con, User user) throws SQLException {
+    public static boolean isStudent(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
             pstmt.setInt(1, user.getId());

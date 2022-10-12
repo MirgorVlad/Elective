@@ -216,6 +216,28 @@ public class MysqlCourseDAO implements CourseDAO {
         }
     }
 
+    @Override
+    public List<Course> getCoursesByTopic(String topic) throws SQLException, DBException {
+        List<Course> courses = new ArrayList<>();
+        ResultSet rs = null;
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_TOPIC)) {
+            pstmt.setString(1, topic);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                courses.add(getCourse(rs));
+            }
+        }
+        finally {
+            if(rs != null)
+                rs.close();
+        }
+        return courses;
+    }
+
+
+
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");
@@ -235,7 +257,7 @@ public class MysqlCourseDAO implements CourseDAO {
         System.out.println(user);
         try(Connection con = ConnectionFactory.getConnection()) {
             if (user != null) {
-                if (userDAO.isTeacher(con, user))
+                if (MysqlUserDAO.isTeacher(con, user))
                     return user;
                 else
                     throw new DBException(user.getEmail() + " is not teacher");

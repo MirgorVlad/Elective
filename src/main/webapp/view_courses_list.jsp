@@ -28,11 +28,22 @@
         <a href="controller?command=sortCourses&sample=students&method=desc" >(desc)</a></p>
     <p><b>Selection:</b></p>
     <form method="get" action="controller?">
-        <input type="hidden" value="command=selectCourses">
+        <input type="hidden" name="command" value="selectCourses">
+        <%--By topic--%>
         <label for="topics">Course on the topic: </label>
         <select name="topics" id="topics">
+            <option value="all">all</option>
             <c:forEach items="${topicList}" var="topic">
                 <option value="${topic}">${topic}</option>
+            </c:forEach>
+        </select>
+        <%--By teacher--%>
+        <br/>
+        <label for="teachers">Course with a teacher: </label>
+        <select name="teachers" id="teachers">
+            <option value="all">all</option>
+            <c:forEach items="${teacherList}" var="teacher">
+                <option value="${teacher.id}">${teacher.fullName}</option>
             </c:forEach>
         </select>
         <input type="submit" value="Select">
