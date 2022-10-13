@@ -16,5 +16,6 @@ public abstract class ReferencesPages {
     public static final String STUDENTS_IN_COURSE = "students_in_course.jsp";
     public static final String PROFILE = "profile.jsp";
     public static final String TEACHER_JOURNAL = "teacher_journal.jsp";
+    public static final String VIEW_ALL_USERS = "all_users.jsp";
 }
 

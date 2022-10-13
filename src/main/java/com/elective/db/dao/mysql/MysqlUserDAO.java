@@ -43,6 +43,19 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     @Override
+    public List<User> getAll() throws SQLException, DBException {
+        List<User> userList = new ArrayList<>();
+        try(Connection con = ConnectionFactory.getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(SQLQueris.SELECT_ALL_USERS)) {
+            while (rs.next()){
+                userList.add(createUser(rs));
+            }
+        }
+        return userList;
+    }
+
+    @Override
     public User findByEmail(String email) throws SQLException, DBException {
         ResultSet rs = null;
         try(Connection con = ConnectionFactory.getConnection();
@@ -102,6 +115,19 @@ public class MysqlUserDAO implements UserDAO {
         return teachers;
     }
 
+    @Override
+    public void changeUserState(int userId, boolean state) throws SQLException, DBException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.UPDATE_USER_STATE)) {
+            pstmt.setBoolean(1, state);
+            pstmt.setInt(2, userId);
+            int upd = pstmt.executeUpdate();
+            if(upd < 0){
+                throw new DBException("Can not update state");
+            }
+        }
+    }
+
     private boolean isManager(Connection con, User user) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
@@ -148,6 +174,7 @@ public class MysqlUserDAO implements UserDAO {
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
         user.setId(rs.getInt("id"));
+        user.setBlock(rs.getBoolean("blocked"));
         getRole(user);
         return user;
     }

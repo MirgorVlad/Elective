@@ -14,6 +14,8 @@ public interface UserDAO {
 
     void insert(User user) throws SQLException, DBException;
 
+    List<User> getAll() throws SQLException, DBException;
+
     User findByEmail(String email) throws SQLException, DBException;
 
     User findById(int id) throws SQLException, DBException;
@@ -21,4 +23,6 @@ public interface UserDAO {
     void getRole(User user) throws SQLException, DBException;
 
     List<User> getAllTeachers() throws SQLException, DBException;
+
+    void changeUserState(int userId, boolean state) throws SQLException, DBException;
 }

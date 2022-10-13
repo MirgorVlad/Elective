@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class LoginCommand implements Command{
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         UserDAO userDAO = daoFactory.getUserDAO();
 
         System.out.println("LOGIN:");
@@ -32,8 +32,15 @@ public class LoginCommand implements Command{
         User user = userDAO.findByEmail(email);
         userDAO.getRole(user);
 
+
+
         if(user != null){
+            if(user.isBlock()) {
+                throw new IllegalAccessException("You are blocked by manager");
+            }
+
             req.getSession().setAttribute("topicList", CourseDAO.topicList);
+
             if(user.getPassword().equals(password)) {
                 req.getSession().setAttribute("user", user);
                 if(user.getRole().equals(UserDAO.STUDENT_ROLE))

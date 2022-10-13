@@ -10,6 +10,16 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String role;
+    private boolean block;
+
+    public boolean isBlock() {
+        return block;
+    }
+
+    public void setBlock(boolean block) {
+        this.block = block;
+    }
+
     public String getRole() {
         return role;
     }

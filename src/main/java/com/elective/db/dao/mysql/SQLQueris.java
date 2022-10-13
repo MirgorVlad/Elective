@@ -2,7 +2,7 @@ package com.elective.db.dao.mysql;
 
 public class SQLQueris {
 
-    public static final String INSERT_USER = "INSERT INTO users values(DEFAULT, ?, ?, ?, ?)";
+    public static final String INSERT_USER = "INSERT INTO users (id, first_name, last_name, email, password) values(DEFAULT, ?, ?, ?, ?)";
     public static final String INSERT_TEACHER = "INSERT INTO teachers values(?)";
     public static final String INSERT_STUDENT = "INSERT INTO students values(?)";
     public static final String FIND_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
@@ -28,6 +28,8 @@ public class SQLQueris {
     public static final String COUNT_STUDENTS_IN_COURSE = "SELECT COUNT(*) AS students FROM sections WHERE course_id=?";
     public static final String FIND_COURSE_BY_TOPIC = "SELECT * FROM courses WHERE topic = ?";
     public static final String SELECT_ALL_TEACHERS = "SELECT * FROM teachers INNER JOIN users u ON teachers.user_id = u.id" ;
+    public static final String SELECT_ALL_USERS = "SELECT * FROM users";
+    public static final String UPDATE_USER_STATE = "UPDATE users SET blocked = ? WHERE id = ?";
 
     private SQLQueris(){
     }
