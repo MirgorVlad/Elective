@@ -22,8 +22,9 @@ public class SelectCoursesCommand implements Command{
 
         courseList = generateList(topic, teacher);
 
-        req.setAttribute("coursesList", courseList);
-        return "controller?command=viewCoursesList";
+        //req.getSession().removeAttribute("coursesList");
+        req.getSession().setAttribute("coursesList", courseList);
+        return ReferencesPages.VIEW_COURSES_LIST;
     }
 
     private List<Course> generateList(String topic, String teacher) throws DBException, SQLException {

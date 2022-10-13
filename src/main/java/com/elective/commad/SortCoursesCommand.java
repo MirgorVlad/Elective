@@ -1,5 +1,6 @@
 package com.elective.commad;
 
+import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -7,6 +8,7 @@ import com.elective.db.entity.Course;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,9 +23,19 @@ public class SortCoursesCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
-        List<Course> courseList = courseDAO.getAll();
+        //List<Course> courseList = courseDAO.getAll();
         String sample = req.getParameter("sample");
         String method = req.getParameter("method");
+        List<Course> courseList;
+
+
+        if(req.getSession().getAttribute("coursesList") != null) {
+            courseList = new ArrayList<>((List<Course>) req.getSession().getAttribute("coursesList"));
+            System.out.println("SORT: " + courseList);
+        }
+        else {
+            throw new IllegalArgumentException("Courses list is empty");
+        }
 
         if(sample.equals(AZ)){
             courseList.sort(Comparator.comparing(Course::getName));
@@ -58,9 +70,9 @@ public class SortCoursesCommand implements Command{
                 }).reversed());
             }
         }
+        System.out.println("SORTED: " + courseList);
+        req.getSession().setAttribute("coursesList", courseList);
 
-        req.setAttribute("coursesList", courseList);
-
-        return "controller?command=viewCoursesList";
+        return ReferencesPages.VIEW_COURSES_LIST;
     }
 }
