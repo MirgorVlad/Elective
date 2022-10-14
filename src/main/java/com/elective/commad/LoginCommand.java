@@ -31,8 +31,13 @@ public class LoginCommand implements Command{
 
         User user = userDAO.findByEmail(email);
         userDAO.getRole(user);
-
-
+        int a = 6;
+        switch (a){
+            default:
+                System.out.println(5);;
+            case 5:
+                System.out.println(5);;
+        }
 
         if(user != null){
             if(user.isBlock()) {

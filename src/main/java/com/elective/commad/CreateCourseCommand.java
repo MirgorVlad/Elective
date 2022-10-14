@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class CreateCourseCommand implements Command{
 
@@ -25,14 +26,21 @@ public class CreateCourseCommand implements Command{
 
         String name = req.getParameter("name");
         String topic = req.getParameter("topics");
-        System.out.println(topic);
         String desc = req.getParameter("description");
         String tEmail = req.getParameter("teacherEmail");
         Date startDate = Date.valueOf(req.getParameter("startDate"));
         Date finishDate = Date.valueOf(req.getParameter("finishDate"));
 
+        if(startDate.toLocalDate().isBefore(LocalDate.now()))
+            throw new IllegalArgumentException("Course must start today or in the future");
+
         User teacher = courseDAO.getTeacher(userDAO.findByEmail(tEmail));
         Course course = MysqlCourseDAO.createCourse(0, name, topic, desc, startDate, finishDate, teacher);
+
+        if(course.countDays() < CourseDAO.MIN_DURATION)
+            throw new IllegalArgumentException("Course must last at least " + CourseDAO.MIN_DURATION + " days");
+
+
         System.out.println(course);
         courseDAO.create(course);
 

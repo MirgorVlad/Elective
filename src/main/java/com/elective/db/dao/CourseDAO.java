@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface CourseDAO {
 
-    String ALL_COURSES = "all";
-
+    int MIN_DURATION = 14;
     List<String> topicList = Arrays.asList("programming", "languages", "science", "soft skills");
+
 
     void create(Course course) throws SQLException, DBException;
 

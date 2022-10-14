@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ShowJournal extends TagSupport {
     private List<User> studentsList;
-    private static final int COUNT_OF_TEST = 10;
+    private static final int step = 1;
     private Course course;
     private final JournalDAO journalDAO = DAOFactory.getInstance().getJournalDAO();
 
@@ -44,15 +44,14 @@ public class ShowJournal extends TagSupport {
 
     private String printTable() throws DBException, SQLException, ServletException, IOException {
         long courseContinueDays = course.countDays();
-        long step = courseContinueDays / COUNT_OF_TEST;
         User user = (User) pageContext.getSession().getAttribute("user");
 
         try {
             if(user.getRole().equals(UserDAO.STUDENT_ROLE)){
-                return printStudentJournal(step, courseContinueDays);
+                return printStudentJournal(courseContinueDays);
             }
             if(user.getRole().equals(UserDAO.TEACHER_ROLE)){
-                return printTeacherJournal(step, courseContinueDays);
+                return printTeacherJournal(courseContinueDays);
             }
         } catch (DBException | SQLException ex){
             pageContext.forward(ReferencesPages.ERROR_PAGE);
@@ -61,13 +60,13 @@ public class ShowJournal extends TagSupport {
         return "No data";
     }
 
-    private String printStudentJournal(long step, long days) throws DBException, SQLException {
+    private String printStudentJournal(long days) throws DBException, SQLException {
         User student = (User)pageContext.getSession().getAttribute("user");
-        LocalDate startDate = course.getStartDate().toLocalDate().plusDays(step);
+        LocalDate startDate = course.getStartDate().toLocalDate();
         LocalDate finishDate = course.getFinishDate().toLocalDate();
         String out = createDates(startDate, step, days, "DATE");
         String outGrades = "<tr><th>GRADE</th>";
-        for(LocalDate s = startDate; s.isBefore(finishDate); s = s.plusDays(step)){
+        for(LocalDate s = startDate; !s.isEqual(finishDate.minusDays(1)); s = s.plusDays(step)){
             outGrades += "<th>"+journalDAO.getGrade(course.getId(), student.getId(), Date.valueOf(s))+"</th>";  //instead i -> date.getGrade
             //startDate = startDate.plusDays(step);
         }
@@ -76,14 +75,14 @@ public class ShowJournal extends TagSupport {
         return out + outGrades;
     }
 
-    private String printTeacherJournal(long step, long days) throws DBException, SQLException {
-        LocalDate startDate = course.getStartDate().toLocalDate().plusDays(step);
+    private String printTeacherJournal(long days) throws DBException, SQLException {
+        LocalDate startDate = course.getStartDate().toLocalDate();
         LocalDate finishDate = course.getFinishDate().toLocalDate();
         String out = createDates(startDate, step, days, "Student\\Date");
         String studentRow = "";
         for(User user : studentsList) {
             studentRow += "<tr><th><a href=\"controller?command=viewProfile&userId="+user.getId()+"\">"+user.getFullName()+"</a></th>";
-            for(LocalDate s = startDate; s.isBefore(finishDate); s = s.plusDays(step)){
+            for(LocalDate s = startDate; !s.isEqual(finishDate.minusDays(1)); s = s.plusDays(step)){
                 studentRow += "<th>"+journalDAO.getGrade(course.getId(), user.getId(), Date.valueOf(s))+"</th>";  //instead i -> date.getGrade
                 //startDate = startDate.plusDays(step);
             }

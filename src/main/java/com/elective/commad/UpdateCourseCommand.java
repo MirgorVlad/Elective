@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UpdateCourseCommand implements Command{
     @Override
@@ -26,8 +27,15 @@ public class UpdateCourseCommand implements Command{
         Date startDate = Date.valueOf(req.getParameter("startDate"));
         Date finishDate = Date.valueOf(req.getParameter("finishDate"));
 
+        if(startDate.toLocalDate().isBefore(LocalDate.now()))
+            throw new IllegalArgumentException("Course must start today or in the future");
+
         User teacher = courseDAO.getTeacher(userDAO.findByEmail(tEmail));
         Course course = MysqlCourseDAO.createCourse(id, name, topic, desc, startDate, finishDate, teacher);
+
+        if(course.countDays() < CourseDAO.MIN_DURATION)
+            throw new IllegalArgumentException("Course must last at least " + CourseDAO.MIN_DURATION + " days");
+
         req.setAttribute("course", course);
         courseDAO.update(course);
 

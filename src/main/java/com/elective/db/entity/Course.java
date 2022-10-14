@@ -38,6 +38,7 @@ public class Course implements Serializable {
                 '}';
     }
 
+
     public String getTopic() {
         return topic;
     }

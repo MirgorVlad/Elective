@@ -121,7 +121,8 @@ public class ShowCourses extends TagSupport {
                 "            <th style=\"width: 10%;\">JOURNAL</th>\n" +
                 "</tr>";
         for(Course course : coursesList) {
-            if (course.getStartDate().toLocalDate().isBefore(LocalDate.now()) && course.getFinishDate().toLocalDate().isAfter(LocalDate.now())) {
+            if ((course.getStartDate().toLocalDate().isBefore(LocalDate.now()) || course.getStartDate().toLocalDate().isEqual(LocalDate.now()))
+                    && course.getFinishDate().toLocalDate().isAfter(LocalDate.now())) {
                 table += " <tr>\n" +
                         "      <th><a href=\"controller?command=viewCourse&courseId=" + course.getId() + "\">" + course.getName() + "</a></th>\n" +
                         "      <th>" + course.getStartDate() + "</th>\n" +
