@@ -1,46 +1,37 @@
-package com.elective.commad;
+package com.elective.command;
 
 import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
-import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
-import com.elective.db.dao.mysql.MysqlDAOFactory;
 import com.elective.db.entity.User;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
 public class LoginCommand implements Command{
-
+    static Logger log = LogManager.getLogger(LoginCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         UserDAO userDAO = daoFactory.getUserDAO();
 
-        System.out.println("LOGIN:");
-
         String email = req.getParameter("email");
-        System.out.println("LOGIN: " + email);
         String password = req.getParameter("password");
-        System.out.println("PASSWORD: " + password);
 
         //DB get User
         //Logic if admin -> admin.jsp if clien -> client.jsp
         //User to session
-
+        log.log(Level.DEBUG, "email: " + email + "; password: " + password);
         User user = userDAO.findByEmail(email);
-        userDAO.getRole(user);
-        int a = 6;
-        switch (a){
-            default:
-                System.out.println(5);;
-            case 5:
-                System.out.println(5);;
-        }
+        log.log(Level.INFO, "LOGIN user: " + user);
 
         if(user != null){
             if(user.isBlock()) {
+                log.log(Level.WARN, "User"+user.getEmail()+" is blocked by manager");
                 throw new IllegalAccessException("You are blocked by manager");
             }
 
@@ -55,10 +46,14 @@ public class LoginCommand implements Command{
                 if(user.getRole().equals(UserDAO.MANAGER_ROLE)) {
                     return ReferencesPages.MANAGER_PAGE;
                 }
-            } else
+            } else {
+                log.log(Level.WARN, "Wrong password for "+user.getEmail()+" account");
                 throw new DBException("wrong password");
-        } else
+            }
+        } else {
+            log.log(Level.WARN, "Cannot find user with login "+ email);
             throw new DBException("cannot find user");
+        }
 
         return null;
     }

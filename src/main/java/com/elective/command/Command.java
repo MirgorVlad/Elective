@@ -1,4 +1,4 @@
-package com.elective.commad;
+package com.elective.command;
 
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;

@@ -1,17 +1,20 @@
-package com.elective.commad;
+package com.elective.command;
 
 import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SelectCoursesCommand implements Command{
+    static Logger log = LogManager.getLogger(SelectCoursesCommand.class);
     private final CourseDAO courseDAO = daoFactory.getCourseDAO();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
@@ -21,6 +24,9 @@ public class SelectCoursesCommand implements Command{
         List<Course> courseList;
 
         courseList = generateList(topic, teacher);
+
+        log.log(Level.INFO, "Selected courses by topic - " + topic + "; teacher - " + teacher);
+        log.log(Level.DEBUG, courseList);
 
         //req.getSession().removeAttribute("coursesList");
         req.getSession().setAttribute("coursesList", courseList);
@@ -39,8 +45,6 @@ public class SelectCoursesCommand implements Command{
         else
             courseListByTeacher = courseDAO.findCoursesByTeacher(Integer.parseInt(teacher));
 
-        System.out.println("Topic: " + courseListByTopic);
-        System.out.println("Teacher: " + courseListByTeacher);
 
         return courseListByTopic.stream()
                 .distinct()

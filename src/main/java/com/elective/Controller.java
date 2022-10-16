@@ -1,11 +1,9 @@
 package com.elective;
 
 
-import com.elective.commad.Command;
-import com.elective.commad.CommandContainer;
-import com.elective.db.dao.CourseDAO;
+import com.elective.command.Command;
+import com.elective.command.CommandContainer;
 import com.elective.db.dao.DBException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +14,6 @@ import java.sql.SQLException;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

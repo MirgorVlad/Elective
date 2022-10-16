@@ -1,9 +1,12 @@
-package com.elective.commad;
+package com.elective.command;
 
 import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SortCoursesCommand implements Command{
+    static Logger log = LogManager.getLogger(SortCoursesCommand.class);
+
     private final String AZ = "az";
     private final String ZA = "za";
     private final String DURATION = "duration";
@@ -22,8 +27,8 @@ public class SortCoursesCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
+
         CourseDAO courseDAO = daoFactory.getCourseDAO();
-        //List<Course> courseList = courseDAO.getAll();
         String sample = req.getParameter("sample");
         String method = req.getParameter("method");
         List<Course> courseList;
@@ -31,7 +36,7 @@ public class SortCoursesCommand implements Command{
 
         if(req.getSession().getAttribute("coursesList") != null) {
             courseList = new ArrayList<>((List<Course>) req.getSession().getAttribute("coursesList"));
-            System.out.println("SORT: " + courseList);
+
         }
         else {
             throw new IllegalArgumentException("Courses list is empty");
@@ -70,8 +75,10 @@ public class SortCoursesCommand implements Command{
                 }).reversed());
             }
         }
-        System.out.println("SORTED: " + courseList);
+
         req.getSession().setAttribute("coursesList", courseList);
+
+        log.log(Level.INFO, "Sort courses by " + method + "(" + sample + ")");
 
         return ReferencesPages.VIEW_COURSES_LIST;
     }

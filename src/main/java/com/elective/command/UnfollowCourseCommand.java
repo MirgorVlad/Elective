@@ -1,18 +1,20 @@
-package com.elective.commad;
+package com.elective.command;
 
 import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
-import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
-public class JoinToCourseCommand implements Command{
-
+public class UnfollowCourseCommand implements Command{
+    static Logger log = LogManager.getLogger(UnfollowCourseCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
@@ -20,9 +22,12 @@ public class JoinToCourseCommand implements Command{
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         Course course = courseDAO.findById(courseId);
         User user = (User) req.getSession().getAttribute("user");
-        req.setAttribute("course", course);
         req.setAttribute("isJoined", courseDAO.isStudentJoined(user.getId(), courseId));
-        courseDAO.jointStudentToCourse(studentId, courseId);
+        req.setAttribute("course", course);
+
+        log.log(Level.INFO, "Unfollow user " + user.getEmail() + " from course " + course.getName());
+
+        courseDAO.unfollowCourse(studentId, courseId);
         return ReferencesPages.ACCESS_JOINED;
     }
 }

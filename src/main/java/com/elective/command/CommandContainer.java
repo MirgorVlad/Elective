@@ -1,4 +1,4 @@
-package com.elective.commad;
+package com.elective.command;
 
 import java.util.HashMap;
 import java.util.Map;

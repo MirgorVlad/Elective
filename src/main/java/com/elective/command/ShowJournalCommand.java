@@ -1,4 +1,4 @@
-package com.elective.commad;
+package com.elective.command;
 
 import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
@@ -6,6 +6,9 @@ import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowJournalCommand implements Command{
+    static Logger log = LogManager.getLogger(ShowJournalCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         String page = "";
@@ -22,6 +26,8 @@ public class ShowJournalCommand implements Command{
         Course course = courseDAO.findById(Integer.parseInt(req.getParameter("courseId")));
         req.setAttribute("course", course);
         User user = (User)req.getSession().getAttribute("user");
+
+        log.log(Level.INFO, "Show journal for course - "+ course.getName());
 
         if (user.getRole().equals(UserDAO.TEACHER_ROLE)){
             List<Integer> studentsIdList = courseDAO.findStudentsInCourse(course.getId());

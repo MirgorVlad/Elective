@@ -1,20 +1,23 @@
-package com.elective.commad;
+package com.elective.command;
 
-import com.elective.ReferencesPages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.JournalDAO;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.Journal;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class EditJournalCommand implements Command{
+    static Logger log = LogManager.getLogger(EditJournalCommand.class);
+
     private final CourseDAO courseDAO = daoFactory.getCourseDAO();
     private final UserDAO userDAO = daoFactory.getUserDAO();
     @Override
@@ -25,11 +28,16 @@ public class EditJournalCommand implements Command{
         Date date = Date.valueOf(req.getParameter("date"));
         int grade = Integer.parseInt(req.getParameter("grade"));
         Course course = courseDAO.findById(courseId);
-        System.out.println(courseId + student + date + grade);
+
+        log.log(Level.INFO, "Edit journal for course " + course.getName());
 
         if(date.toLocalDate().isBefore(course.getStartDate().toLocalDate())
-                || date.toLocalDate().isAfter(course.getFinishDate().toLocalDate()))
+                || date.toLocalDate().isAfter(course.getFinishDate().toLocalDate())) {
+            log.log(Level.WARN, "No date " + date.toLocalDate() + " in course");
             throw new IllegalArgumentException("There is no such date in the course");
+        }
+
+        log.log(Level.DEBUG, "Change grade " + grade + "to student: " + student + " to " + date);
 
         journalDAO.setGrade(createJournal(courseId, student, date, grade));
         req.getSession().removeAttribute("studentsList");
