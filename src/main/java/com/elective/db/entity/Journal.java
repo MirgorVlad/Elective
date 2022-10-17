@@ -8,6 +8,16 @@ public class Journal {
     private Date date;
     private int grade;
 
+    @Override
+    public String toString() {
+        return "Journal{" +
+                "course=" + course +
+                ", student=" + student +
+                ", date=" + date +
+                ", grade=" + grade +
+                '}';
+    }
+
     public Course getCourse() {
         return course;
     }

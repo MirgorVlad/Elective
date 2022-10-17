@@ -4,10 +4,14 @@ import com.elective.db.dao.ConnectionFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.JournalDAO;
 import com.elective.db.entity.Journal;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
 public class MysqlJournalDAO implements JournalDAO {
+    static Logger log = LogManager.getLogger(MysqlJournalDAO.class);
     @Override
     public void setGrade(Journal journal) throws SQLException, DBException {
         PreparedStatement pstmt=null;
@@ -21,8 +25,10 @@ public class MysqlJournalDAO implements JournalDAO {
                 pstmt.setInt(k++, journal.getGrade());
 
                 if (pstmt.executeUpdate() == 0) {
+                    log.log(Level.WARN, "Cannot insert grade");
                     throw new DBException("Cannot insert grade");
                 }
+                log.log(Level.INFO, "Set grade: " + journal);
             } else {
                 pstmt = con.prepareStatement(SQLQueris.UPDATE_GRADE);
                 int k = 1;
@@ -56,6 +62,7 @@ public class MysqlJournalDAO implements JournalDAO {
             while (rs.next()){
                 return rs.getInt("grade");
             }
+            log.log(Level.INFO, "Cannot get grade from course " + courseId + "; student " + studentId + "; date " + date);
         }
         finally {
             if(rs != null)
@@ -78,6 +85,7 @@ public class MysqlJournalDAO implements JournalDAO {
                 System.out.println(rs.getInt("sum(grade)"));
                 return rs.getInt("sum(grade)");
             }
+            log.log(Level.INFO, "Sum of grades for " + studentId + " from course " + courseId);
         }
         finally {
             if(rs != null)

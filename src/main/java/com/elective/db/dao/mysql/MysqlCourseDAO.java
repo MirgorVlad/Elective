@@ -6,12 +6,16 @@ import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlCourseDAO implements CourseDAO {
+    static Logger log = LogManager.getLogger(MysqlCourseDAO.class);
 
     UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
     @Override
@@ -30,6 +34,7 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, course.getTopic());
 
             if (pstmt.executeUpdate() > 0) {
+                log.log(Level.INFO, "Course "+course.getName()+" created");
                 setCourseID(rs, pstmt, course);
             }
 
@@ -49,6 +54,7 @@ public class MysqlCourseDAO implements CourseDAO {
             while (rs.next()){
                 courses.add(getCourse(rs));
             }
+            log.log(Level.INFO, "Get all courses");
         }
         return courses;
     }
@@ -61,7 +67,9 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
 
+
             while (rs.next()){
+                log.log(Level.INFO, "Find course by id: " + id);
                 return getCourse(rs);
             }
         }
@@ -86,7 +94,10 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, course.getTopic());
             pstmt.setInt(k++, course.getId());
 
+            log.log(Level.INFO, "Update course " + course.getName());
+
             if (pstmt.executeUpdate() == 0) {
+                log.log(Level.WARN, "Cannot update course " + course.getName());
                 throw new DBException("Can't update course");
             }
         }
@@ -101,7 +112,10 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(k++, courseId);
             pstmt.setInt(k++, studentId);
 
+            log.log(Level.INFO, "Join student " + studentId + " to course " + courseId);
+
             if (pstmt.executeUpdate() == 0) {
+                log.log(Level.WARN, "Cannot join student to course");
                 throw new DBException("Cant join student to course");
             }
         }
@@ -116,6 +130,8 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(k++, userId);
             pstmt.setInt(k++, courseId);
             rs = pstmt.executeQuery();
+
+            log.log(Level.INFO, "Student " + userId + " is joined to " + courseId);
 
             return rs.next();
         }
@@ -134,7 +150,10 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(k++, studentId);
             pstmt.setInt(k++, courseId);
 
+            log.log(Level.INFO, "Unfollow user " + studentId + " from course " + courseId);
+
             if (pstmt.executeUpdate() == 0) {
+                log.log(Level.WARN, "Cannot unfollow user " + studentId + " from course " + courseId);
                 throw new DBException("Cannot unfollow from course");
             }
         }
@@ -151,6 +170,7 @@ public class MysqlCourseDAO implements CourseDAO {
                 while (rs.next()){
                     courses.add(findById(rs.getInt("course_id")));
                 }
+                log.log(Level.INFO, "Available courses for user " + userId);
         } finally {
             if(rs != null){
                 rs.close();
@@ -171,6 +191,9 @@ public class MysqlCourseDAO implements CourseDAO {
             while (rs.next()){
                 courses.add(getCourse(rs));
             }
+
+            log.log(Level.INFO, "Find course by teacher " + id);
+
         }
         finally {
             if(rs != null)
@@ -190,6 +213,9 @@ public class MysqlCourseDAO implements CourseDAO {
             while (rs.next()){
                 usersId.add(rs.getInt("id"));
             }
+
+            log.log(Level.INFO, "Find students in course " + courseId);
+
         } finally {
             if(rs != null){
                 rs.close();
@@ -204,9 +230,11 @@ public class MysqlCourseDAO implements CourseDAO {
             PreparedStatement statement = con.prepareStatement(SQLQueris.COUNT_STUDENTS_IN_COURSE)){
             statement.setInt(1, courseId);
             rs = statement.executeQuery();
+            log.log(Level.INFO, "Count students in course " + courseId);
             if(rs.next()){
                 return rs.getInt("students");
             } else {
+                log.log(Level.WARN, "Cannot find students in course " + courseId);
                 throw new DBException("Cannot find students");
             }
         } finally {
@@ -228,6 +256,9 @@ public class MysqlCourseDAO implements CourseDAO {
             while (rs.next()){
                 courses.add(getCourse(rs));
             }
+
+            log.log(Level.INFO, "Get courses by topic " + topic);
+
         }
         finally {
             if(rs != null)
@@ -272,7 +303,11 @@ public class MysqlCourseDAO implements CourseDAO {
         try(Connection con = ConnectionFactory.getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_COURSE_BY_ID)){
             pstmt.setInt(1, courseId);
+
+            log.log(Level.INFO, "Delete course " + courseId);
+
             if(pstmt.executeUpdate() == 0){
+                log.log(Level.WARN, "Cannot delete  course " + courseId);
                 throw new DBException("Cannot delete course");
             }
         }
