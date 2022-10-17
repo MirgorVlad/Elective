@@ -62,9 +62,6 @@ public class SecurityFilter implements Filter {
                     if (query.split("&")[0].equals("command=showStudentsInCourse")) {
                         req.getRequestDispatcher(ReferencePages.ACCESS_ERROR).forward(req, resp);
                     }
-                    if (query.split("&")[0].equals("command=showJournal")) {
-                        req.getRequestDispatcher(ReferencePages.ACCESS_ERROR).forward(req, resp);
-                    }
                 } else {
                     if(page.equals("/teacher.jsp")){
                         req.getRequestDispatcher(ReferencePages.ACCESS_ERROR).forward(req, resp);
@@ -79,7 +76,13 @@ public class SecurityFilter implements Filter {
             log.log(Level.WARN, "Illegal access to student functions");
             if (!user.getRole().equals(UserDAO.STUDENT_ROLE)) {
                 if (page.equals("/controller")) {
-                    if (query.equals("command=viewStudentAvailableCourses")) {
+                    if (query.split("&")[0].equals("command=viewStudentAvailableCourses")) {
+                        req.getRequestDispatcher(ReferencePages.ACCESS_ERROR).forward(req, resp);
+                    }
+                    if (query.split("&")[0].equals("command=unfollowCourse")) {
+                        req.getRequestDispatcher(ReferencePages.ACCESS_ERROR).forward(req, resp);
+                    }
+                    if (query.split("&")[0].equals("command=joinToCourse")) {
                         req.getRequestDispatcher(ReferencePages.ACCESS_ERROR).forward(req, resp);
                     }
                 } else {
