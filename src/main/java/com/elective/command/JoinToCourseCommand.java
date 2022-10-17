@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -28,6 +28,6 @@ public class JoinToCourseCommand implements Command{
         req.setAttribute("course", course);
         req.setAttribute("isJoined", courseDAO.isStudentJoined(user.getId(), courseId));
         courseDAO.jointStudentToCourse(studentId, courseId);
-        return ReferencesPages.ACCESS_JOINED;
+        return ReferencePages.ACCESS_JOINED;
     }
 }

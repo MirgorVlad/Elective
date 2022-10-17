@@ -18,10 +18,10 @@ public class Controller extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String address = ReferencesPages.ERROR_PAGE;
+        String address = ReferencePages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
-        } catch (Exception | DBException ex){
+        } catch (DBException | SQLException | IllegalAccessException ex){
             req.setAttribute("exception", ex);
             //log
         }
@@ -32,11 +32,11 @@ public class Controller extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String address = ReferencesPages.ERROR_PAGE;
+        String address = ReferencePages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
-        } catch (Exception | DBException ex){
-            req.getSession().setAttribute("exception", ex);
+        } catch (DBException | SQLException | IllegalAccessException ex){
+            req.setAttribute("exception", ex);
             //log
         }
         resp.sendRedirect(address);

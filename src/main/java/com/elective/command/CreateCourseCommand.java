@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -52,7 +52,7 @@ public class CreateCourseCommand implements Command{
         courseDAO.create(course);
 
 
-        return ReferencesPages.MANAGER_PAGE;
+        return ReferencePages.MANAGER_PAGE;
     }
 
 

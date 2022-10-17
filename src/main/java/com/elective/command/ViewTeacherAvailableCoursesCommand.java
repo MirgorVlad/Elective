@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -26,6 +26,6 @@ public class ViewTeacherAvailableCoursesCommand implements Command{
         log.log(Level.DEBUG, availableCourses);
 
         req.setAttribute("coursesList", availableCourses);
-        return ReferencesPages.AVAILABLE_COURSES_FOR_TEACHER;
+        return ReferencePages.AVAILABLE_COURSES_FOR_TEACHER;
     }
 }

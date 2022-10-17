@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -33,14 +33,14 @@ public class ViewAllCoursesCommand implements Command{
         log.log(Level.DEBUG,  courseList);
 
         if(req.getParameter("command").equals("viewCoursesList")){
-            page =  ReferencesPages.VIEW_COURSES_LIST;
+            page =  ReferencePages.VIEW_COURSES_LIST;
             log.log(Level.INFO, "View all courses");
         }
 
         else if(req.getParameter("command").equals("manageCourses") &&
                 user.getRole().equals(UserDAO.MANAGER_ROLE)) {
             log.log(Level.INFO, "Manage courses: " + courseList);
-            page =  ReferencesPages.MANAGE_COURSES;
+            page =  ReferencePages.MANAGE_COURSES;
         } else{
             log.log(Level.WARN, "User " + user.getEmail() + " cannot manage courses");
             throw new IllegalAccessException("You are not manager");

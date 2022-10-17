@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -28,6 +28,6 @@ public class UnfollowCourseCommand implements Command{
         log.log(Level.INFO, "Unfollow user " + user.getEmail() + " from course " + course.getName());
 
         courseDAO.unfollowCourse(studentId, courseId);
-        return ReferencesPages.ACCESS_JOINED;
+        return ReferencePages.ACCESS_JOINED;
     }
 }

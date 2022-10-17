@@ -1,5 +1,5 @@
 package com.elective.tags;
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.JournalDAO;
@@ -54,7 +54,7 @@ public class ShowJournal extends TagSupport {
                 return printTeacherJournal(courseContinueDays);
             }
         } catch (DBException | SQLException ex){
-            pageContext.forward(ReferencesPages.ERROR_PAGE);
+            pageContext.forward(ReferencePages.ERROR_PAGE);
         }
 
         return "No data";

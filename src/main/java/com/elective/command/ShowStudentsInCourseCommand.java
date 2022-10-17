@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -36,6 +36,6 @@ public class ShowStudentsInCourseCommand implements Command{
         log.log(Level.INFO, "Show students in course " + courseId);
         log.log(Level.DEBUG, studentsList);
 
-        return ReferencesPages.STUDENTS_IN_COURSE;
+        return ReferencePages.STUDENTS_IN_COURSE;
     }
 }

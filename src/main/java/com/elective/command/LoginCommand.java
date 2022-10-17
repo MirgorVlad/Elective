@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -40,11 +40,11 @@ public class LoginCommand implements Command{
             if(user.getPassword().equals(password)) {
                 req.getSession().setAttribute("user", user);
                 if(user.getRole().equals(UserDAO.STUDENT_ROLE))
-                    return ReferencesPages.STUDENT_PAGE;
+                    return ReferencePages.STUDENT_PAGE;
                 if(user.getRole().equals(UserDAO.TEACHER_ROLE))
-                    return ReferencesPages.TEACHER_PAGE;
+                    return ReferencePages.TEACHER_PAGE;
                 if(user.getRole().equals(UserDAO.MANAGER_ROLE)) {
-                    return ReferencesPages.MANAGER_PAGE;
+                    return ReferencePages.MANAGER_PAGE;
                 }
             } else {
                 log.log(Level.WARN, "Wrong password for "+user.getEmail()+" account");

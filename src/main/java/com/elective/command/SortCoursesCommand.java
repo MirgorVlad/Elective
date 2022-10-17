@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -80,6 +80,6 @@ public class SortCoursesCommand implements Command{
 
         log.log(Level.INFO, "Sort courses by " + method + "(" + sample + ")");
 
-        return ReferencesPages.VIEW_COURSES_LIST;
+        return ReferencePages.VIEW_COURSES_LIST;
     }
 }

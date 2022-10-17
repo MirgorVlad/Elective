@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -39,11 +39,11 @@ public class ShowJournalCommand implements Command{
 
             req.getSession().setAttribute("studentsList", studentsList);
 
-            page = ReferencesPages.TEACHER_JOURNAL;
+            page = ReferencePages.TEACHER_JOURNAL;
         }
 
         if(user.getRole().equals(UserDAO.STUDENT_ROLE)) {
-            page = ReferencesPages.JOURNAL_PAGE;
+            page = ReferencePages.JOURNAL_PAGE;
         }
         return page;
     }

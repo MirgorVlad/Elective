@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
@@ -30,7 +30,7 @@ public class SelectCoursesCommand implements Command{
 
         //req.getSession().removeAttribute("coursesList");
         req.getSession().setAttribute("coursesList", courseList);
-        return ReferencesPages.VIEW_COURSES_LIST;
+        return ReferencePages.VIEW_COURSES_LIST;
     }
 
     private List<Course> generateList(String topic, String teacher) throws DBException, SQLException {

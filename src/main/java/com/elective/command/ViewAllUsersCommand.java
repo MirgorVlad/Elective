@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
@@ -32,6 +32,6 @@ public class ViewAllUsersCommand implements Command{
         log.log(Level.INFO, "View all user");
         log.log(Level.DEBUG, userList);
 
-        return ReferencesPages.VIEW_ALL_USERS;
+        return ReferencePages.VIEW_ALL_USERS;
     }
 }

@@ -1,6 +1,6 @@
 package com.elective;
 
-public abstract class ReferencesPages {
+public abstract class ReferencePages {
 
     public static final String STUDENT_PAGE = "student.jsp";
     public static final String TEACHER_PAGE = "teacher.jsp";
@@ -17,5 +17,6 @@ public abstract class ReferencesPages {
     public static final String PROFILE = "profile.jsp";
     public static final String TEACHER_JOURNAL = "teacher_journal.jsp";
     public static final String VIEW_ALL_USERS = "all_users.jsp";
+    public static final String ACCESS_ERROR = "error_access.jsp";
 }
 

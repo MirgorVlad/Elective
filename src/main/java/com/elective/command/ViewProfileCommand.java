@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
@@ -25,6 +25,6 @@ public class ViewProfileCommand implements Command{
         log.log(Level.DEBUG, user);
 
         req.setAttribute("user", user);
-        return ReferencesPages.PROFILE;
+        return ReferencePages.PROFILE;
     }
 }

@@ -1,6 +1,6 @@
 package com.elective.command;
 
-import com.elective.ReferencesPages;
+import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
@@ -41,9 +41,9 @@ public class RegistrCommand implements Command{
         log.log(Level.INFO, "Register user: " + user);
 
         if(user.getRole().equals(UserDAO.TEACHER_ROLE))
-            page = ReferencesPages.TEACHER_PAGE;
+            page = ReferencePages.TEACHER_PAGE;
         if(user.getRole().equals(UserDAO.STUDENT_ROLE))
-            page =  ReferencesPages.STUDENT_PAGE;
+            page =  ReferencePages.STUDENT_PAGE;
 
         req.getSession().setAttribute("topicList", CourseDAO.topicList);
 
