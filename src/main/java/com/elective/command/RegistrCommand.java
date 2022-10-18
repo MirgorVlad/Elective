@@ -38,6 +38,8 @@ public class RegistrCommand implements Command{
 
         userDAO.insert(user);
 
+        req.getSession().setAttribute("user", user);
+
         log.log(Level.INFO, "Register user: " + user);
 
         if(user.getRole().equals(UserDAO.TEACHER_ROLE))
