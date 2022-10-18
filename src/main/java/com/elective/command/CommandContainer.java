@@ -13,6 +13,7 @@ public class CommandContainer {
     static {
         commands = new HashMap<>();
         commands.put("login", new LoginCommand());
+        commands.put("logout", new LogoutCommand());
         commands.put("registr", new RegistrCommand());
         commands.put("createCourse", new CreateCourseCommand());
         commands.put("manageCourses", new ViewAllCoursesCommand());

@@ -130,7 +130,7 @@ public class ShowCourses extends TagSupport {
                         "      <th>" + course.getTeacher().getFullName() + "</th>\n" +
                         "      <th><a href=\"controller?command=viewProfile&userId=" + course.getTeacher().getId() + "\">" + course.getTeacher().getEmail() + "</a></th>\n" +
                         "      <th><a href=\"controller?command=unfollowCourse&userId=" + user.getId() + "&courseId=" + course.getId() + "\">UNFOLLOW</a></th>\n" +
-                        "      <th><a href=\"controller?command=showJournal&courseId=" + course.getId() + "\">JOURNAL</a></th>\n" +
+                        "      <th><a href=\"controller?command=showJournal&courseId=" + course.getId() + "\"?page=1>JOURNAL</a></th>\n" +
                         " </tr>";
             }
         }
@@ -159,7 +159,7 @@ public class ShowCourses extends TagSupport {
                         "      <th>" + course.getTeacher().getFullName() + "</th>\n" +
                         "      <th><a href=\"controller?command=viewProfile&userId=" + course.getTeacher().getId() + "\">" + course.getTeacher().getEmail() + "</a></th>\n" +
                         "      <th><a href=\"controller?command=unfollowCourse&userId=" + user.getId() + "&courseId=" + course.getId() + "\">UNFOLLOW</a></th>\n" +
-                        "      <th><a href=\"controller?command=showJournal&courseId=" + course.getId() + "\">RESULTS</a></th>\n" +
+                        "      <th><a href=\"controller?command=showJournal&courseId=" + course.getId() + "\"?page=1>RESULTS</a></th>\n" +
                         " </tr>";
             }
         }
@@ -179,7 +179,7 @@ public class ShowCourses extends TagSupport {
                     "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
                     "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
                     "      <th><a href=\"controller?command=showStudentsInCourse&courseId="+course.getId()+"\">STUDENTS</a></th>\n" +
-                    "      <th><a href=\"controller?command=showJournal&courseId="+course.getId()+"\">JOURNAL</a></th>\n" +
+                    "      <th><a href=\"controller?command=showJournal&courseId="+course.getId()+"\"?page=1>JOURNAL</a></th>\n" +
                     " </tr>";
         }
         return table;

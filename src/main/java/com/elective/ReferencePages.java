@@ -1,7 +1,8 @@
 package com.elective;
 
 public abstract class ReferencePages {
-
+    public static final String LOGIN_PAGE = "login_page.jsp";
+    public static final String REGISTR_PAGE = "registration_page.jsp";
     public static final String STUDENT_PAGE = "student.jsp";
     public static final String TEACHER_PAGE = "teacher.jsp";
     public static final String ERROR_PAGE = "error_page.jsp";
