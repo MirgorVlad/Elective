@@ -41,7 +41,7 @@ public class EditJournalCommand implements Command{
 
         journalDAO.setGrade(createJournal(courseId, student, date, grade));
         req.getSession().removeAttribute("studentsList");
-        return "controller?command=showJournal&courseId="+courseId;
+        return "controller?command=showJournal&courseId="+courseId+"&page=1";
     }
 
     private Journal createJournal(int courseId, String studentEmail, Date date, int grade) throws DBException, SQLException {
