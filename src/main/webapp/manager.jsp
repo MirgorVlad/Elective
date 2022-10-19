@@ -16,13 +16,16 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav mr-auto mb-2">
                 <li class="nav-item">
-                     <a href="controller?command=manageCourses" class="nav-link">View courses</a>
+                     <a href="controller?command=manageCourses" class="nav-link">Manage courses</a>
                 </li>
                  <li class="nav-item">
                       <a href="create_course.jsp" class="nav-link">Create course</a>
                 </li>
                 <li class="nav-item">
                       <a href="controller?command=viewAllUsers" class="nav-link">All users</a>
+                </li>
+                <li class="nav-item">
+                    <a href="controller?command=viewProfile&userId=${user.id}" class="nav-link">My profile</a>
                 </li>
             </ul>
         </div>

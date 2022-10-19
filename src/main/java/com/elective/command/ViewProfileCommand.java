@@ -24,7 +24,7 @@ public class ViewProfileCommand implements Command{
         log.log(Level.INFO, "View profile: " + user.getEmail());
         log.log(Level.DEBUG, user);
 
-        req.setAttribute("user", user);
+        req.setAttribute("currentUser", user);
         return ReferencePages.PROFILE;
     }
 }

@@ -23,7 +23,7 @@
                      <a href="controller?command=viewStudentAvailableCourses" class="nav-link">My courses</a>
                 </li>
                 <li class="nav-item">
-                     <a href="" class="nav-link">My profile</a>
+                     <a href="controller?command=viewProfile&userId=${user.id}" class="nav-link">My profile</a>
                 </li>
             </ul>
         </div>
