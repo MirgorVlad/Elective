@@ -8,6 +8,7 @@
 </head>
 <body>
     <ex:showjournal course="${course}" studentsList="${studentsList}"/>
+    <br/>
     <a href="edit_journal.jsp?courseId=${course.id}">Edit</a>
 
 </body>

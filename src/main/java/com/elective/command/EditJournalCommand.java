@@ -21,7 +21,7 @@ public class EditJournalCommand implements Command{
     private final CourseDAO courseDAO = daoFactory.getCourseDAO();
     private final UserDAO userDAO = daoFactory.getUserDAO();
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException, IllegalArgumentException {
         JournalDAO journalDAO = daoFactory.getJournalDAO();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         String student = req.getParameter("students");

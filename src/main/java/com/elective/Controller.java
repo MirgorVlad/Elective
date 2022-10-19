@@ -21,7 +21,7 @@ public class Controller extends HttpServlet {
         String address = ReferencePages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
-        } catch (DBException | SQLException | IllegalAccessException ex){
+        } catch (Exception ex){
             req.setAttribute("exception", ex);
             //log
         }
@@ -35,7 +35,7 @@ public class Controller extends HttpServlet {
         String address = ReferencePages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
-        } catch (DBException | SQLException | IllegalAccessException ex){
+        } catch (Exception ex){
             req.setAttribute("exception", ex);
             //log
         }

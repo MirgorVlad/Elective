@@ -1,6 +1,5 @@
 package com.elective;
 
-import com.elective.command.CreateCourseCommand;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
 import org.apache.logging.log4j.Level;

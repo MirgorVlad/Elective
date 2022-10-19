@@ -8,7 +8,6 @@ import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
 import javax.servlet.ServletException;
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.sql.Date;
@@ -20,10 +19,8 @@ public class ShowJournal extends TagSupport {
     private List<User> studentsList;
     private static final int step = 1;
     private static final int limit = 7;
+    private int pageCount;
     private Course course;
-    private final User student = (User)pageContext.getSession().getAttribute("user");
-    private  LocalDate startDate = course.getStartDate().toLocalDate();
-    private final LocalDate finishDate = course.getFinishDate().toLocalDate();
     private final JournalDAO journalDAO = DAOFactory.getInstance().getJournalDAO();
 
     public void setCourse(Course course){
@@ -33,31 +30,33 @@ public class ShowJournal extends TagSupport {
         this.studentsList = studentsList;
     }
     @Override
-    public int doStartTag() throws JspException {
+    public int doStartTag() {
+        pageCount = (int) Math.ceil(1.0*course.countDays() / limit);
+        String page = pageContext.getRequest().getParameter("page");
         try {
-            pageContext.getOut().write(
-                        "<table border=\"1\">" +
-                                printTable() +
-                            "</table>" +
-                                "<a href=\"controller?command=showJournal&courseId="+course.getId()+"\"?page=1>1 </a>" +
-                                "<a href=\"controller?command=showJournal&courseId="+course.getId()+"\"?page=2>2 </a>"
-            );
+            String out = "<h1>Week "+page+"</h1>" +
+                    "<table border=\"1\">" +
+                            printTable() +
+                         "</table>";
+            for (int i = 1; i <= pageCount; i++){
+                out += "<a href=\"controller?command=showJournal&courseId="+course.getId()+"&page="+i+"\">"+i+"&nbsp\t</a>";
+            }
+            pageContext.getOut().write(out);
         } catch (IOException | DBException | SQLException | ServletException e) {
-            throw new RuntimeException("Problem is here", e);
+            throw new RuntimeException("Cannot show journal", e);
         }
         return SKIP_BODY;
     }
 
     private String printTable() throws DBException, SQLException, ServletException, IOException {
-        long courseContinueDays = course.countDays();
         User user = (User) pageContext.getSession().getAttribute("user");
 
         try {
             if(user.getRole().equals(UserDAO.STUDENT_ROLE)){
-                return printStudentJournal(courseContinueDays);
+                return printStudentJournal();
             }
             if(user.getRole().equals(UserDAO.TEACHER_ROLE)){
-                return printTeacherJournal(courseContinueDays);
+                return printTeacherJournal();
             }
         } catch (DBException | SQLException ex){
             pageContext.forward(ReferencePages.ERROR_PAGE);
@@ -66,14 +65,18 @@ public class ShowJournal extends TagSupport {
         return "No data";
     }
 
-    private String printStudentJournal(long days) throws DBException, SQLException {
-        int page = Integer.parseInt(pageContext.getRequest().getParameter("page"));
-        if(page > 1){
-            page-=1;
-            page = page*limit+1;
+    private String printStudentJournal() throws DBException, SQLException {
+        LocalDate startDate = course.getStartDate().toLocalDate();
+        LocalDate finishDate = course.getFinishDate().toLocalDate();
+        User student = (User)pageContext.getSession().getAttribute("user");
+        int pageInfoCount = Integer.parseInt(pageContext.getRequest().getParameter("page"));
+        int page = pageInfoCount;
+        if(pageInfoCount > 1){
+            pageInfoCount-=1;
+            pageInfoCount = pageInfoCount*limit+1;
         }
-        startDate = startDate.plusDays(page);
-        String out = createDates(startDate, limit, "DATE");
+        startDate = startDate.plusDays(pageInfoCount);
+        String out = createDates(startDate, finishDate,  page,"DATE");
         String outGrades = "<tr><th>GRADE</th>";
         for(LocalDate s = startDate; !s.isEqual(startDate.plusDays(limit)); s = s.plusDays(step)){
             if(s.isAfter(finishDate)){
@@ -82,41 +85,57 @@ public class ShowJournal extends TagSupport {
             outGrades += "<th>"+journalDAO.getGrade(course.getId(), student.getId(), Date.valueOf(s))+"</th>";  //instead i -> date.getGrade
             //startDate = startDate.plusDays(step);
         }
-        outGrades += "<th>-</th>"; //finalTest;
-        outGrades += "<th>"+journalDAO.sumOfStudentGrades(course.getId(), student.getId())+"</th></tr>"; //total;
+        if(page == pageCount) {
+            outGrades += "<th>-</th>"; //finalTest;
+            outGrades += "<th>" + journalDAO.sumOfStudentGrades(course.getId(), student.getId()) + "</th></tr>"; //total;
+        }
         return out + outGrades;
     }
 
-    private String printTeacherJournal(long days) throws DBException, SQLException {
+    private String printTeacherJournal() throws DBException, SQLException {
         LocalDate startDate = course.getStartDate().toLocalDate();
         LocalDate finishDate = course.getFinishDate().toLocalDate();
-        String out = createDates(startDate,  days, "Student\\Date");
+        int pageInfoCount = Integer.parseInt(pageContext.getRequest().getParameter("page"));
+        int page = pageInfoCount;
+        if(pageInfoCount > 1){
+            pageInfoCount-=1;
+            pageInfoCount = pageInfoCount*limit+1;
+        }
+        startDate = startDate.plusDays(pageInfoCount);
+        String out = createDates(startDate, finishDate,  page, "STUDENT/DATE");
         String studentRow = "";
         for(User user : studentsList) {
             studentRow += "<tr><th><a href=\"controller?command=viewProfile&userId="+user.getId()+"\">"+user.getFullName()+"</a></th>";
-            for(LocalDate s = startDate; !s.isEqual(finishDate.minusDays(1)); s = s.plusDays(step)){
-                studentRow += "<th>"+journalDAO.getGrade(course.getId(), user.getId(), Date.valueOf(s))+"</th>";  //instead i -> date.getGrade
-                //startDate = startDate.plusDays(step);
+            for(LocalDate s = startDate; !s.isEqual(startDate.plusDays(limit)); s = s.plusDays(step)) {
+                if (s.isAfter(finishDate)) {
+                    break;
+                }
+                studentRow += "<th>" + journalDAO.getGrade(course.getId(), user.getId(), Date.valueOf(s)) + "</th>";
             }
-            studentRow += "<th>-</th>"; //finalTest;
-            studentRow += "<th>"+journalDAO.sumOfStudentGrades(course.getId(), user.getId())+"</th></tr>"; //total;
+            if(page == pageCount) {
+                studentRow += "<th>-</th>"; //finalTest;
+                studentRow += "<th>" + journalDAO.sumOfStudentGrades(course.getId(), user.getId()) + "</th></tr>"; //total;
+            }
             startDate = course.getStartDate().toLocalDate().plusDays(step);
         }
         return out + studentRow;
     }
 
-    private String createDates(LocalDate start, long days, String fColumnText){
+    private String createDates(LocalDate start, LocalDate finish, int page, String fColumnText){
         String out = "<tr><th>"+fColumnText+"</th>";
         LocalDate s = start;
         for(int i = 0; i < limit; i+=step){
-            if(s.isAfter(finishDate)){
+            if(s.isAfter(finish)){
                 break;
             }
             out += "<th>" + s + "</th>";
             s = s.plusDays(step);
         }
-        out += "<th>Final Test</th>" +
-                "<th>TOTAL</th></tr>";
+        System.out.println(page + " : " + pageCount);
+        if(page == pageCount) {
+            out += "<th>Final Test</th>" +
+                    "<th>TOTAL</th></tr>";
+        }
         return out;
     }
 }
