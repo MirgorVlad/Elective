@@ -20,9 +20,6 @@
                         <a href="controller?command=manageCourses" class="nav-link">Manage courses</a>
                     </li>
                     <li class="nav-item">
-                        <a href="create_course.jsp" class="nav-link">Create course</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="controller?command=viewAllUsers" class="nav-link">All users</a>
                     </li>
                     <li class="nav-item">

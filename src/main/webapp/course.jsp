@@ -41,11 +41,7 @@
                         <a href="controller?command=manageCourses" class="nav-link">Manage courses</a>
                     </c:if>
                 </li>
-                <li class="nav-item">
-                    <c:if test="${user.role eq 'manager'}">
-                        <a href="create_course.jsp" class="nav-link">Create course</a>
-                    </c:if>
-                </li>
+
                 <li class="nav-item">
                     <c:if test="${user.role eq 'manager'}">
                         <a href="controller?command=viewAllUsers" class="nav-link">All users</a>
