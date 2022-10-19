@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Journal</title>
+    <link href="bootstrap/css/journal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
@@ -35,7 +36,42 @@
     </nav>
     <ex:showjournal course="${course}" studentsList="${studentsList}"/>
     <br/>
-    <a href="edit_journal.jsp?courseId=${course.id}">Edit</a>
 
+    <%--<a href="edit_journal.jsp?courseId=${course.id}">Edit</a>--%>
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Set grade</button>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Set grade</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="controller?" method="post">
+                <input type="hidden" name="command" value="editJournal">
+                <input type="hidden" name="courseId" value="${param.courseId}">
+                <div class="mb-3">
+                  <label class="form-label" for="students">Student</label>
+                    <select name="students" id="students" class="form-control">
+                          <c:forEach items="${studentsList}" var="student">
+                            <option value="${student.email}">${student.fullName}</option>
+                          </c:forEach>
+                    </select>
+                </div>
+               
+                 <div class="mb-3">
+                  <label class="form-label">Date</label>
+                  <input name="date" type="date" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Grade</label>
+                  <input name="grade" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Set grade</button>
+            </form>
+            </div>
+          </div>
+        </div>
+    </div>
 </body>
 </html>
