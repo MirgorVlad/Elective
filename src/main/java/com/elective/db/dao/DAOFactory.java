@@ -18,14 +18,14 @@ public abstract class DAOFactory {
     public static synchronized DAOFactory getInstance() {
         if (instance == null) {
 
-            Properties props = new Properties();
+            //Properties props = new Properties();
             try {
-                props.load(new FileInputStream(DAOFactory.class.getResource("/").getPath() + "app.properties"));
-                String daoFQN = props.getProperty("dao.fqn");
-                Class<?> c = Class.forName(daoFQN);
+                //props.load(new FileInputStream(DAOFactory.class.getResource("/").getPath() + "app.properties"));
+               // String daoFQN = props.getProperty("dao.fqn");
+                Class<?> c = Class.forName("com.elective.db.dao.mysql.MysqlDAOFactory");
                 Constructor<?> constr = c.getDeclaredConstructor();
                 instance = (DAOFactory) constr.newInstance();
-            } catch (IOException | ReflectiveOperationException ex) {
+            } catch (ReflectiveOperationException ex) {
                 throw new IllegalStateException("Cannot obtain an instance of DAO", ex);
             }
         }

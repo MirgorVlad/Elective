@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container">
-            <a href="teacher.jsp" class="navbar-brand">Elective</a>
+             <h1 class="fs-4" style="margin-left:-70px; margin-right:10px ;"><span class="bg-white text-dark rounded shadow px-2 me-2">EL</span><span class="text-white"><a href="teacher.jsp" class="navbar-brand">Elective</a><span></span></h1>
 
 
             <div class="collapse navbar-collapse" id="navbarContent">
