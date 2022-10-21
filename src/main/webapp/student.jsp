@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Student</title>
+        <link href="bootstrap/css/welcome_page.css" rel="stylesheet">
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -33,6 +34,25 @@
         </form>
         </div>    
     </nav>
+
+<div class="container">
+      <div class="row custom-section d-flex align-items-center">
+        <div class="col-12 col-lg-4">
+          <h1>You are student</h1>
+          <h3>Text</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          </p>
+        
+        </div>
+        <div class="col-12 col-lg-5">
+          <img src="files/student.png" alt="welcome">
+        </div>
+      </div>
+    </div>
+
 
 
 </body>

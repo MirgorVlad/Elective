@@ -22,7 +22,7 @@ public class ShowUsers extends TagSupport {
                     getOutTable()
             );
         } catch (IOException e) {
-            throw new RuntimeException("Problem is here", e);
+            throw new RuntimeException("Cannot show users", e);
         }
         return SKIP_BODY;
     }
