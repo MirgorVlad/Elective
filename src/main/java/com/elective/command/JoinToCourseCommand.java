@@ -28,6 +28,6 @@ public class JoinToCourseCommand implements Command{
         req.setAttribute("course", course);
         req.setAttribute("isJoined", courseDAO.isStudentJoined(user.getId(), courseId));
         courseDAO.jointStudentToCourse(studentId, courseId);
-        return ReferencePages.ACCESS_JOINED;
+        return "controller?command=viewCourse&courseId=" + courseId;
     }
 }

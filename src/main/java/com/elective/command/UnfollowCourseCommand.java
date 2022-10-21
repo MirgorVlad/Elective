@@ -28,6 +28,6 @@ public class UnfollowCourseCommand implements Command{
         log.log(Level.INFO, "Unfollow user " + user.getEmail() + " from course " + course.getName());
 
         courseDAO.unfollowCourse(studentId, courseId);
-        return ReferencePages.ACCESS_JOINED;
+        return "controller?command=viewCourse&courseId=" + courseId;
     }
 }
