@@ -89,7 +89,7 @@
                     </c:forEach>
                 </select>
                 <br/>
-                <input type="submit" value="Select" class="btn btn-success my-2">
+                <input type="submit" value="Select" class="btn btn-success">
             </form>
 
         </div>

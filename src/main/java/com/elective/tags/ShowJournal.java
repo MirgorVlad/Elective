@@ -38,9 +38,11 @@ public class ShowJournal extends TagSupport {
                     "<table border=\"1\">" +
                             printTable() +
                          "</table>";
+            out += "<div class=\"pagination\">";
             for (int i = 1; i <= pageCount; i++){
-                out += "<a href=\"controller?command=showJournal&courseId="+course.getId()+"&page="+i+"\">"+i+"&nbsp\t</a>";
+                out += "<a href=\"controller?command=showJournal&courseId="+course.getId()+"&page="+i+"\">"+i+"</a>";
             }
+            out+="</div>";
             pageContext.getOut().write(out);
         } catch (IOException | DBException | SQLException | ServletException e) {
             throw new RuntimeException("Cannot show journal", e);
@@ -122,7 +124,7 @@ public class ShowJournal extends TagSupport {
     }
 
     private String createDates(LocalDate start, LocalDate finish, int page, String fColumnText){
-        String out = "<tr><th>"+fColumnText+"</th>";
+        String out = "<tr class=\"header\"><th>"+fColumnText+"</th>";
         LocalDate s = start;
         for(int i = 0; i < limit; i+=step){
             if(s.isAfter(finish)){

@@ -14,8 +14,7 @@ public class ShowCourses extends TagSupport {
     private List<Course> coursesList;
     private User user = null;
     private final String out = "  <table border=\"1\">\n" +
-            "        <caption>All Courses</caption>\n" +
-            "        <tr>\n" +
+            "        <tr class=\"header\">\n" +
             "            <th>Name</th>\n" +
             "            <th>Start date</th>\n" +
             "            <th>End date</th>\n" +
@@ -82,9 +81,8 @@ public class ShowCourses extends TagSupport {
     }
 
     String studentTableThatNotBegun(){
-        String table = "  <table border=\"1\" style=\"width: 70%;\">\n" +
-                "        <caption><b>Not begun yet</b></caption>\n" +
-                "        <tr>\n" +
+        String table = "  <h3>Not begun yet</h3><table border=\"1\">\n" +
+                "        <tr class=\"header\">\n" +
                 "            <th style=\"width: 11%;\">Name</th>\n" +
                 "            <th style=\"width: 11%;\">Start date</th>\n" +
                 "            <th style=\"width: 11%;\">End date</th>\n" +
@@ -109,9 +107,8 @@ public class ShowCourses extends TagSupport {
     }
 
     String studentTableThatInProgress(){
-        String table = "  <table border=\"1\" style=\"width: 70%;\">\n" +
-                "        <caption><b>In Progress</b></caption>\n" +
-                "        <tr>\n" +
+        String table = "  <h3>In progress</h3><table border=\"1\" >\n" +
+                "        <tr class=\"header\">\n" +
                 "            <th style=\"width: 10%;\">Name</th>\n" +
                 "            <th style=\"width: 10%;\">Start date</th>\n" +
                 "            <th style=\"width: 10%;\">End date</th>\n" +
@@ -139,9 +136,8 @@ public class ShowCourses extends TagSupport {
     }
 
     String studentTableThatFinished(){
-        String table = "  <table border=\"1\" style=\"width: 70%;\">\n" +
-                "        <caption><b>Finished</b></caption>\n" +
-                "        <tr>\n" +
+        String table = "  <h3>Finished</h3><table border=\"1\" >\n" +
+                "        <tr class=\"header\">\n" +
                 "            <th style=\"width: 10%;\">Name</th>\n" +
                 "            <th style=\"width: 10%;\">Start date</th>\n" +
                 "            <th style=\"width: 10%;\">End date</th>\n" +
