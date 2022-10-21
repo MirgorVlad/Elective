@@ -107,6 +107,7 @@ public class ShowJournal extends TagSupport {
         String out = createDates(startDate, finishDate,  page, "STUDENT/DATE");
         String studentRow = "";
         for(User user : studentsList) {
+
             studentRow += "<tr><th><a href=\"controller?command=viewProfile&userId="+user.getId()+"\">"+user.getFullName()+"</a></th>";
             for(LocalDate s = startDate; !s.isEqual(startDate.plusDays(limit)); s = s.plusDays(step)) {
                 if (s.isAfter(finishDate)) {
@@ -118,7 +119,7 @@ public class ShowJournal extends TagSupport {
                 studentRow += "<th>-</th>"; //finalTest;
                 studentRow += "<th>" + journalDAO.sumOfStudentGrades(course.getId(), user.getId()) + "</th></tr>"; //total;
             }
-            startDate = course.getStartDate().toLocalDate().plusDays(step);
+            startDate = course.getStartDate().toLocalDate().plusDays(pageInfoCount);
         }
         return out + studentRow;
     }

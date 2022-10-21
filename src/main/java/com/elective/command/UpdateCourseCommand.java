@@ -30,10 +30,7 @@ public class UpdateCourseCommand implements Command{
         Date startDate = Date.valueOf(req.getParameter("startDate"));
         Date finishDate = Date.valueOf(req.getParameter("finishDate"));
 
-        if(startDate.toLocalDate().isBefore(LocalDate.now())) {
-            log.log(Level.WARN, "Course start date in the past  - " + startDate.toLocalDate());
-            throw new IllegalArgumentException("Course must start today or in the future");
-        }
+
 
         User teacher = courseDAO.getTeacher(userDAO.findByEmail(tEmail));
         Course course = MysqlCourseDAO.createCourse(id, name, topic, desc, startDate, finishDate, teacher);
