@@ -3,7 +3,12 @@ package com.elective;
 
 import com.elective.command.Command;
 import com.elective.command.CommandContainer;
+import com.elective.command.ViewAllCoursesCommand;
 import com.elective.db.dao.DBException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +19,7 @@ import java.sql.SQLException;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
+    static Logger log = LogManager.getLogger(Controller.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -23,7 +29,7 @@ public class Controller extends HttpServlet {
             address = getAndExecuteCommand(req, resp);
         } catch (Exception ex){
             req.setAttribute("exception", ex);
-            //log
+            log.log(Level.ERROR, ex.getMessage());
         }
         req.getRequestDispatcher(address).forward(req, resp);
     }
@@ -37,7 +43,7 @@ public class Controller extends HttpServlet {
             address = getAndExecuteCommand(req, resp);
         } catch (Exception ex){
             req.setAttribute("exception", ex);
-            //log
+            log.log(Level.ERROR, ex.getMessage());
         }
         resp.sendRedirect(address);
     }

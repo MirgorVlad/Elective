@@ -18,5 +18,10 @@ web-jsptaglibrary_2_0.xsd"
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+<!--        <attribute>-->
+<!--            <name>lang</name>-->
+<!--            <required>true</required>-->
+<!--            <rtexprvalue>true</rtexprvalue>-->
+<!--        </attribute>-->
     </tag>
 </taglib>

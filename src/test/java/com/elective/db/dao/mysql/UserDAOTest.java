@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserDAOTest {
 
     @Test
-    void insertUserTest() throws DBException, SQLException, IOException, ClassNotFoundException {
+    void insertUserTest() throws DBException, SQLException {
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         String email = "test1@mail.com";
         User expected = new User();

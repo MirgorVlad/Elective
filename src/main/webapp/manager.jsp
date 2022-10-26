@@ -1,7 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="messages"/>
+
+<html lang="${lang}">
 <head>
     <title>Manager</title>
     <link href="bootstrap/css/manager.css" rel="stylesheet">
@@ -10,43 +15,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
-        <div class="container">
-         <h1 class="fs-4" style="margin-left:-70px; margin-right:10px ;"><span class="bg-white text-dark rounded shadow px-2 me-2">EL</span><span class="text-white"><a href="manager.jsp" class="navbar-brand">Elective</a><span></span></h1>
-        
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mr-auto mb-2">
-                <li class="nav-item">
-                     <a href="controller?command=manageCourses" class="nav-link">Manage courses</a>
-                </li>
-                <li class="nav-item">
-                      <a href="controller?command=viewAllUsers" class="nav-link">All users</a>
-                </li>
-                <li class="nav-item">
-                    <a href="controller?command=viewProfile&userId=${user.id}" class="nav-link">My profile</a>
-                </li>
-            </ul>
-        </div>
-         <form action="controller?" method="post" class="d-flex">
-            <input name="command" value="logout" type="hidden" class="form-control mr-2">
-            <button class="btn btn-outline-danger mr-auto mt-2">Log out</button>
-        </form>
-        </div>    
-    </nav>
+    <%@include file="menu.jsp" %>
 <%-- ------------------------------------------ --%>
 
      <div class="container">
       <div class="row custom-section d-flex align-items-center">
         <div class="col-12 col-lg-4">
-          <h1>You are manager</h1>
-          <h3>Text</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          </p>
-           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Create course</button>
+            <h1><fmt:message key="manager.header" /></h1>
+            <h3><fmt:message key="manager.underheader" /></h3>
+            <p><fmt:message key="manager.text" /></p>
+           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"><fmt:message key="manager.createcourse" /></button>
         </div>
         <div class="col-12 col-lg-8">
           <img src="files/manager.png" alt="welcome">
@@ -61,19 +39,19 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create course</h1>
+              <h5 class="modal-title"><fmt:message key="manager.createcourse" /></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
               <form action="controller?" method="post">
                 <input name="command" value="createCourse" type="hidden">
                 <div class="mb-3">
-                  <label class="form-label">Name</label>
+                  <label class="form-label"><fmt:message key="course.name" /></label>
                    <input name="name" class="form-control">
                 </div>
                
                 <div class="mb-3">
-                  <label for="topics" class="form-label">Topic</label>
+                  <label for="topics" class="form-label"><fmt:message key="course.topic" /></label>
                   <select name="topics" id="topics" class="form-control">
                     <c:forEach items="${topicList}" var="topic">
                       <option value="${topic}">${topic}</option>
@@ -81,22 +59,22 @@
                   </select>
                 </div>
                  <div class="mb-3">
-                  <label class="form-label">Teacher</label>
+                  <label class="form-label"><fmt:message key="course.teacher" /></label>
                   <input name="teacherEmail" type="email" class="form-control">
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Start date</label>
+                  <label class="form-label"><fmt:message key="course.start" /></label>
                   <input name="startDate" type="date" class="form-control">
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Finish date</label>
+                  <label class="form-label"><fmt:message key="course.end" /></label>
                   <input name="finishDate" type="date" class="form-control">
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Description</label>
+                  <label class="form-label"><fmt:message key="course.description" /></label>
                   <textarea name="description" class="form-control"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary"><fmt:message key="course.create" /></button>
             </form>
             </div>
           </div>

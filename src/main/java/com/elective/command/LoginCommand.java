@@ -25,7 +25,7 @@ public class LoginCommand implements Command{
         //DB get User
         //Logic if admin -> admin.jsp if clien -> client.jsp
         //User to session
-        log.log(Level.DEBUG, "email: " + email + "; password: " + password);
+        log.log(Level.DEBUG, "email: " + email);
         User user = userDAO.findByEmail(email);
         log.log(Level.INFO, "LOGIN user: " + user);
 

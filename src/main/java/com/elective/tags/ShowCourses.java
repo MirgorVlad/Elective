@@ -1,17 +1,32 @@
 package com.elective.tags;
 
+import com.elective.Controller;
+import com.elective.ReferencePages;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Properties;
 
 public class ShowCourses extends TagSupport {
+    static Logger log = LogManager.getLogger(ShowCourses.class);
 
+    private Properties locale;
     private List<Course> coursesList;
+    private String lang;
     private User user = null;
     private final String out = "  <table border=\"1\">\n" +
             "        <tr class=\"header\">\n" +
@@ -24,10 +39,24 @@ public class ShowCourses extends TagSupport {
     public void setCoursesList(List<Course> courseList){
         this.coursesList = courseList;
     }
+    public void setLang(String lang){
+        this.lang = lang;
+    }
 
     @Override
     public int doStartTag() throws JspException {
         user = (User)pageContext.getSession().getAttribute("user");
+        try {
+            locale = setLocale(lang, pageContext.getRequest(), pageContext.getResponse());
+        } catch (ServletException | IOException e) {
+            log.log(Level.ERROR, e.getMessage());
+            try {
+                pageContext.forward(ReferencePages.ERROR_PAGE);
+            } catch (ServletException| IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
         try {
             pageContext.getOut().write(
                    getOutTable()
@@ -181,4 +210,14 @@ public class ShowCourses extends TagSupport {
         return table;
     }
 
+    private static Properties setLocale(String lang, ServletRequest req, ServletResponse resp) throws ServletException, IOException {
+        Properties locale = new Properties();
+        String name = "messages_"+lang+".properties";
+        try {
+            locale.load(new FileInputStream(ShowCourses.class.getResource("/").getPath() + name));
+        } catch (IOException e) {
+                locale.load(new FileInputStream(ShowCourses.class.getResource("/").getPath() + "messages.properties"));
+        }
+        return locale;
+    }
 }

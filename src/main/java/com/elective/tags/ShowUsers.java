@@ -28,7 +28,7 @@ public class ShowUsers extends TagSupport {
     }
 
     private String getOutTable() {
-        String out = "<h3>All users</h3><table border=\"1\">\n" +
+        String out = "<table border=\"1\">\n" +
                 "    <tr class=\"header\">\n" +
                 "        <th>Name</th>\n" +
                 "        <th>Email</th>\n" +
