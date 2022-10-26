@@ -1,7 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="messages"/>
+<html lang="${lang}">
 <head>
     <title>${course.name}</title>
     <link href="bootstrap/css/course.css" rel="stylesheet">
@@ -19,10 +23,10 @@
                 <div class="col-md-3 w-200">
                     <p class="newarrival"></p>
                     <h1>${course.name}</h1>
-                    <p><b>Teacher:</b> <a href = "controller?command=viewProfile&userId=${course.teacher.id}" class="text-decoration-none">${course.teacher.fullName}</a></p>
-                    <p><b>Start date: </b>${course.startDate}</p>
-                    <p><b>Finish date: </b>${course.finishDate}</p>
-                    <h3>Description: </h3>
+                    <p><b><fmt:message key="course.teacher" />:</b> <a href = "controller?command=viewProfile&userId=${course.teacher.id}" class="text-decoration-none">${course.teacher.fullName}</a></p>
+                    <p><b><fmt:message key="course.start" />: </b>${course.startDate}</p>
+                    <p><b><fmt:message key="course.end" />: </b>${course.finishDate}</p>
+                    <h3><fmt:message key="course.description" />: </h3>
                     <p>${course.description}</p>
                      <c:if test="${user.role eq 'student'}" >
                         <c:if test="${isJoined ne true}" >
