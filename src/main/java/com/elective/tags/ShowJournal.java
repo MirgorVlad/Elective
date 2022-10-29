@@ -8,14 +8,18 @@ import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class ShowJournal extends TagSupport {
+    private ResourceBundle bundle;
     private List<User> studentsList;
     private static final int step = 1;
     private static final int limit = 7;
@@ -31,10 +35,11 @@ public class ShowJournal extends TagSupport {
     }
     @Override
     public int doStartTag() {
+        getLocale(pageContext.getSession());
         pageCount = (int) Math.ceil(1.0*course.countDays() / limit);
         String page = pageContext.getRequest().getParameter("page");
         try {
-            String out = "<h1>Week "+page+"</h1>" +
+            String out = "<h1>"+bundle.getString("journal.week")+page+"</h1>" +
                     "<table border=\"1\">" +
                             printTable() +
                          "</table>";
@@ -78,8 +83,8 @@ public class ShowJournal extends TagSupport {
             pageInfoCount = pageInfoCount*limit+1;
         }
         startDate = startDate.plusDays(pageInfoCount);
-        String out = createDates(startDate, finishDate,  page,"DATE");
-        String outGrades = "<tr><th>GRADE</th>";
+        String out = createDates(startDate, finishDate,  page, bundle.getString("journal.date"));
+        String outGrades = "<tr><th>"+bundle.getString("journal.grade")+"</th>";
         for(LocalDate s = startDate; !s.isEqual(startDate.plusDays(limit)); s = s.plusDays(step)){
             if(s.isAfter(finishDate)){
                 break;
@@ -104,7 +109,7 @@ public class ShowJournal extends TagSupport {
             pageInfoCount = pageInfoCount*limit+1;
         }
         startDate = startDate.plusDays(pageInfoCount);
-        String out = createDates(startDate, finishDate,  page, "STUDENT/DATE");
+        String out = createDates(startDate, finishDate,  page, bundle.getString("journal.studentdate"));
         String studentRow = "";
         for(User user : studentsList) {
 
@@ -136,9 +141,19 @@ public class ShowJournal extends TagSupport {
         }
         System.out.println(page + " : " + pageCount);
         if(page == pageCount) {
-            out += "<th>Final Test</th>" +
-                    "<th>TOTAL</th></tr>";
+            out += "<th>"+bundle.getString("journal.final")+"</th>" +
+                    "<th>"+bundle.getString("journal.total")+"</th></tr>";
         }
         return out;
+    }
+
+    private void getLocale(HttpSession session) {
+        String lang = "en";
+        if( session.getAttribute("lang") != null)
+            lang = (String) session.getAttribute("lang");
+
+        Locale locale = Locale.of(lang);
+
+        bundle = ResourceBundle.getBundle("messages", locale);
     }
 }

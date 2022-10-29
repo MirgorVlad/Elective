@@ -28,46 +28,29 @@
                     <p><b><fmt:message key="course.end" />: </b>${course.finishDate}</p>
                     <h3><fmt:message key="course.description" />: </h3>
                     <p>${course.description}</p>
+                    <c:if test="${course.finished eq true}">
+                        <h2 style="color: red"><fmt:message key="course.isfinished"/></h2>
+                    </c:if>
                      <c:if test="${user.role eq 'student'}" >
                         <c:if test="${isJoined ne true}" >
-                            <a href = "controller?command=joinToCourse&userId=${user.id}&courseId=${course.id}" class="btn btn-outline-success">Join to course</a>
+                            <c:if test="${course.finished ne true}">
+                                <a href = "controller?command=joinToCourse&userId=${user.id}&courseId=${course.id}" class="btn btn-outline-success"><fmt:message key="course.jointo"/></a>
+                            </c:if>
                         </c:if>
                         <c:if test="${isJoined eq true}" >
-                            <a href = "controller?command=unfollowCourse&userId=${user.id}&courseId=${course.id}" class="btn btn-outline-danger">Unfollow course</a>
-                            <a href = "controller?command=showJournal&courseId=${course.id}&page=1" class="btn btn-outline-primary">View journal</a>
+                            <c:if test="${course.finished ne true}">
+                                <a href = "controller?command=unfollowCourse&userId=${user.id}&courseId=${course.id}" class="btn btn-outline-danger"><fmt:message key="course.unfollowfrom"/></a>
+                            </c:if>
+                            <a href = "controller?command=showJournal&courseId=${course.id}&page=1" class="btn btn-outline-primary"><fmt:message key="course.viewjournal"/></a>
                         </c:if>
                     </c:if>
                     <c:if test="${user.role eq 'teacher'}">
                         <c:if test="${user.email eq course.teacher.email}">
-                            <a href = "controller?command=showJournal&courseId=${course.id}&page=1" class="btn btn-outline-primary">View journal</a>
+                            <a href = "controller?command=showJournal&courseId=${course.id}&page=1" class="btn btn-outline-primary"><fmt:message key="course.viewjournal"/>l</a>
                         </c:if>
                     </c:if>
                 </div>
             </div>
-    </div> 
-
-
-
-
-
-
-<%--    
-    <div>
-        <img src="files/course_img.webp" alt="course_img">
-    <h1>${course.name}</h1>
-        <p>Teacher: <a href = "controller?command=viewProfile&userId=${course.teacher.id}">${course.teacher.fullName}</a></p>
-    <h2>Description</h2>
-    <p>${course.description}</p>
-        <c:if test="${user.role eq 'student'}" >
-            <c:if test="${isJoined ne true}" >
-                <a href = "controller?command=joinToCourse&userId=${user.id}&courseId=${course.id}">Join to course</a>
-            </c:if>
-            <c:if test="${isJoined eq true}" >
-                <a href = "controller?command=unfollowCourse&userId=${user.id}&courseId=${course.id}">Unfollow course</a>
-                <a href = "controller?command=showJournal&courseId=${course.id}">Show journal</a>
-            </c:if>
-        </c:if>
     </div>
---%>
 </body>
 </html>

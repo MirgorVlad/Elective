@@ -36,7 +36,7 @@
     </div>
 
         <div class="setLanguage">
-            <ul>
+            <ul
                 <li><a href="?lang=en">Eng</a></li>
                 <li><a href="?lang=ua">Ua</a></li>
             </ul>

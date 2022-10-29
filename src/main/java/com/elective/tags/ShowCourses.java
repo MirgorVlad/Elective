@@ -1,27 +1,19 @@
 package com.elective.tags;
 
-import com.elective.ReferencePages;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class ShowCourses extends TagSupport {
@@ -30,30 +22,19 @@ public class ShowCourses extends TagSupport {
     private ResourceBundle bundle;
     private List<Course> coursesList;
     private User user = null;
-    private final String out = "  <table border=\"1\">\n" +
-            "        <tr class=\"header\">\n" +
-            "            <th>Name</th>\n" +
-            "            <th>Start date</th>\n" +
-            "            <th>End date</th>\n" +
-            "            <th>Teacher</th>\n" +
-            "            <th>Email</th>\n";
+    private String out;
 
     public void setCoursesList(List<Course> courseList){
         this.coursesList = courseList;
     }
 
     @Override
-    public int doStartTag() throws JspException {
+    public int doStartTag(){
         HttpSession session = pageContext.getSession();
         user = (User)session.getAttribute("user");
-        String lang = "en";
-        if( session.getAttribute("lang") != null)
-            lang = (String) session.getAttribute("lang");
-
-        Locale locale = Locale.of(lang);
-
-        bundle = ResourceBundle.getBundle("messages", locale);
-            //locale = setLocale((String) session.getAttribute("lang"), pageContext.getRequest(), pageContext.getResponse());
+        getLocale(session);
+        initOut();
+        //locale = setLocale((String) session.getAttribute("lang"), pageContext.getRequest(), pageContext.getResponse());
 
         try {
             pageContext.getOut().write(
@@ -63,6 +44,16 @@ public class ShowCourses extends TagSupport {
             throw new RuntimeException("Problem is here", e);
         }
         return SKIP_BODY;
+    }
+
+    private void getLocale(HttpSession session) {
+        String lang = "en";
+        if( session.getAttribute("lang") != null)
+            lang = (String) session.getAttribute("lang");
+
+        Locale locale = Locale.of(lang);
+
+        bundle = ResourceBundle.getBundle("messages", locale);
     }
 
     private String getOutTable() throws IOException, ServletException {
@@ -80,8 +71,8 @@ public class ShowCourses extends TagSupport {
     }
 
     private String managerTable(){
-        String table = "<th>EDIT</th>\n" +
-                        "<th>DELETE</th>\n" +
+        String table = "<th>"+bundle.getString("course.edit")+"</th>\n" +
+                        "<th>"+bundle.getString("course.delete")+"</th>\n" +
                         "</tr>";
         for(Course course : coursesList){
             table += " <tr>\n" +
@@ -191,8 +182,8 @@ public class ShowCourses extends TagSupport {
     }
 
     private String teacherTable(){
-        String table = "<th>STUDENTS</th>\n" +
-                "<th>JOURNAL</th>\n" +
+        String table = "<th>"+bundle.getString("course.students")+"</th>\n" +
+                "<th>"+bundle.getString("course.journal")+"</th>\n" +
                 "</tr>";
         for(Course course : coursesList){
             table += " <tr>\n" +
@@ -201,22 +192,20 @@ public class ShowCourses extends TagSupport {
                     "      <th>"+course.getFinishDate()+"</th>\n" +
                     "      <th>"+course.getTeacher().getFullName()+"</th>\n" +
                     "      <th><a href=\"controller?command=viewProfile&userId="+course.getTeacher().getId()+"\">"+course.getTeacher().getEmail()+"</a></th>\n" +
-                    "      <th><a href=\"controller?command=showStudentsInCourse&courseId="+course.getId()+"\">STUDENTS</a></th>\n" +
-                    "      <th><a href=\"controller?command=showJournal&courseId="+ course.getId() + "&page=1\">JOURNAL</a></th>\n" +
+                    "      <th><a href=\"controller?command=showStudentsInCourse&courseId="+course.getId()+"\">"+bundle.getString("course.students")+"</a></th>\n" +
+                    "      <th><a href=\"controller?command=showJournal&courseId="+ course.getId() + "&page=1\">"+bundle.getString("course.journal")+"</a></th>\n" +
                     " </tr>";
         }
         return table;
     }
 
-    private static Properties setLocale(String lang, ServletRequest req, ServletResponse resp) throws ServletException, IOException {
-        Properties locale = new Properties();
-        String name = "messages_"+lang+".properties";
-        File file = new File(ShowCourses.class.getResource("/").getPath() + name);
-        try {
-            locale.load(new FileInputStream(ShowCourses.class.getResource("/").getPath() + name));
-        } catch (IOException e) {
-                locale.load(new FileInputStream(ShowCourses.class.getResource("/").getPath() + "messages.properties"));
-        }
-        return locale;
+    private void initOut(){
+        out = "  <table border=\"1\">\n" +
+                "        <tr class=\"header\">\n" +
+                "            <th>"+bundle.getString("course.name")+"</th>\n" +
+                "            <th>"+bundle.getString("course.start")+"</th>\n" +
+                "            <th>"+bundle.getString("course.end")+"</th>\n" +
+                "            <th>"+bundle.getString("course.teacher")+"</th>\n" +
+                "            <th>"+bundle.getString("course.email")+"</th>\n";
     }
 }

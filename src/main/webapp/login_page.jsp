@@ -1,5 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="messages"/>
+<html lang="${lang}">
 <head>
     <title>Sign in</title>
 
@@ -13,27 +18,27 @@
 </head>
 <body>
     <div class="login">
-        <h1 class="text-center">Sign In</h1>
+        <h1 class="text-center"><fmt:message key="login.signin" /></h1>
         <form action="controller?" method="post" class="needs-validation">
              <input name="command" value="login" type="hidden">
 
             <div class = "form-group was-validated">
-                <label class="form-label" for="email">Email</label>
+                <label class="form-label" for="email"><fmt:message key="profile.email" /></label>
                 <input class="form-control" name="email" type="email" required>
                 <div class="invalid-feedback">
-                    Please enter your email address
+                    <fmt:message key="login.emailcapch" />
                 </div>
             </div>
 
             <div class = "form-group was-validated">
-                <label class="form-label" for="password">Password</label>
+                <label class="form-label" for="password"><fmt:message key="login.password" /></label>
                  <input class="form-control" name="password" type="password" required>
                  <div class="invalid-feedback">
-                    Please enter your password
+                     <fmt:message key="login.passcapch" />
                 </div>
             </div>
       
-            <input  class="btn btn-success w-100" value="SIGN IN" type="submit">
+            <input  class="btn btn-success w-100" value="<fmt:message key="login.signin" />" type="submit">
            
         </form>
     </div>

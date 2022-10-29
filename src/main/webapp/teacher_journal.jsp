@@ -18,13 +18,18 @@
         
 
         <%--<a href="edit_journal.jsp?courseId=${course.id}">Edit</a>--%>
-         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Set grade</button>
+        <c:if test="${course.finished eq true}">
+            <h2 style="color:red;">Course is finished</h2>
+        </c:if>
+        <c:if test="${course.finished ne true}">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Set grade</button>
+        </c:if>
     </div>
     <div class="modal" id="myModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Set grade</h1>
+              <h5 class="modal-title">Set grade</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
