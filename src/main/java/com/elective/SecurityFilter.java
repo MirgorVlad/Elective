@@ -26,7 +26,7 @@ public class SecurityFilter implements Filter {
 
         if(user != null) {
             //MANAGER ACCESS
-            log.log(Level.WARN, "Illegal access to manager functions");
+            log.log(Level.DEBUG, "Illegal access to manager functions");
             if (!user.getRole().equals(UserDAO.MANAGER_ROLE)) {
                 if (page.equals("/controller")) {
                     if (query.split("&")[0].equals("command=manageCourses")) {

@@ -139,7 +139,7 @@ public class ShowJournal extends TagSupport {
             out += "<th>" + s + "</th>";
             s = s.plusDays(step);
         }
-        System.out.println(page + " : " + pageCount);
+
         if(page == pageCount) {
             out += "<th>"+bundle.getString("journal.final")+"</th>" +
                     "<th>"+bundle.getString("journal.total")+"</th></tr>";

@@ -3,6 +3,7 @@ package com.elective.command;
 import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
+import com.elective.db.dao.JournalDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
 import org.apache.logging.log4j.Level;
@@ -18,6 +19,7 @@ public class UnfollowCourseCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
+        JournalDAO journalDAO = daoFactory.getJournalDAO();
         int studentId = Integer.parseInt(req.getParameter("userId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         Course course = courseDAO.findById(courseId);
@@ -28,6 +30,7 @@ public class UnfollowCourseCommand implements Command{
         log.log(Level.INFO, "Unfollow user " + user.getEmail() + " from course " + course.getName());
 
         courseDAO.unfollowCourse(studentId, courseId);
+        journalDAO.deleteData(user.getId(), course.getId());
         return "controller?command=viewCourse&courseId=" + courseId;
     }
 }

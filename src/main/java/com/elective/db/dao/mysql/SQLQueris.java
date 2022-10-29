@@ -30,6 +30,7 @@ public class SQLQueris {
     public static final String SELECT_ALL_TEACHERS = "SELECT * FROM teachers INNER JOIN users u ON teachers.user_id = u.id" ;
     public static final String SELECT_ALL_USERS = "SELECT * FROM users";
     public static final String UPDATE_USER_STATE = "UPDATE users SET blocked = ? WHERE id = ?";
+    public static final String DELETE_JOURNAL_COURSE_FOR_USER = "DELETE FROM journal WHERE student_id = ? AND course_id = ?";
 
     private SQLQueris(){
     }

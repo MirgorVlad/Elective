@@ -36,7 +36,7 @@ public class MysqlUserDAO implements UserDAO {
 
             insertRole(user);
 
-            log.log(Level.INFO, "Insert user " + user.getEmail());
+            log.log(Level.DEBUG, "Insert user " + user.getEmail());
 
         } finally {
             if (rs != null) {
@@ -58,7 +58,7 @@ public class MysqlUserDAO implements UserDAO {
                 userList.add(createUser(rs));
             }
 
-            log.log(Level.INFO, "Get all users");
+            log.log(Level.DEBUG, "Get all users");
 
         }
         return userList;
@@ -72,7 +72,7 @@ public class MysqlUserDAO implements UserDAO {
             pstmt.setString(1, email);
             rs = pstmt.executeQuery();
 
-            log.log(Level.INFO, "Find by email " + email);
+            log.log(Level.DEBUG, "Find by email " + email);
 
             while (rs.next()){
                 return createUser(rs);
@@ -89,7 +89,7 @@ public class MysqlUserDAO implements UserDAO {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
 
-            log.log(Level.INFO, "Find by id " + id);
+            log.log(Level.DEBUG, "Find by id " + id);
 
             while (rs.next()){
                 return createUser(rs);
@@ -124,7 +124,7 @@ public class MysqlUserDAO implements UserDAO {
             while (rs.next()){
                 teachers.add(createUser(rs));
             }
-            log.log(Level.INFO, "Get all teachers");
+            log.log(Level.DEBUG, "Get all teachers");
         }
         return teachers;
     }
@@ -140,7 +140,7 @@ public class MysqlUserDAO implements UserDAO {
                 log.log(Level.WARN, "Can not update state to " + state);
                 throw new DBException("Can not update state");
             }
-            log.log(Level.INFO, "Change user state to " + state);
+            log.log(Level.DEBUG, "Change user state to " + state);
         }
     }
 
@@ -149,7 +149,7 @@ public class MysqlUserDAO implements UserDAO {
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
             pstmt.setInt(1, user.getId());
             rs = pstmt.executeQuery();
-            log.log(Level.INFO, "Checking if user " + user.getEmail() + " is a manager");
+            log.log(Level.DEBUG, "Checking if user " + user.getEmail() + " is a manager");
             return rs.next();
         } finally {
             if(rs != null){
@@ -177,7 +177,7 @@ public class MysqlUserDAO implements UserDAO {
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
             pstmt.setInt(1, user.getId());
             rs = pstmt.executeQuery();
-            log.log(Level.INFO, "Checking if user "+user.getEmail()+" is a student ");
+            log.log(Level.DEBUG, "Checking if user "+user.getEmail()+" is a student ");
             return rs.next();
         } finally {
             if(rs != null){
@@ -203,7 +203,7 @@ public class MysqlUserDAO implements UserDAO {
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_STUDENT)) {
             pstmt.setInt(1, user.getId());
             int upd = pstmt.executeUpdate();
-            log.log(Level.INFO, "Insert user "+user.getEmail());
+            log.log(Level.DEBUG, "Insert user "+user.getEmail());
             if(upd < 0){
                 log.log(Level.WARN, "Cannot insert user "+user.getEmail());
                 throw new DBException("Can not insert student");
@@ -216,7 +216,7 @@ public class MysqlUserDAO implements UserDAO {
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_TEACHER)) {
             pstmt.setInt(1, user.getId());
             int upd = pstmt.executeUpdate();
-            log.log(Level.INFO, "Insert teacher "+user.getEmail());
+            log.log(Level.DEBUG, "Insert teacher "+user.getEmail());
             if(upd < 0){
                 log.log(Level.WARN, "Cannot insert teacher "+user.getEmail());
                 throw new DBException("Can not insert teacher");

@@ -9,4 +9,6 @@ public interface JournalDAO {
     void setGrade(Journal journal) throws SQLException, DBException;
     int getGrade(int courseId, int studentId, Date date) throws SQLException, DBException;
     int sumOfStudentGrades(int courseId, int studentId) throws SQLException;
+
+    void deleteData(int userId, int courseId) throws SQLException;
 }

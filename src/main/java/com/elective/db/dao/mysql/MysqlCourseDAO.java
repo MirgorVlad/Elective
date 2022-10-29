@@ -35,7 +35,7 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, course.getTopic());
 
             if (pstmt.executeUpdate() > 0) {
-                log.log(Level.INFO, "Course " + course.getName() + " created");
+                log.log(Level.DEBUG, "Course " + course.getName() + " created");
                 setCourseID(rs, pstmt, course);
             }
 
@@ -55,7 +55,7 @@ public class MysqlCourseDAO implements CourseDAO {
             while (rs.next()) {
                 courses.add(getCourse(rs));
             }
-            log.log(Level.INFO, "Get all courses");
+            log.log(Level.DEBUG, "Get all courses");
         }
         return courses;
     }
@@ -70,7 +70,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
 
             while (rs.next()) {
-                log.log(Level.INFO, "Find course by id: " + id);
+                log.log(Level.DEBUG, "Find course by id: " + id);
                 return getCourse(rs);
             }
         } finally {
@@ -94,7 +94,7 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, course.getTopic());
             pstmt.setInt(k++, course.getId());
 
-            log.log(Level.INFO, "Update course " + course.getName());
+            log.log(Level.DEBUG, "Update course " + course.getName());
 
             if (pstmt.executeUpdate() == 0) {
                 log.log(Level.WARN, "Cannot update course " + course.getName());
@@ -112,7 +112,7 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(k++, courseId);
             pstmt.setInt(k++, studentId);
 
-            log.log(Level.INFO, "Join student " + studentId + " to course " + courseId);
+            log.log(Level.DEBUG, "Join student " + studentId + " to course " + courseId);
 
             if (pstmt.executeUpdate() == 0) {
                 log.log(Level.WARN, "Cannot join student to course");
@@ -131,7 +131,7 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(k++, courseId);
             rs = pstmt.executeQuery();
 
-            log.log(Level.INFO, "Student " + userId + " is joined to " + courseId);
+            log.log(Level.DEBUG, "Student " + userId + " is joined to " + courseId);
 
             return rs.next();
         } finally {
@@ -149,7 +149,7 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setInt(k++, studentId);
             pstmt.setInt(k++, courseId);
 
-            log.log(Level.INFO, "Unfollow user " + studentId + " from course " + courseId);
+            log.log(Level.DEBUG, "Unfollow user " + studentId + " from course " + courseId);
 
             if (pstmt.executeUpdate() == 0) {
                 log.log(Level.WARN, "Cannot unfollow user " + studentId + " from course " + courseId);
@@ -169,7 +169,7 @@ public class MysqlCourseDAO implements CourseDAO {
             while (rs.next()) {
                 courses.add(findById(rs.getInt("course_id")));
             }
-            log.log(Level.INFO, "Available courses for user " + userId);
+            log.log(Level.DEBUG, "Available courses for user " + userId);
         } finally {
             if (rs != null) {
                 rs.close();
@@ -191,7 +191,7 @@ public class MysqlCourseDAO implements CourseDAO {
                 courses.add(getCourse(rs));
             }
 
-            log.log(Level.INFO, "Find course by teacher " + id);
+            log.log(Level.DEBUG, "Find course by teacher " + id);
 
         } finally {
             if (rs != null)
@@ -212,7 +212,7 @@ public class MysqlCourseDAO implements CourseDAO {
                 usersId.add(rs.getInt("id"));
             }
 
-            log.log(Level.INFO, "Find students in course " + courseId);
+            log.log(Level.DEBUG, "Find students in course " + courseId);
 
         } finally {
             if (rs != null) {
@@ -228,7 +228,7 @@ public class MysqlCourseDAO implements CourseDAO {
              PreparedStatement statement = con.prepareStatement(SQLQueris.COUNT_STUDENTS_IN_COURSE)) {
             statement.setInt(1, courseId);
             rs = statement.executeQuery();
-            log.log(Level.INFO, "Count students in course " + courseId);
+            log.log(Level.DEBUG, "Count students in course " + courseId);
             if (rs.next()) {
                 return rs.getInt("students");
             } else {
@@ -255,7 +255,7 @@ public class MysqlCourseDAO implements CourseDAO {
                 courses.add(getCourse(rs));
             }
 
-            log.log(Level.INFO, "Get courses by topic " + topic);
+            log.log(Level.DEBUG, "Get courses by topic " + topic);
 
         } finally {
             if (rs != null)
@@ -300,7 +300,7 @@ public class MysqlCourseDAO implements CourseDAO {
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_COURSE_BY_ID)) {
             pstmt.setInt(1, courseId);
 
-            log.log(Level.INFO, "Delete course " + courseId);
+            log.log(Level.DEBUG, "Delete course " + courseId);
 
             if (pstmt.executeUpdate() == 0) {
                 log.log(Level.WARN, "Cannot delete  course " + courseId);

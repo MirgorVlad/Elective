@@ -28,7 +28,7 @@ public class MysqlJournalDAO implements JournalDAO {
                     log.log(Level.WARN, "Cannot insert grade");
                     throw new DBException("Cannot insert grade");
                 }
-                log.log(Level.INFO, "Set grade: " + journal);
+                log.log(Level.DEBUG, "Set grade: " + journal);
             } else {
                 pstmt = con.prepareStatement(SQLQueris.UPDATE_GRADE);
                 int k = 1;
@@ -62,7 +62,7 @@ public class MysqlJournalDAO implements JournalDAO {
             while (rs.next()){
                 return rs.getInt("grade");
             }
-            log.log(Level.INFO, "Cannot get grade from course " + courseId + "; student " + studentId + "; date " + date);
+            log.log(Level.DEBUG, "Cannot get grade from course " + courseId + "; student " + studentId + "; date " + date);
         }
         finally {
             if(rs != null)
@@ -85,12 +85,23 @@ public class MysqlJournalDAO implements JournalDAO {
                 System.out.println(rs.getInt("sum(grade)"));
                 return rs.getInt("sum(grade)");
             }
-            log.log(Level.INFO, "Sum of grades for " + studentId + " from course " + courseId);
+            log.log(Level.DEBUG, "Sum of grades for " + studentId + " from course " + courseId);
         }
         finally {
             if(rs != null)
                 rs.close();
         }
         return 0;
+    }
+
+    @Override
+    public void deleteData(int userId, int courseId) throws SQLException {
+        try(Connection con = ConnectionFactory.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_JOURNAL_COURSE_FOR_USER)) {
+                pstmt.setInt(1, userId);
+                pstmt.setInt(2, courseId);
+                int res = pstmt.executeUpdate();
+                log.log(Level.DEBUG, "Deleted " + res + " rows from journal: " + courseId + " for student: " + userId);
+        }
     }
 }
