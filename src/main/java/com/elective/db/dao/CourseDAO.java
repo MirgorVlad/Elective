@@ -14,7 +14,7 @@ public interface CourseDAO {
     List<String> topicList = Arrays.asList("programming", "languages", "science", "soft skills");
 
 
-    void create(Course course) throws SQLException, DBException;
+    void create(Course course, String lang) throws SQLException, DBException;
 
     List<Course> getAll() throws SQLException, DBException;
     User getTeacher(User user) throws DBException, SQLException;

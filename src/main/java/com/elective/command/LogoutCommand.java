@@ -2,9 +2,8 @@ package com.elective.command;
 
 import com.elective.ReferencePages;
 import com.elective.db.dao.DBException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
 public class LogoutCommand implements Command{

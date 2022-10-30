@@ -149,7 +149,7 @@ public class MysqlUserDAO implements UserDAO {
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
             pstmt.setInt(1, user.getId());
             rs = pstmt.executeQuery();
-            log.log(Level.DEBUG, "Checking if user " + user.getEmail() + " is a manager");
+            //log.log(Level.DEBUG, "Checking if user " + user.getEmail() + " is a manager");
             return rs.next();
         } finally {
             if(rs != null){
@@ -163,7 +163,7 @@ public class MysqlUserDAO implements UserDAO {
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
             pstmt.setInt(1, user.getId());
             rs = pstmt.executeQuery();
-            log.log(Level.INFO, "Checking if user "+user.getEmail()+" is a teacher ");
+            //log.log(Level.INFO, "Checking if user "+user.getEmail()+" is a teacher ");
             return rs.next();
         } finally {
             if(rs != null){
@@ -177,7 +177,7 @@ public class MysqlUserDAO implements UserDAO {
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
             pstmt.setInt(1, user.getId());
             rs = pstmt.executeQuery();
-            log.log(Level.DEBUG, "Checking if user "+user.getEmail()+" is a student ");
+            //log.log(Level.DEBUG, "Checking if user "+user.getEmail()+" is a student ");
             return rs.next();
         } finally {
             if(rs != null){

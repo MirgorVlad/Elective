@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -9,6 +9,8 @@
 <html lang="${lang}">
 <head>
     <title>Manager</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
     <link href="bootstrap/css/manager.css" rel="stylesheet">
     <link href="bootstrap/css/welcome_page.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -17,7 +19,6 @@
 <body>
     <%@include file="menu.jsp" %>
 <%-- ------------------------------------------ --%>
-
      <div class="container">
       <div class="row custom-section d-flex align-items-center">
         <div class="col-12 col-lg-4">
@@ -74,6 +75,13 @@
                   <label class="form-label"><fmt:message key="course.description" /></label>
                   <textarea name="description" class="form-control"></textarea>
                 </div>
+                  <div class="mb-3">
+                      <fmt:message key="manager.create.lang" />:
+                      <input type="radio" id="eng"  name="language" value="Eng" class="form-radio-input" required>
+                      <label for="eng" class="form-radio-label"><fmt:message key="lang.eng" /></label>
+                      <input type="radio" id="ua"  name="language" value="Ua" class="form-radio-input" required>
+                      <label for="ua" class="form-radio-label"><fmt:message key="lang.ua" /></label>
+                  </div>
                 <button type="submit" class="btn btn-primary"><fmt:message key="course.create" /></button>
             </form>
             </div>

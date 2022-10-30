@@ -16,6 +16,23 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     <filter-name>securityfilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <filter>
+    <filter-name>localefilter</filter-name>
+    <filter-class>com.elective.SessionLocaleFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>localefilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.elective.EncodingFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
     <description>MySQL Elective</description>
     <resource-ref>

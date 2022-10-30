@@ -2,12 +2,12 @@ package com.elective.command;
 
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
 public class DeleteCourseCommand implements Command{

@@ -6,10 +6,9 @@ import com.elective.db.dao.JournalDAO;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;

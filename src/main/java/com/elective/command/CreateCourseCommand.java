@@ -7,13 +7,15 @@ import com.elective.db.dao.UserDAO;
 import com.elective.db.dao.mysql.MysqlCourseDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -22,14 +24,16 @@ public class CreateCourseCommand implements Command{
     static Logger log = LogManager.getLogger(CreateCourseCommand.class);
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, UnsupportedEncodingException {
         CourseDAO courseDAO = daoFactory.getCourseDAO();
         UserDAO userDAO = daoFactory.getUserDAO();
-
         String name = req.getParameter("name");
+        System.out.println(name);
+        System.out.println(req.getCharacterEncoding());
         String topic = req.getParameter("topics");
         String desc = req.getParameter("description");
         String tEmail = req.getParameter("teacherEmail");
+        String lang = req.getParameter("language");
         Date startDate = Date.valueOf(req.getParameter("startDate"));
         Date finishDate = Date.valueOf(req.getParameter("finishDate"));
 
@@ -49,7 +53,7 @@ public class CreateCourseCommand implements Command{
         log.log(Level.INFO, "Course created: " + course.getName());
         log.log(Level.DEBUG, "name: " + name + "; topic: " + topic + "; " + "teacher:  " + tEmail + "; start: " + startDate +
                 "; finish:  " + finishDate);
-        courseDAO.create(course);
+        courseDAO.create(course, lang);
 
 
         return ReferencePages.MANAGER_PAGE;

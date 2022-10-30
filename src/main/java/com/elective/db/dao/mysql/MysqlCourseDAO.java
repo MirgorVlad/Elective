@@ -20,7 +20,7 @@ public class MysqlCourseDAO implements CourseDAO {
     UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
 
     @Override
-    public void create(Course course) throws SQLException, DBException {
+    public void create(Course course, String lang) throws SQLException, DBException {
         ResultSet rs = null;
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_COURSE,
@@ -28,6 +28,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
             int k = 1;
             pstmt.setString(k++, course.getName());
+            pstmt.setString(k++, lang);
             pstmt.setString(k++, course.getDescription());
             pstmt.setDate(k++, course.getStartDate());
             pstmt.setDate(k++, course.getFinishDate());

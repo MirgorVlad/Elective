@@ -2,10 +2,10 @@ package com.elective.tags;
 
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
+import jakarta.servlet.http.HttpSession;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+
+import jakarta.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
