@@ -11,13 +11,15 @@ import org.apache.logging.log4j.Logger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.List;
 
 public class LoginCommand implements Command{
     static Logger log = LogManager.getLogger(LoginCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         UserDAO userDAO = daoFactory.getUserDAO();
-
+        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
@@ -34,7 +36,7 @@ public class LoginCommand implements Command{
                 throw new IllegalAccessException("You are blocked by manager");
             }
 
-            req.getSession().setAttribute("topicList", CourseDAO.topicList);
+            req.getSession().setAttribute("topicList",topicList);
 
             if(user.getPassword().equals(password)) {
                 req.getSession().setAttribute("user", user);

@@ -1,5 +1,7 @@
 package com.elective;
 
+import com.elective.db.dao.CourseDAO;
+import com.elective.db.dao.DAOFactory;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
@@ -10,7 +12,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
-
+import java.util.List;
 
 
 public class SessionLocaleFilter implements Filter {
@@ -25,6 +27,7 @@ public class SessionLocaleFilter implements Filter {
 
             throws IOException, ServletException {
 
+        CourseDAO courseDAO;
         HttpServletRequest req = (HttpServletRequest) request;
 
         if (req.getParameter("lang") != null) {

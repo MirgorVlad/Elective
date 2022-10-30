@@ -45,7 +45,7 @@ public class ShowUsers extends TagSupport {
             out += " <tr>\n" +
                     "      <th>"+user.getFullName()+"</th>\n" +
                     "      <th><a href=\"controller?command=viewProfile&userId="+user.getId()+"\">"+user.getEmail()+"</a></th>\n" +
-                    "      <th>"+user.getRole()+"</th>\n" +
+                    "      <th>"+bundle.getString("role."+user.getRole())+"</th>\n" +
                     "      <th><a href=\"controller?command=viewAllUsers&userId="+user.getId()+"\">\n";
             if(!user.getRole().equals(UserDAO.MANAGER_ROLE)) {
                 if (user.isBlock()) {

@@ -40,4 +40,6 @@ public interface CourseDAO {
 
     List<Course> getCoursesByTopic(String topic) throws SQLException, DBException;
 
+    List<String> getTopicList(String language) throws SQLException;
+
 }

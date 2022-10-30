@@ -11,12 +11,15 @@ import org.apache.logging.log4j.Logger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.List;
 
 public class RegistrCommand implements Command{
     static Logger log = LogManager.getLogger(RegistrCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         UserDAO userDAO = daoFactory.getUserDAO();
+        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
         String page = null;
 
         String email = req.getParameter("email");
@@ -46,7 +49,7 @@ public class RegistrCommand implements Command{
         if(user.getRole().equals(UserDAO.STUDENT_ROLE))
             page =  ReferencePages.STUDENT_PAGE;
 
-        req.getSession().setAttribute("topicList", CourseDAO.topicList);
+        req.getSession().setAttribute("topicList", topicList);
 
         return page;
     }

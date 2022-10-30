@@ -265,6 +265,30 @@ public class MysqlCourseDAO implements CourseDAO {
         return courses;
     }
 
+    @Override
+    public List<String> getTopicList(String language) throws SQLException {
+        if (language == null)
+            language = "eng";
+        List<String> topics = new ArrayList<>();
+        ResultSet rs = null;
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(SQLQueris.GET_TOPICS)) {
+            pstmt.setString(1, language);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                topics.add(rs.getString("topic"));
+            }
+
+            log.log(Level.DEBUG, "Get topics in  " + language);
+
+        } finally {
+            if (rs != null)
+                rs.close();
+        }
+        return topics;
+    }
+
 
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();

@@ -23,12 +23,12 @@ public class ViewAllCoursesCommand implements Command{
         User user = (User)req.getSession().getAttribute("user");
         List<Course> courseList = courseDAO.getAll();
         List<User> teacherList = userDAO.getAllTeachers();
+
         req.getSession().setAttribute("teacherList", teacherList);
 
         String page;
 
         req.getSession().setAttribute("coursesList", courseList);
-
         log.log(Level.DEBUG,  courseList);
 
         if(req.getParameter("command").equals("viewCoursesList")){

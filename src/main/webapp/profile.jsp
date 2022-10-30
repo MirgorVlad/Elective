@@ -71,7 +71,7 @@
                                 <fmt:message key="profile.role" />
                             </div>
                             <div class="col-4">
-                                ${requestScope.currentUser.role}
+                                <fmt:message key="role.${requestScope.currentUser.role}" />
                             </div>
                         </div>
                     </div>
