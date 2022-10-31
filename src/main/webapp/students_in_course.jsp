@@ -11,6 +11,7 @@
 <body>
     <%@include file="menu.jsp" %>
 
+
     <div class="center">
         <h3>Students in course</h3>
     <table border="1">

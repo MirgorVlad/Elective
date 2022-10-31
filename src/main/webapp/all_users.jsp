@@ -16,6 +16,7 @@
 </head>
 <body>
     <%@include file="menu.jsp" %>
+
     <div class="center">
         <h3><fmt:message key="manager.allusers" /></h3>
         <u:showusers userList="${userList}"/>

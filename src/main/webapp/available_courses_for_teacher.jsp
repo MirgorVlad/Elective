@@ -17,6 +17,7 @@
 </head>
 <body>
     <%@include file="menu.jsp" %>
+
     <div class="center">
         <h3><fmt:message key="courses.my" /></h3>
         <co:showcourses coursesList="${coursesList}"/>

@@ -1,0 +1,15 @@
+.switch{
+    position: absolute;
+    top: 100px;
+    right: 50px;
+}
+
+.switch img{
+    width: 30px;
+    display: inline-block;
+}
+
+.switch .lang  {
+    display: inline-block;
+}
+

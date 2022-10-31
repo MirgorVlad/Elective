@@ -20,9 +20,10 @@ public class SelectCoursesCommand implements Command{
 
         String topic = req.getParameter("topics");
         String teacher = req.getParameter("teachers");
+        String lang = req.getParameter("languages");
         List<Course> courseList;
 
-        courseList = generateList(topic, teacher);
+        courseList = generateList(topic, teacher, lang);
 
         log.log(Level.INFO, "Selected courses by topic - " + topic + "; teacher - " + teacher);
         log.log(Level.DEBUG, courseList);
@@ -32,9 +33,10 @@ public class SelectCoursesCommand implements Command{
         return ReferencePages.VIEW_COURSES_LIST;
     }
 
-    private List<Course> generateList(String topic, String teacher) throws DBException, SQLException {
+    private List<Course> generateList(String topic, String teacher, String lang) throws DBException, SQLException {
         List<Course> courseListByTopic;
         List<Course> courseListByTeacher;
+        List<Course> courseListByLang;
         if(topic.equals("all"))
             courseListByTopic = courseDAO.getAll();
         else
@@ -43,10 +45,14 @@ public class SelectCoursesCommand implements Command{
             courseListByTeacher = courseListByTopic;
         else
             courseListByTeacher = courseDAO.findCoursesByTeacher(Integer.parseInt(teacher));
-
+        if(lang.equals("all"))
+            courseListByLang = courseListByTopic;
+        else
+            courseListByLang = courseDAO.findCoursesByLang(lang);
 
         return courseListByTopic.stream()
                 .distinct()
-                .filter(courseListByTeacher::contains).toList();
+                .filter(courseListByTeacher::contains)
+                .filter(courseListByLang::contains).toList();
     }
 }

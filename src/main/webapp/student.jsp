@@ -17,7 +17,7 @@
 </head>
 <body>
     <%@include file="menu.jsp" %>
-
+    <%@include file="languge_switch.jsp" %>
     <div class="container">
         <div class="row custom-section d-flex align-items-center">
             <div class="col-12 col-lg-4">
@@ -34,14 +34,6 @@
             </div>
         </div>
     </div>
-
-        <div class="setLanguage">
-            <ul
-                <li><a href="?lang=en">Eng</a></li>
-                <li><a href="?lang=ua">Ua</a></li>
-            </ul>
-        </div>
-
 
 </body>
 </html>

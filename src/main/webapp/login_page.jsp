@@ -17,6 +17,7 @@
 
 </head>
 <body>
+    <%@include file="languge_switch.jsp" %>
     <div class="login">
         <h1 class="text-center"><fmt:message key="login.signin" /></h1>
         <form action="controller?" method="post" class="needs-validation">

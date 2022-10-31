@@ -17,7 +17,6 @@
 <body>
 
     <%@include file="menu.jsp" %>
-
 <%-- -------------------------------------------------------------- --%> 
 
     <div class="main-container d-flex">
@@ -44,7 +43,7 @@
                         <%--By topic--%>
                         <label for="topics"><fmt:message key="sidenav.courses" /> </label>
                         <select name="topics" id="topics" class="form-control">
-                            <option value="all">all</option>
+                            <option value="all"><fmt:message key="sidenav.all" /></option>
                             <c:forEach items="${topicList}" var="topic">
                                 <option value="${topic}">${topic}</option>
                             </c:forEach>
@@ -54,12 +53,19 @@
                     <br/>
                     <label for="teachers"><fmt:message key="sidenav.teachers" /> </label>
                     <select name="teachers" id="teachers" class="form-control" style="with:100px;">
-                        <option value="all">all</option>
+                        <option value="all"><fmt:message key="sidenav.all" /></option>
                         <c:forEach items="${teacherList}" var="teacher">
                             <option value="${teacher.id}">${teacher.fullName}</option>
                         </c:forEach>
                     </select>
                     <br/>
+                        <label for="languages"><fmt:message key="sidenav.languages" /> </label>
+                        <select name="languages" id="languages" class="form-control" style="with:100px;">
+                            <option value="all"><fmt:message key="sidenav.all" /></option>
+                            <option value="eng"><fmt:message key="language.eng" /></option>
+                            <option value="ua"><fmt:message key="language.ua" /></option>
+                        </select>
+                        <br/>
                     <input type="submit" value="<fmt:message key="sidenav.select" />" class="btn btn-success">
                 </form>
 

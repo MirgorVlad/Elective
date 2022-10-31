@@ -15,7 +15,6 @@
 </head>
 <body>
     <%@include file="menu.jsp" %>
-
     <div class="container" style="margin-left: 60px;">
         <div class="row">
             <div class="col-md-6">

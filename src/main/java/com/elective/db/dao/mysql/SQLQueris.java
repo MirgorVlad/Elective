@@ -32,6 +32,7 @@ public class SQLQueris {
     public static final String UPDATE_USER_STATE = "UPDATE users SET blocked = ? WHERE id = ?";
     public static final String DELETE_JOURNAL_COURSE_FOR_USER = "DELETE FROM journal WHERE student_id = ? AND course_id = ?";
     public static final String GET_TOPICS = "SELECT * FROM topics WHERE language = ?";
+    public static final String FIND_COURSE_BY_LANG = "SELECT * FROM courses WHERE language = ?";
 
     private SQLQueris(){
     }

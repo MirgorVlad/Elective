@@ -42,4 +42,5 @@ public interface CourseDAO {
 
     List<String> getTopicList(String language) throws SQLException;
 
+    List<Course> findCoursesByLang(String lang) throws SQLException, DBException;
 }

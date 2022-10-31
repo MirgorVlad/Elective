@@ -18,6 +18,7 @@
 </head>
 <body>
     <%@include file="menu.jsp" %>
+    <%@include file="languge_switch.jsp" %>
 <%-- ------------------------------------------ --%>
      <div class="container">
       <div class="row custom-section d-flex align-items-center">
@@ -77,9 +78,9 @@
                 </div>
                   <div class="mb-3">
                       <fmt:message key="manager.create.lang" />:
-                      <input type="radio" id="eng"  name="language" value="Eng" class="form-radio-input" required>
+                      <input type="radio" id="eng"  name="language" value="eng" class="form-radio-input" required>
                       <label for="eng" class="form-radio-label"><fmt:message key="lang.eng" /></label>
-                      <input type="radio" id="ua"  name="language" value="Ua" class="form-radio-input" required>
+                      <input type="radio" id="ua"  name="language" value="ua" class="form-radio-input" required>
                       <label for="ua" class="form-radio-label"><fmt:message key="lang.ua" /></label>
                   </div>
                 <button type="submit" class="btn btn-primary"><fmt:message key="course.create" /></button>

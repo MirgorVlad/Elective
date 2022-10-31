@@ -11,6 +11,7 @@
 </head>
 <body>
     <%@include file="menu.jsp" %>
+
     <div class="center">
       <ex:showjournal course="${course}"/>
     </div>

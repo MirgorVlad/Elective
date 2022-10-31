@@ -33,7 +33,7 @@ public class UpdateResourcesFilter implements Filter {
                 }
             }
         }
-        if(page.equals("/manager.jsp")){
+        if(page.equals("/"+ReferencePages.MANAGER_PAGE) || page.equals("/" + ReferencePages.VIEW_COURSES_LIST)){
             try {
                 List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
                 req.getSession().setAttribute("topicList", topicList);
