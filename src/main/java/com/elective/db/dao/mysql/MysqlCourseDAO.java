@@ -331,7 +331,7 @@ public class MysqlCourseDAO implements CourseDAO {
         System.out.println(user);
         try (Connection con = ConnectionFactory.getConnection()) {
             if (user != null) {
-                if (MysqlUserDAO.isTeacher(con, user))
+                if (userDAO.isTeacher(con, user.getId()))
                     return user;
                 else
                     throw new DBException(user.getEmail() + " is not teacher");

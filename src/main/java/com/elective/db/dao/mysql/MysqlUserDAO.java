@@ -16,12 +16,16 @@ import java.util.List;
 public class MysqlUserDAO implements UserDAO {
     static Logger log = LogManager.getLogger(MysqlUserDAO.class);
 
+    Connection getConnection() throws SQLException {
+        return ConnectionFactory.getConnection();
+    }
+
     @Override
     public void insert(User user) throws SQLException, DBException {
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        try(Connection con = ConnectionFactory.getConnection()) {
+        try(Connection con = getConnection()) {
             pstmt = con.prepareStatement(SQLQueris.INSERT_USER,
                     Statement.RETURN_GENERATED_KEYS);
             int k = 1;
@@ -32,7 +36,8 @@ public class MysqlUserDAO implements UserDAO {
 
             if (pstmt.executeUpdate() > 0) {
                setUserID(rs, pstmt, user);
-            }
+            } else
+                throw new DBException("Cannot insert user");
 
             insertRole(user);
 
@@ -51,7 +56,7 @@ public class MysqlUserDAO implements UserDAO {
     @Override
     public List<User> getAll() throws SQLException, DBException {
         List<User> userList = new ArrayList<>();
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(SQLQueris.SELECT_ALL_USERS)) {
             while (rs.next()){
@@ -64,27 +69,30 @@ public class MysqlUserDAO implements UserDAO {
         return userList;
     }
 
+
+
     @Override
     public User findByEmail(String email) throws SQLException, DBException {
-        ResultSet rs = null;
-        try(Connection con = ConnectionFactory.getConnection();
+        User user = null;
+        ResultSet rs;
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER_BY_EMAIL)) {
             pstmt.setString(1, email);
             rs = pstmt.executeQuery();
 
             log.log(Level.DEBUG, "Find by email " + email);
 
-            while (rs.next()){
-                return createUser(rs);
+            if(rs.next()){
+                user = createUser(rs);
             }
         }
-        return null;
+        return user;
     }
 
     @Override
     public User findById(int id) throws SQLException, DBException {
         ResultSet rs = null;
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_USER_BY_ID)) {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
@@ -103,22 +111,22 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     @Override
-    public void getRole(User user) throws SQLException, DBException {
+    public String getRole(int id) throws SQLException, DBException {
         String role = null;
-        try(Connection con = ConnectionFactory.getConnection()) {
-            if(isStudent(con, user)) role = STUDENT_ROLE;
-            else if(isTeacher(con, user)) role = TEACHER_ROLE;
-            else if(isManager(con, user)) role = MANAGER_ROLE;
+        try(Connection con = getConnection()) {
+            if(isStudent(con, id)) role = STUDENT_ROLE;
+            else if(isTeacher(con, id)) role = TEACHER_ROLE;
+            else if(isManager(con, id)) role = MANAGER_ROLE;
         }
         if(role == null)
             throw new DBException("cannot find roll");
-        user.setRole(role);
+        return role;
     }
 
     @Override
     public List<User> getAllTeachers() throws SQLException, DBException {
         List<User> teachers = new ArrayList<>();
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(SQLQueris.SELECT_ALL_TEACHERS)) {
             while (rs.next()){
@@ -131,7 +139,7 @@ public class MysqlUserDAO implements UserDAO {
 
     @Override
     public void changeUserState(int userId, boolean state) throws SQLException, DBException {
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.UPDATE_USER_STATE)) {
             pstmt.setBoolean(1, state);
             pstmt.setInt(2, userId);
@@ -144,10 +152,10 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    private boolean isManager(Connection con, User user) throws SQLException {
+    public boolean isManager(Connection con, int id) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_MANAGER)) {
-            pstmt.setInt(1, user.getId());
+            pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             //log.log(Level.DEBUG, "Checking if user " + user.getEmail() + " is a manager");
             return rs.next();
@@ -158,10 +166,10 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public static boolean isTeacher(Connection con, User user) throws SQLException {
+    public boolean isTeacher(Connection con, int id) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
-            pstmt.setInt(1, user.getId());
+            pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             //log.log(Level.INFO, "Checking if user "+user.getEmail()+" is a teacher ");
             return rs.next();
@@ -172,10 +180,10 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public static boolean isStudent(Connection con, User user) throws SQLException {
+    public  boolean isStudent(Connection con, int id) throws SQLException {
         ResultSet rs = null;
         try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT)) {
-            pstmt.setInt(1, user.getId());
+            pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             //log.log(Level.DEBUG, "Checking if user "+user.getEmail()+" is a student ");
             return rs.next();
@@ -194,12 +202,12 @@ public class MysqlUserDAO implements UserDAO {
         user.setPassword(rs.getString("password"));
         user.setId(rs.getInt("id"));
         user.setBlock(rs.getBoolean("blocked"));
-        getRole(user);
+        user.setRole(getRole(user.getId()));
         return user;
     }
 
     private void insertStudent(User user) throws SQLException, DBException {
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_STUDENT)) {
             pstmt.setInt(1, user.getId());
             int upd = pstmt.executeUpdate();
@@ -212,7 +220,7 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     private void insertTeacher(User user) throws SQLException, DBException {
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_TEACHER)) {
             pstmt.setInt(1, user.getId());
             int upd = pstmt.executeUpdate();

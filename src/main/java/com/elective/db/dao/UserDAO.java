@@ -20,9 +20,13 @@ public interface UserDAO {
 
     User findById(int id) throws SQLException, DBException;
 
-    void getRole(User user) throws SQLException, DBException;
+    String getRole(int id) throws SQLException, DBException;
 
     List<User> getAllTeachers() throws SQLException, DBException;
 
     void changeUserState(int userId, boolean state) throws SQLException, DBException;
+
+    boolean isStudent(Connection con, int id) throws SQLException;
+    boolean isTeacher(Connection con, int id) throws SQLException;
+    boolean isManager(Connection con, int id) throws SQLException;
 }
