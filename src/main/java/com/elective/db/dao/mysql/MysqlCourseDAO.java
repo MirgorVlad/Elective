@@ -16,13 +16,19 @@ import java.util.List;
 
 public class MysqlCourseDAO implements CourseDAO {
     static Logger log = LogManager.getLogger(MysqlCourseDAO.class);
+    private final UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
+    Connection getConnection() throws SQLException {
+        return ConnectionFactory.getConnection();
+    }
 
-    UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();
+    UserDAO getUserDAO(){
+        return userDAO;
+    }
 
     @Override
     public void create(Course course, String lang) throws SQLException, DBException {
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_COURSE,
                      Statement.RETURN_GENERATED_KEYS)) {
 
@@ -50,7 +56,7 @@ public class MysqlCourseDAO implements CourseDAO {
     @Override
     public List<Course> getAll() throws SQLException, DBException {
         List<Course> courses = new ArrayList<>();
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              Statement statement = con.createStatement();
              ResultSet rs = statement.executeQuery(SQLQueris.SELECT_ALL_COURSES)) {
             while (rs.next()) {
@@ -64,7 +70,7 @@ public class MysqlCourseDAO implements CourseDAO {
     @Override
     public Course findById(int id) throws SQLException, DBException {
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_ID)) {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
@@ -83,7 +89,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
     @Override
     public void update(Course course) throws SQLException, DBException {
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.UPDATE_COURSE)) {
 
             int k = 1;
@@ -106,7 +112,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
     @Override
     public void jointStudentToCourse(int studentId, int courseId) throws SQLException, DBException {
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.JOIN_TO_COURSE)) {
 
             int k = 1;
@@ -125,7 +131,7 @@ public class MysqlCourseDAO implements CourseDAO {
     @Override
     public boolean isStudentJoined(int userId, int courseId) throws SQLException {
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_STUDENT_IN_COURSE_BY_ID)) {
             int k = 1;
             pstmt.setInt(k++, userId);
@@ -143,7 +149,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
     @Override
     public void unfollowCourse(int studentId, int courseId) throws SQLException, DBException {
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.UNFOLLOW_COURSE)) {
 
             int k = 1;
@@ -163,7 +169,7 @@ public class MysqlCourseDAO implements CourseDAO {
     public List<Course> availableCourses(int userId) throws SQLException, DBException {
         List<Course> courses = new ArrayList<>();
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_ALL_AVAILABLE_COURSES_FOR_STUDENT)) {
             statement.setInt(1, userId);
             rs = statement.executeQuery();
@@ -183,7 +189,7 @@ public class MysqlCourseDAO implements CourseDAO {
     public List<Course> findCoursesByTeacher(int id) throws SQLException, DBException {
         List<Course> courses = new ArrayList<>();
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_TEACHER_ID)) {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
@@ -205,7 +211,7 @@ public class MysqlCourseDAO implements CourseDAO {
     public List<Integer> findStudentsInCourse(int courseId) throws SQLException {
         List<Integer> usersId = new ArrayList<>();
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_ALL_STUDENTS_IN_COURSE)) {
             statement.setInt(1, courseId);
             rs = statement.executeQuery();
@@ -225,7 +231,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
     public int countStudentsInCourse(int courseId) throws SQLException, DBException {
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement statement = con.prepareStatement(SQLQueris.COUNT_STUDENTS_IN_COURSE)) {
             statement.setInt(1, courseId);
             rs = statement.executeQuery();
@@ -247,7 +253,7 @@ public class MysqlCourseDAO implements CourseDAO {
     public List<Course> getCoursesByTopic(String topic) throws SQLException, DBException {
         List<Course> courses = new ArrayList<>();
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_TOPIC)) {
             pstmt.setString(1, topic);
             rs = pstmt.executeQuery();
@@ -271,7 +277,7 @@ public class MysqlCourseDAO implements CourseDAO {
             language = "eng";
         List<String> topics = new ArrayList<>();
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.GET_TOPICS)) {
             pstmt.setString(1, language);
             rs = pstmt.executeQuery();
@@ -293,7 +299,7 @@ public class MysqlCourseDAO implements CourseDAO {
     public List<Course> findCoursesByLang(String lang) throws SQLException, DBException {
         List<Course> courses = new ArrayList<>();
         ResultSet rs = null;
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_LANG)) {
             pstmt.setString(1, lang);
             rs = pstmt.executeQuery();
@@ -315,7 +321,7 @@ public class MysqlCourseDAO implements CourseDAO {
     private Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");
-        User teacher = userDAO.findById(teacherId);
+        User teacher = getUserDAO().findById(teacherId);
 
         course.setId(rs.getInt("id"));
         course.setName(rs.getString("name"));
@@ -329,9 +335,9 @@ public class MysqlCourseDAO implements CourseDAO {
 
     public User getTeacher(User user) throws DBException, SQLException {
         System.out.println(user);
-        try (Connection con = ConnectionFactory.getConnection()) {
+        try (Connection con = getConnection()) {
             if (user != null) {
-                if (userDAO.isTeacher(con, user.getId()))
+                if (getUserDAO().isTeacher(con, user.getId()))
                     return user;
                 else
                     throw new DBException(user.getEmail() + " is not teacher");
@@ -343,7 +349,7 @@ public class MysqlCourseDAO implements CourseDAO {
 
     @Override
     public void deleteById(int courseId) throws SQLException, DBException {
-        try (Connection con = ConnectionFactory.getConnection();
+        try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_COURSE_BY_ID)) {
             pstmt.setInt(1, courseId);
 
