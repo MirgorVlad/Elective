@@ -146,7 +146,7 @@ public class UserDAOTest {
     @Test
     void insertUserThrowExceptionTest() throws SQLException, DBException {
         PreparedStatement pstmt = mock(PreparedStatement.class);
-        when(pstmt.executeUpdate()).thenReturn(-1);
+        when(pstmt.executeUpdate()).thenReturn(0);
 
         Connection con = mock(Connection.class);
         when(con.prepareStatement(SQLQueris.INSERT_USER, Statement.RETURN_GENERATED_KEYS)).thenReturn(pstmt);
@@ -157,7 +157,7 @@ public class UserDAOTest {
         when(userDAO.findByEmail(email)).thenReturn(expectedUser);
 
         assertThrows(DBException.class,
-                () ->  userDAO.insert(expectedUser));
+                () ->  userDAO.insert(expectedUser), "Cannot insert user");
     }
 
     @Test

@@ -21,9 +21,13 @@ public class Course implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return id == course.id;
+        return id == course.id && Objects.equals(name, course.name) && Objects.equals(topic, course.topic) && Objects.equals(description, course.description) && Objects.equals(teacher, course.teacher) && Objects.equals(startDate, course.startDate) && Objects.equals(finishDate, course.finishDate);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, topic, description, teacher, startDate, finishDate);
+    }
 
     @Override
     public String toString() {

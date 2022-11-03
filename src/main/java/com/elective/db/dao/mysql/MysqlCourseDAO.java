@@ -44,7 +44,8 @@ public class MysqlCourseDAO implements CourseDAO {
             if (pstmt.executeUpdate() > 0) {
                 log.log(Level.DEBUG, "Course " + course.getName() + " created");
                 setCourseID(rs, pstmt, course);
-            }
+            } else
+                throw new DBException("Cannot insert course");
 
         } finally {
             if (rs != null) {
@@ -318,7 +319,7 @@ public class MysqlCourseDAO implements CourseDAO {
     }
 
 
-    private Course getCourse(ResultSet rs) throws SQLException, DBException {
+    public Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();
         int teacherId = rs.getInt("teacher");
         User teacher = getUserDAO().findById(teacherId);
