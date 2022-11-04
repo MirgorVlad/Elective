@@ -1,18 +1,11 @@
 package com.elective.db.dao.mysql;
 
-import com.elective.db.dao.ConnectionFactory;
-import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
-import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -21,26 +14,21 @@ import static org.mockito.Mockito.*;
 
 public class UserDAOTest {
 
-    private String email = "test1@gmail.com";
-    private String fname = "Test";
-    private String lname = "First";
-    private String password = "password";
-    private String role = "student";
-    private int id = 1;
-    private boolean blocked = false;
-    private final User expectedUser = createUser(id, fname, lname, email, password, role);
+    private Random rand = new Random();
     @Test
     void findUserByEmailTest() throws DBException, SQLException {
+        User expectedUser = createRandomUser(false, false);
+
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
                 .thenReturn(true)
                 .thenReturn(false);
-        when(rs.getString("first_name")).thenReturn(fname);
-        when(rs.getString("last_name")).thenReturn(lname);
-        when(rs.getString("email")).thenReturn(email);
-        when(rs.getString("password")).thenReturn(password);
-        when(rs.getInt("id")).thenReturn(id);
-        when(rs.getBoolean("blocked")).thenReturn(blocked);
+        when(rs.getString("first_name")).thenReturn(expectedUser.getFirstName());
+        when(rs.getString("last_name")).thenReturn(expectedUser.getLastName());
+        when(rs.getString("email")).thenReturn(expectedUser.getEmail());
+        when(rs.getString("password")).thenReturn(expectedUser.getPassword());
+        when(rs.getInt("id")).thenReturn(expectedUser.getId());
+        when(rs.getBoolean("blocked")).thenReturn(expectedUser.isBlock());
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeQuery()).thenReturn(rs);
@@ -50,26 +38,28 @@ public class UserDAOTest {
 
         MysqlUserDAO userDAO = mock(MysqlUserDAO.class);
         when(userDAO.getConnection()).thenReturn(con);
-        when(userDAO.findByEmail(email)).thenCallRealMethod();
+        when(userDAO.findByEmail(expectedUser.getEmail())).thenCallRealMethod();
         when(userDAO.createUser(rs)).thenCallRealMethod();
-        when(userDAO.getRole(id)).thenReturn(role);
+        when(userDAO.getRole(expectedUser.getId())).thenReturn(expectedUser.getRole());
 
-        User actualUser = userDAO.findByEmail(email);
+        User actualUser = userDAO.findByEmail(expectedUser.getEmail());
 
         assertEquals(expectedUser, actualUser);
     }
 
     @Test
     void findUserByIdTest() throws DBException, SQLException {
+        User expectedUser = createRandomUser(false, false);
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
                 .thenReturn(true)
                 .thenReturn(false);
-        when(rs.getString("first_name")).thenReturn(fname);
-        when(rs.getString("last_name")).thenReturn(lname);
-        when(rs.getString("email")).thenReturn(email);
-        when(rs.getString("password")).thenReturn(password);
-        when(rs.getInt("id")).thenReturn(id);
+        when(rs.getString("first_name")).thenReturn(expectedUser.getFirstName());
+        when(rs.getString("last_name")).thenReturn(expectedUser.getLastName());
+        when(rs.getString("email")).thenReturn(expectedUser.getEmail());
+        when(rs.getString("password")).thenReturn(expectedUser.getPassword());
+        when(rs.getInt("id")).thenReturn(expectedUser.getId());
+        when(rs.getBoolean("blocked")).thenReturn(expectedUser.isBlock());
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeQuery()).thenReturn(rs);
@@ -79,11 +69,11 @@ public class UserDAOTest {
 
         MysqlUserDAO userDAO = mock(MysqlUserDAO.class);
         when(userDAO.getConnection()).thenReturn(con);
-        when(userDAO.findById(id)).thenCallRealMethod();
+        when(userDAO.findById(expectedUser.getId())).thenCallRealMethod();
         when(userDAO.createUser(rs)).thenCallRealMethod();
-        when(userDAO.getRole(id)).thenReturn(role);
+        when(userDAO.getRole(expectedUser.getId())).thenReturn(expectedUser.getRole());
 
-        User actualUser = userDAO.findById(id);
+        User actualUser = userDAO.findById(expectedUser.getId());
 
         assertEquals(expectedUser, actualUser);
     }
@@ -145,6 +135,8 @@ public class UserDAOTest {
 
     @Test
     void insertUserThrowExceptionTest() throws SQLException, DBException {
+        User expectedUser = createRandomUser(false, false);
+
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
 
@@ -154,7 +146,7 @@ public class UserDAOTest {
         MysqlUserDAO userDAO = mock(MysqlUserDAO.class);
         Mockito.doCallRealMethod().when(userDAO).insert(expectedUser);
         when(userDAO.getConnection()).thenReturn(con);
-        when(userDAO.findByEmail(email)).thenReturn(expectedUser);
+        when(userDAO.findByEmail(expectedUser.getEmail())).thenReturn(expectedUser);
 
         assertThrows(DBException.class,
                 () ->  userDAO.insert(expectedUser), "Cannot insert user");
@@ -220,28 +212,16 @@ public class UserDAOTest {
         assertTrue(userDAO.isManager(con, 1));
     }
 
-    private User createUser(int id, String fname, String lname, String email, String password, String role) {
+    private User createRandomUser(boolean student, boolean teacher) {
         User user = new User();
-        user.setId(id);
-        user.setEmail(email);
-        user.setFirstName(fname);
-        user.setLastName(lname);
-        user.setPassword(password);
-        user.setRole(role);
+        user.setId(rand.nextInt(100));
+        user.setFirstName(generateString(10));
+        user.setLastName(generateString(10));
+        user.setPassword(generateString(10));
+        user.setEmail(user.getFirstName() + "@mail.com");
+        user.setRole(student ? "student" : teacher ? "teacher" : rand.nextBoolean() ? "student" : "teacher");
+
         return user;
-    }
-
-    private User generateRandomUser() {
-        Random random = new Random();
-        int id = random.nextInt(100);
-        String fname = generateString(10);
-        String lname = generateString(10);
-        String password = generateString(10);
-        String email = fname + "@mail.com";
-        String role = id < 50 ? "student" : "teacher";
-
-        return createUser(id, fname, lname, email, password, role);
-
     }
 
     private String generateString(int targetStringLength) {
@@ -258,7 +238,7 @@ public class UserDAOTest {
     private List<User> generateUserList(int length){
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
-            userList.add(generateRandomUser());
+            userList.add(createRandomUser(false, false));
         }
         return userList;
     }

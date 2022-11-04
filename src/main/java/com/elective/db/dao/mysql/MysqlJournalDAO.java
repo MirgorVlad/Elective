@@ -12,10 +12,15 @@ import java.sql.*;
 
 public class MysqlJournalDAO implements JournalDAO {
     static Logger log = LogManager.getLogger(MysqlJournalDAO.class);
+
+    Connection getConnection() throws SQLException {
+        return ConnectionFactory.getConnection();
+    }
+
     @Override
     public void setGrade(Journal journal) throws SQLException, DBException {
         PreparedStatement pstmt=null;
-        try(Connection con = ConnectionFactory.getConnection()){
+        try(Connection con = getConnection()){
             if(getGrade(journal.getCourse().getId(), journal.getStudent().getId(), journal.getDate()) == 0){
                 pstmt = con.prepareStatement(SQLQueris.INSERT_GRADE);
                 int k = 1;
@@ -51,7 +56,7 @@ public class MysqlJournalDAO implements JournalDAO {
     @Override
     public int getGrade(int courseId, int studentId, Date date) throws SQLException, DBException {
         ResultSet rs = null;
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_GRADE_BY_KEY)) {
             int k = 1;
             pstmt.setInt(k++, courseId);
@@ -74,7 +79,7 @@ public class MysqlJournalDAO implements JournalDAO {
     @Override
     public int sumOfStudentGrades(int courseId, int studentId) throws SQLException {
         ResultSet rs = null;
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.SUM_OF_STUDENT_GRADE)) {
             int k = 1;
             pstmt.setInt(k++, courseId);
@@ -96,7 +101,7 @@ public class MysqlJournalDAO implements JournalDAO {
 
     @Override
     public void deleteData(int userId, int courseId) throws SQLException {
-        try(Connection con = ConnectionFactory.getConnection();
+        try(Connection con = getConnection();
             PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_JOURNAL_COURSE_FOR_USER)) {
                 pstmt.setInt(1, userId);
                 pstmt.setInt(2, courseId);

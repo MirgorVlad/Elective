@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,32 +18,22 @@ import static org.mockito.Mockito.when;
 
 public class CourseDAOTest {
 
-    private int id = 1;
-    private String name = "Test Course";
-    private String description = "Test description";
-    private Date start = new Date(100000);
-    private Date finish = new Date(10000000);
-    private User teacher = createUser("Teacher", "Test", "teacher@gmail.com",
-            "password", "teacher");
-    private String topic = "test topic";
-
-    private final Random random = new Random();
-
-    Course expectedCourse = createCourse(id, name, description, start, finish, teacher, topic);
+    private final Random rand = new Random();
 
     @Test
     void findCourseByIdTest() throws DBException, SQLException {
+        Course expectedCourse = createRandomCourse(null);
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
                 .thenReturn(true)
                 .thenReturn(false);
-        when(rs.getInt("id")).thenReturn(id);
-        when(rs.getString("name")).thenReturn(name);
-        when(rs.getString("description")).thenReturn(description);
-        when(rs.getDate("start")).thenReturn(start);
-        when(rs.getDate("finish")).thenReturn(finish);
-        when(rs.getString("topic")).thenReturn(topic);
-        when(rs.getInt("teacher")).thenReturn(teacher.getId());
+        when(rs.getInt("id")).thenReturn(expectedCourse.getId());
+        when(rs.getString("name")).thenReturn(expectedCourse.getName());
+        when(rs.getString("description")).thenReturn(expectedCourse.getDescription());
+        when(rs.getDate("start")).thenReturn(expectedCourse.getStartDate());
+        when(rs.getDate("finish")).thenReturn(expectedCourse.getFinishDate());
+        when(rs.getString("topic")).thenReturn(expectedCourse.getTopic());
+        when(rs.getInt("teacher")).thenReturn(expectedCourse.getTeacher().getId());
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeQuery()).thenReturn(rs);
@@ -53,28 +42,25 @@ public class CourseDAOTest {
         when(con.prepareStatement(SQLQueris.FIND_COURSE_BY_ID)).thenReturn(pstmt);
 
         UserDAO userDAO = mock(UserDAO.class);
-        when(userDAO.findById(teacher.getId())).thenReturn(teacher);
+        when(userDAO.findById(expectedCourse.getTeacher().getId())).thenReturn(expectedCourse.getTeacher());
 
         MysqlCourseDAO courseDAO = mock(MysqlCourseDAO.class);
         when(courseDAO.getConnection()).thenReturn(con);
-        when(courseDAO.findById(id)).thenCallRealMethod();
+        when(courseDAO.findById(expectedCourse.getId())).thenCallRealMethod();
         when(courseDAO.getCourse(rs)).thenCallRealMethod();
         when(courseDAO.getUserDAO()).thenReturn(userDAO);
 
-        Course actualCourse = courseDAO.findById(id);
+        Course actualCourse = courseDAO.findById(expectedCourse.getId());
 
         assertEquals(expectedCourse, actualCourse);
     }
 
     @Test
     void findCourseByTeacherTest() throws DBException, SQLException {
-        User teacher = createUser("Teacher", "Test", "email@gmail.com", "password", "teacher");
-        Course course1 = createCourse(1, "Course1", "description1", new Date(123), new Date(12345),
-                teacher, "topic1");
-        Course course2 = createCourse(2, "Course2", "description2", new Date(123), new Date(12345),
-                teacher, "topic2");
-        Course course3 = createCourse(3, "Course3", "description3", new Date(123), new Date(12345),
-                teacher, "topic3");
+        User teacher = createRandomUser(false, true);
+        Course course1 = createRandomCourse(teacher);
+        Course course2 = createRandomCourse(teacher);
+        Course course3 = createRandomCourse(teacher);
 
         List<Course> expectedCourseList = List.of(course1, course2, course3);
 
@@ -203,6 +189,7 @@ public class CourseDAOTest {
 
     @Test
     void insertCourseThrowExceptionTest() throws SQLException, DBException {
+        Course expectedCourse = createRandomCourse(null);
         String lang = "ua";
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
@@ -214,7 +201,7 @@ public class CourseDAOTest {
         MysqlCourseDAO courseDAO = mock(MysqlCourseDAO.class);
         Mockito.doCallRealMethod().when(courseDAO).create(expectedCourse, lang);
         when(courseDAO.getConnection()).thenReturn(con);
-        when(courseDAO.findById(id)).thenReturn(expectedCourse);
+        when(courseDAO.findById(expectedCourse.getId())).thenReturn(expectedCourse);
 
         assertThrows(DBException.class,
                 () ->  courseDAO.create(expectedCourse, lang), "Cannot insert course");
@@ -222,6 +209,7 @@ public class CourseDAOTest {
 
     @Test
     void updateCourseThrowExceptionTest() throws SQLException, DBException {
+        Course expectedCourse = createRandomCourse(null);
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
 
@@ -239,7 +227,8 @@ public class CourseDAOTest {
 
     @Test
     void unfollowCourseThrowExceptionTest() throws SQLException, DBException {
-        int userId = random.nextInt(100);
+        int userId = rand.nextInt(100);
+        int courseId = rand.nextInt(100);
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
 
@@ -247,17 +236,18 @@ public class CourseDAOTest {
         when(con.prepareStatement(SQLQueris.UNFOLLOW_COURSE)).thenReturn(pstmt);
 
         MysqlCourseDAO courseDAO = mock(MysqlCourseDAO.class);
-        Mockito.doCallRealMethod().when(courseDAO).unfollowCourse(userId, id);
+        Mockito.doCallRealMethod().when(courseDAO).unfollowCourse(userId, courseId);
         when(courseDAO.getConnection()).thenReturn(con);
 
 
         assertThrows(DBException.class,
-                () ->  courseDAO.unfollowCourse(userId, id), "Cannot unfollow from course");
+                () ->  courseDAO.unfollowCourse(userId, courseId), "Cannot unfollow from course");
     }
 
     @Test
     void joinToCourseThrowExceptionTest() throws SQLException, DBException {
-        int userId = random.nextInt(100);
+        int userId = rand.nextInt(100);
+        int courseId = rand.nextInt(100);
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
 
@@ -265,18 +255,19 @@ public class CourseDAOTest {
         when(con.prepareStatement(SQLQueris.JOIN_TO_COURSE)).thenReturn(pstmt);
 
         MysqlCourseDAO courseDAO = mock(MysqlCourseDAO.class);
-        Mockito.doCallRealMethod().when(courseDAO).jointStudentToCourse(userId, id);
+        Mockito.doCallRealMethod().when(courseDAO).jointStudentToCourse(userId, courseId);
         when(courseDAO.getConnection()).thenReturn(con);
 
 
         assertThrows(DBException.class,
-                () ->  courseDAO.jointStudentToCourse(userId, id), "Cant join student to course");
+                () ->  courseDAO.jointStudentToCourse(userId, courseId), "Cant join student to course");
     }
 
 
     @Test
     void isStudentJoinedToCourseTest() throws SQLException {
-       int userId = random.nextInt(100);
+       int userId = rand.nextInt(100);
+       int courseId = rand.nextInt(100);
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
                 .thenReturn(true)
@@ -290,14 +281,15 @@ public class CourseDAOTest {
 
         MysqlCourseDAO courseDAO = mock(MysqlCourseDAO.class);
         when(courseDAO.getConnection()).thenReturn(con);
-        when(courseDAO.isStudentJoined(userId, id)).thenCallRealMethod();
+        when(courseDAO.isStudentJoined(userId, courseId)).thenCallRealMethod();
 
-        assertTrue(courseDAO.isStudentJoined(userId, id));
+        assertTrue(courseDAO.isStudentJoined(userId, courseId));
     }
 
     @Test
     void countStudentsInCourseTest() throws SQLException, DBException {
-        int expectedCount = random.nextInt(100);
+        int expectedCount = rand.nextInt(100);
+        int courseId = rand.nextInt(100);
 
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
@@ -312,54 +304,47 @@ public class CourseDAOTest {
         when(con.prepareStatement(SQLQueris.COUNT_STUDENTS_IN_COURSE)).thenReturn(pstmt);
 
         MysqlCourseDAO courseDAO = mock(MysqlCourseDAO.class);
-        when(courseDAO.countStudentsInCourse(id)).thenCallRealMethod();
+        when(courseDAO.countStudentsInCourse(courseId)).thenCallRealMethod();
         when(courseDAO.getConnection()).thenReturn(con);
 
-        int actualCount = courseDAO.countStudentsInCourse(id);
+        int actualCount = courseDAO.countStudentsInCourse(courseId);
 
         assertEquals(expectedCount, actualCount);
     }
 
-    private Course createCourse(int id, String name, String description, Date start, Date finish, User teacher, String topic){
+    private Course createRandomCourse(User teacher) {
         Course course = new Course();
-        course.setId(id);
-        course.setName(name);
-        course.setDescription(description);
-        course.setStartDate(start);
-        course.setFinishDate(finish);
-        course.setTeacher(teacher);
-        course.setTopic(topic);
+        course.setId(rand.nextInt(100));
+        course.setName(generateString(10));
+        course.setDescription(generateString(20));
+        course.setTopic("topic" + rand.nextInt(10));
+        course.setStartDate(new Date(rand.nextLong(12345)));
+        course.setFinishDate(new Date(course.getStartDate().getTime() + rand.nextLong(12345)));
+
+        if(teacher != null)
+            course.setTeacher(teacher);
+        else
+            course.setTeacher(createRandomUser(false, true));
+
         return course;
     }
 
-    private User createUser(String fname, String lname, String email, String password, String role) {
+    private User createRandomUser(boolean student, boolean teacher) {
         User user = new User();
-        user.setId(2);
-        user.setEmail(email);
-        user.setFirstName(fname);
-        user.setLastName(lname);
-        user.setPassword(password);
-        user.setRole(role);
+        user.setId(rand.nextInt(100));
+        user.setFirstName(generateString(10));
+        user.setLastName(generateString(10));
+        user.setPassword(generateString(10));
+        user.setEmail(user.getFirstName() + "@mail.com");
+        user.setRole(student ? "student" : teacher ? "teacher" : rand.nextBoolean() ? "student" : "teacher");
+
         return user;
-    }
-
-    private Course generateRandomCourse() {
-        Random random = new Random();
-        int id = random.nextInt(100);
-        String name = generateString(10);
-        String description = generateString(20);
-        String topic = "topic";
-        User teacher = createUser("name", "lname", "email@gmail.com", "password", "teacher");
-        Date start = new Date(12345);
-        Date finish = new Date(1234567);
-
-        return createCourse(id, name, description, start, finish, teacher, topic);
     }
 
     private List<Course> generateCourseList(int length){
         List<Course> courseList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
-            courseList.add(generateRandomCourse());
+            courseList.add(createRandomCourse(null));
         }
         return courseList;
     }
