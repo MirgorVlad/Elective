@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SelectCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(SelectCoursesCommand.class);
-    private final CourseDAO courseDAO = daoFactory.getCourseDAO();
+    private final CourseDAO courseDAO = getDaoFactory().getCourseDAO();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
 

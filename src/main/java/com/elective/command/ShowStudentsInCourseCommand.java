@@ -19,8 +19,8 @@ public class ShowStudentsInCourseCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
-        UserDAO userDAO = daoFactory.getUserDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
 
         List<Integer> studentsIdList = courseDAO.findStudentsInCourse(courseId);

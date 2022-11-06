@@ -17,8 +17,8 @@ public class RegistrCommand implements Command{
     static Logger log = LogManager.getLogger(RegistrCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
-        UserDAO userDAO = daoFactory.getUserDAO();
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
         String page = null;
 

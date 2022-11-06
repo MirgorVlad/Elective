@@ -1,9 +1,11 @@
 package com.elective.db.dao.mysql;
 
+import com.elective.Generator;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.Journal;
 import com.elective.db.entity.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.sql.*;
@@ -15,7 +17,14 @@ import static org.mockito.Mockito.when;
 
 public class JournalDAOTest {
 
-    private final Random rand  = new Random();
+    private static Random rand;
+    private static Generator generator;
+
+    @BeforeAll
+    static void setup() {
+        rand = new Random();
+        generator = new Generator();
+    }
 
     @Test
     void getGradeTest() throws SQLException, DBException {
@@ -49,7 +58,7 @@ public class JournalDAOTest {
     @Test
     void setGradeTest() throws SQLException, DBException {
 
-       Journal journal = createRandomJournal();
+       Journal journal = generator.createRandomJournal();
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
@@ -92,52 +101,5 @@ public class JournalDAOTest {
         int actualSum = journalDAO.sumOfStudentGrades(courseId, userId);
 
         assertEquals(expectedSum, actualSum);
-    }
-
-    private Journal createRandomJournal(){
-        Journal journal = new Journal();
-
-        journal.setCourse(createRandomCourse());
-        journal.setStudent(createRandomUser(true, false));
-        journal.setGrade(rand.nextInt(10));
-        journal.setDate(new Date(rand.nextLong(12345)));
-
-        return journal;
-    }
-
-    private Course createRandomCourse() {
-        Course course = new Course();
-        course.setId(rand.nextInt(100));
-        course.setName(generateString(10));
-        course.setDescription(generateString(20));
-        course.setTopic("topic" + rand.nextInt(10));
-        course.setTeacher(createRandomUser(false, true));
-        course.setStartDate(new Date(rand.nextLong(12345)));
-        course.setFinishDate(new Date(course.getStartDate().getTime() + rand.nextLong(12345)));
-
-        return course;
-    }
-
-    private User createRandomUser(boolean student, boolean teacher) {
-        User user = new User();
-        user.setId(rand.nextInt(100));
-        user.setFirstName(generateString(10));
-        user.setLastName(generateString(10));
-        user.setPassword(generateString(10));
-        user.setEmail(user.getFirstName() + "@mail.com");
-        user.setRole(student ? "student" : teacher ? "teacher" : rand.nextBoolean() ? "student" : "teacher");
-
-        return user;
-    }
-
-    private String generateString(int targetStringLength) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
     }
 }

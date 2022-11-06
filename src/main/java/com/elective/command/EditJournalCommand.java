@@ -18,11 +18,11 @@ import java.sql.SQLException;
 public class EditJournalCommand implements Command{
     static Logger log = LogManager.getLogger(EditJournalCommand.class);
 
-    private final CourseDAO courseDAO = daoFactory.getCourseDAO();
-    private final UserDAO userDAO = daoFactory.getUserDAO();
+    private final CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+    private final UserDAO userDAO = getDaoFactory().getUserDAO();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException, IllegalArgumentException {
-        JournalDAO journalDAO = daoFactory.getJournalDAO();
+        JournalDAO journalDAO = getDaoFactory().getJournalDAO();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         String student = req.getParameter("students");
         Date date = Date.valueOf(req.getParameter("date"));

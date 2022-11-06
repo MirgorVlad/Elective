@@ -16,7 +16,7 @@ public class ViewProfileCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        UserDAO userDAO = daoFactory.getUserDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         int userId = Integer.parseInt(req.getParameter("userId"));
         User user = userDAO.findById(userId);
 

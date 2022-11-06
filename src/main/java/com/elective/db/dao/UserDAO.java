@@ -27,6 +27,6 @@ public interface UserDAO {
     void changeUserState(int userId, boolean state) throws SQLException, DBException;
 
     boolean isStudent(Connection con, int id) throws SQLException;
-    boolean isTeacher(Connection con, int id) throws SQLException;
+    boolean isTeacher(int id) throws SQLException;
     boolean isManager(Connection con, int id) throws SQLException;
 }

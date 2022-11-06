@@ -27,7 +27,7 @@ public class SortCoursesCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
 
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         String sample = req.getParameter("sample");
         String method = req.getParameter("method");
         List<Course> courseList;

@@ -16,11 +16,11 @@ public class ViewAllUsersCommand implements Command{
     static Logger log = LogManager.getLogger(ViewAllUsersCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        UserDAO userDAO = daoFactory.getUserDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         int userId;
-
-        if(req.getParameter("userId") != null) {
-            userId = Integer.parseInt(req.getParameter("userId"));
+        String userIdParam = req.getParameter("userId");
+        if(userIdParam != null) {
+            userId = Integer.parseInt(userIdParam);
             User user = userDAO.findById(userId);
             userDAO.changeUserState(userId, !user.isBlock());
         }

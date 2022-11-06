@@ -22,8 +22,6 @@ import java.sql.SQLException;
 public class Controller extends HttpServlet {
     static Logger log = LogManager.getLogger(Controller.class);
 
-
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -55,7 +53,7 @@ public class Controller extends HttpServlet {
     }
 
     private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp)
-            throws SQLException, DBException, IllegalAccessException, UnsupportedEncodingException {
+            throws Exception {
         String commandName = req.getParameter("command");
         Command command = CommandContainer.getCommand(commandName);
         return command.execute(req, resp);

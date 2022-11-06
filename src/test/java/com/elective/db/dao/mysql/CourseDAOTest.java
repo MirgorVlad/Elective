@@ -1,9 +1,11 @@
 package com.elective.db.dao.mysql;
 
+import com.elective.Generator;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -18,11 +20,18 @@ import static org.mockito.Mockito.when;
 
 public class CourseDAOTest {
 
-    private final Random rand = new Random();
+    private static Random rand;
+    private static Generator generator;
+
+    @BeforeAll
+    static void setup() {
+        rand = new Random();
+        generator = new Generator();
+    }
 
     @Test
     void findCourseByIdTest() throws DBException, SQLException {
-        Course expectedCourse = createRandomCourse(null);
+        Course expectedCourse = generator.createRandomCourse(null);
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
                 .thenReturn(true)
@@ -57,10 +66,10 @@ public class CourseDAOTest {
 
     @Test
     void findCourseByTeacherTest() throws DBException, SQLException {
-        User teacher = createRandomUser(false, true);
-        Course course1 = createRandomCourse(teacher);
-        Course course2 = createRandomCourse(teacher);
-        Course course3 = createRandomCourse(teacher);
+        User teacher = generator.createRandomUser(UserDAO.TEACHER_ROLE);
+        Course course1 = generator.createRandomCourse(teacher);
+        Course course2 = generator.createRandomCourse(teacher);
+        Course course3 = generator.createRandomCourse(teacher);
 
         List<Course> expectedCourseList = List.of(course1, course2, course3);
 
@@ -124,7 +133,7 @@ public class CourseDAOTest {
     @Test
     void findAllCoursesTest() throws DBException, SQLException {
         int length = 3;
-        List<Course> expectedCourseList = generateCourseList(length);
+        List<Course> expectedCourseList = generator.generateCourseList(length);
 
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
@@ -189,7 +198,7 @@ public class CourseDAOTest {
 
     @Test
     void insertCourseThrowExceptionTest() throws SQLException, DBException {
-        Course expectedCourse = createRandomCourse(null);
+        Course expectedCourse = generator.createRandomCourse(null);
         String lang = "ua";
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
@@ -209,7 +218,7 @@ public class CourseDAOTest {
 
     @Test
     void updateCourseThrowExceptionTest() throws SQLException, DBException {
-        Course expectedCourse = createRandomCourse(null);
+        Course expectedCourse = generator.createRandomCourse(null);
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
 
@@ -311,53 +320,4 @@ public class CourseDAOTest {
 
         assertEquals(expectedCount, actualCount);
     }
-
-    private Course createRandomCourse(User teacher) {
-        Course course = new Course();
-        course.setId(rand.nextInt(100));
-        course.setName(generateString(10));
-        course.setDescription(generateString(20));
-        course.setTopic("topic" + rand.nextInt(10));
-        course.setStartDate(new Date(rand.nextLong(12345)));
-        course.setFinishDate(new Date(course.getStartDate().getTime() + rand.nextLong(12345)));
-
-        if(teacher != null)
-            course.setTeacher(teacher);
-        else
-            course.setTeacher(createRandomUser(false, true));
-
-        return course;
-    }
-
-    private User createRandomUser(boolean student, boolean teacher) {
-        User user = new User();
-        user.setId(rand.nextInt(100));
-        user.setFirstName(generateString(10));
-        user.setLastName(generateString(10));
-        user.setPassword(generateString(10));
-        user.setEmail(user.getFirstName() + "@mail.com");
-        user.setRole(student ? "student" : teacher ? "teacher" : rand.nextBoolean() ? "student" : "teacher");
-
-        return user;
-    }
-
-    private List<Course> generateCourseList(int length){
-        List<Course> courseList = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            courseList.add(createRandomCourse(null));
-        }
-        return courseList;
-    }
-
-    private String generateString(int targetStringLength) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
-
 }

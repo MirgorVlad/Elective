@@ -16,7 +16,7 @@ public class ViewCourseCommand implements Command{
     static Logger log = LogManager.getLogger(ViewCourseCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         int userId = ((User)req.getSession().getAttribute("user")).getId();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         Course course = courseDAO.findById(courseId);

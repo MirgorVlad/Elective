@@ -17,8 +17,8 @@ public class UnfollowCourseCommand implements Command{
     static Logger log = LogManager.getLogger(UnfollowCourseCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
-        JournalDAO journalDAO = daoFactory.getJournalDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+        JournalDAO journalDAO = getDaoFactory().getJournalDAO();
         int studentId = Integer.parseInt(req.getParameter("userId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         Course course = courseDAO.findById(courseId);

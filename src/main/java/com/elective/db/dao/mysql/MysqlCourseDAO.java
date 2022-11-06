@@ -334,19 +334,6 @@ public class MysqlCourseDAO implements CourseDAO {
         return course;
     }
 
-    public User getTeacher(User user) throws DBException, SQLException {
-        System.out.println(user);
-        try (Connection con = getConnection()) {
-            if (user != null) {
-                if (getUserDAO().isTeacher(con, user.getId()))
-                    return user;
-                else
-                    throw new DBException(user.getEmail() + " is not teacher");
-            } else {
-                throw new DBException("Cannot find user");
-            }
-        }
-    }
 
     @Override
     public void deleteById(int courseId) throws SQLException, DBException {

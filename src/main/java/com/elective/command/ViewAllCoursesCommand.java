@@ -18,8 +18,8 @@ public class ViewAllCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(ViewAllCoursesCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
-        UserDAO userDAO = daoFactory.getUserDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         User user = (User)req.getSession().getAttribute("user");
         List<Course> courseList = courseDAO.getAll();
         List<User> teacherList = userDAO.getAllTeachers();

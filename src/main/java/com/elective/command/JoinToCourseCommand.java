@@ -16,7 +16,7 @@ public class JoinToCourseCommand implements Command{
     static Logger log = LogManager.getLogger(JoinToCourseCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         int studentId = Integer.parseInt(req.getParameter("userId"));
         int courseId = Integer.parseInt(req.getParameter("courseId"));
         Course course = courseDAO.findById(courseId);

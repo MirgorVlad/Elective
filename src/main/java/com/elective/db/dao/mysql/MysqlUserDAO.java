@@ -115,7 +115,7 @@ public class MysqlUserDAO implements UserDAO {
         String role = null;
         try(Connection con = getConnection()) {
             if(isStudent(con, id)) role = STUDENT_ROLE;
-            else if(isTeacher(con, id)) role = TEACHER_ROLE;
+            else if(isTeacher(id)) role = TEACHER_ROLE;
             else if(isManager(con, id)) role = MANAGER_ROLE;
         }
         if(role == null)
@@ -166,9 +166,10 @@ public class MysqlUserDAO implements UserDAO {
         }
     }
 
-    public boolean isTeacher(Connection con, int id) throws SQLException {
+    public boolean isTeacher(int id) throws SQLException {
         ResultSet rs = null;
-        try(PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
+        try(Connection con = getConnection();
+                PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_TEACHER)) {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             //log.log(Level.INFO, "Checking if user "+user.getEmail()+" is a teacher ");

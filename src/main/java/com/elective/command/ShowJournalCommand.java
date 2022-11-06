@@ -20,8 +20,8 @@ public class ShowJournalCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         String page = "";
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
-        UserDAO userDAO = daoFactory.getUserDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         Course course = courseDAO.findById(Integer.parseInt(req.getParameter("courseId")));
         req.setAttribute("course", course);
         User user = (User)req.getSession().getAttribute("user");

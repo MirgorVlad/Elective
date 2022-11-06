@@ -1,11 +1,13 @@
 package com.elective.db.dao.mysql;
 
+import com.elective.Generator;
 import com.elective.db.dao.DBException;
 import com.elective.db.entity.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.sql.*;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Random;
 
@@ -14,10 +16,18 @@ import static org.mockito.Mockito.*;
 
 public class UserDAOTest {
 
-    private Random rand = new Random();
+    private static Random rand;
+    private static Generator generator;
+
+    @BeforeAll
+    static void setup() {
+       rand = new Random();
+       generator = new Generator();
+    }
+
     @Test
     void findUserByEmailTest() throws DBException, SQLException {
-        User expectedUser = createRandomUser(false, false);
+        User expectedUser = generator.createRandomUser(null);
 
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
@@ -49,7 +59,7 @@ public class UserDAOTest {
 
     @Test
     void findUserByIdTest() throws DBException, SQLException {
-        User expectedUser = createRandomUser(false, false);
+        User expectedUser = generator.createRandomUser(null);
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
                 .thenReturn(true)
@@ -81,7 +91,7 @@ public class UserDAOTest {
     @Test
     void findAllUsersTest() throws DBException, SQLException {
         int length = 3;
-        List<User> expectedUserList = generateUserList(length);
+        List<User> expectedUserList = generator.generateUserList(length);
 
         ResultSet rs = mock(ResultSet.class);
         when(rs.next())
@@ -135,7 +145,7 @@ public class UserDAOTest {
 
     @Test
     void insertUserThrowExceptionTest() throws SQLException, DBException {
-        User expectedUser = createRandomUser(false, false);
+        User expectedUser = generator.createRandomUser(null);
 
         PreparedStatement pstmt = mock(PreparedStatement.class);
         when(pstmt.executeUpdate()).thenReturn(0);
@@ -187,9 +197,9 @@ public class UserDAOTest {
 
         MysqlUserDAO userDAO = mock(MysqlUserDAO.class);
         when(userDAO.getConnection()).thenReturn(con);
-        when(userDAO.isTeacher(con, 1)).thenCallRealMethod();
+        when(userDAO.isTeacher(1)).thenCallRealMethod();
 
-        assertTrue(userDAO.isTeacher(con, 1));
+        assertTrue(userDAO.isTeacher(1));
     }
 
     @Test
@@ -210,36 +220,5 @@ public class UserDAOTest {
         when(userDAO.isManager(con, 1)).thenCallRealMethod();
 
         assertTrue(userDAO.isManager(con, 1));
-    }
-
-    private User createRandomUser(boolean student, boolean teacher) {
-        User user = new User();
-        user.setId(rand.nextInt(100));
-        user.setFirstName(generateString(10));
-        user.setLastName(generateString(10));
-        user.setPassword(generateString(10));
-        user.setEmail(user.getFirstName() + "@mail.com");
-        user.setRole(student ? "student" : teacher ? "teacher" : rand.nextBoolean() ? "student" : "teacher");
-
-        return user;
-    }
-
-    private String generateString(int targetStringLength) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
-
-    private List<User> generateUserList(int length){
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            userList.add(createRandomUser(false, false));
-        }
-        return userList;
     }
 }

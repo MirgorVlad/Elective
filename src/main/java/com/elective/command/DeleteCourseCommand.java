@@ -14,7 +14,7 @@ public class DeleteCourseCommand implements Command{
     static Logger log = LogManager.getLogger(DeleteCourseCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
 
         log.log(Level.INFO, "DELETE course id: "+ courseId);

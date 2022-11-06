@@ -17,8 +17,8 @@ public class LoginCommand implements Command{
     static Logger log = LogManager.getLogger(LoginCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        UserDAO userDAO = daoFactory.getUserDAO();
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
         String email = req.getParameter("email");
         String password = req.getParameter("password");

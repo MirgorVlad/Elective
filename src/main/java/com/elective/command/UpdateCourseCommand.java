@@ -18,9 +18,9 @@ import java.time.LocalDate;
 public class UpdateCourseCommand implements Command{
     static Logger log = LogManager.getLogger(UpdateCourseCommand.class);
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
-        UserDAO userDAO = daoFactory.getUserDAO();
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         int id = Integer.parseInt(req.getParameter("courseId"));
         String name = req.getParameter("name");
         String topic = req.getParameter("topics");
@@ -29,9 +29,10 @@ public class UpdateCourseCommand implements Command{
         Date startDate = Date.valueOf(req.getParameter("startDate"));
         Date finishDate = Date.valueOf(req.getParameter("finishDate"));
 
+        User teacher = userDAO.findByEmail(tEmail);
+        if(!userDAO.isTeacher(teacher.getId()))
+            throw new Exception("User is not teacher");
 
-
-        User teacher = courseDAO.getTeacher(userDAO.findByEmail(tEmail));
         Course course = MysqlCourseDAO.createCourse(id, name, topic, desc, startDate, finishDate, teacher);
 
         if(course.countDays() < CourseDAO.MIN_DURATION) {

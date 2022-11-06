@@ -17,7 +17,7 @@ public class ViewStudentAvailableCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(ViewStudentAvailableCoursesCommand.class);
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         User student = (User)req.getSession().getAttribute("user");
         List<Course> availableCourses =  courseDAO.availableCourses(student.getId());
 

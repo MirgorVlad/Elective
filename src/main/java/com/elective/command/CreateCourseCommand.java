@@ -24,9 +24,9 @@ public class CreateCourseCommand implements Command{
     static Logger log = LogManager.getLogger(CreateCourseCommand.class);
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, UnsupportedEncodingException {
-        CourseDAO courseDAO = daoFactory.getCourseDAO();
-        UserDAO userDAO = daoFactory.getUserDAO();
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+        UserDAO userDAO = getDaoFactory().getUserDAO();
         String name = req.getParameter("name");
         System.out.println(name);
         System.out.println(req.getCharacterEncoding());
@@ -42,7 +42,10 @@ public class CreateCourseCommand implements Command{
             throw new IllegalArgumentException("Course must start today or in the future");
         }
 
-        User teacher = courseDAO.getTeacher(userDAO.findByEmail(tEmail));
+        User teacher = userDAO.findByEmail(tEmail);
+        if(!userDAO.isTeacher(teacher.getId()))
+            throw new Exception("User is not teacher");
+
         Course course = MysqlCourseDAO.createCourse(0, name, topic, desc, startDate, finishDate, teacher);
 
         if(course.countDays() < CourseDAO.MIN_DURATION) {
