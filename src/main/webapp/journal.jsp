@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "ex" uri = "/WEB-INF/courseLib.tld"%>
 <%@ page isELIgnored="false" %>

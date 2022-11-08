@@ -24,7 +24,7 @@
 
             <div class = "form-group was-validated">
                 <label class="form-label" for="email"><fmt:message key="profile.email" /></label>
-                <input name="email" type="email" class="form-control" required>
+                <input name="email" type="email" class="form-control" id="email" required>
                 <div class="invalid-feedback">
                     <fmt:message key="login.emailcapch" />
                 </div>
@@ -32,7 +32,7 @@
 
             <div class = "form-group was-validated">
                 <label class="form-label" for="fName"><fmt:message key="profile.firstname" /></label>
-                <input name="fName" class="form-control" required>
+                <input name="fName" class="form-control" id="fName" required>
                 <div class="invalid-feedback">
                     <fmt:message key="login.fnamecapch" />
                 </div>
@@ -41,15 +41,15 @@
     
             <div class = "form-group was-validated">
                 <label class="form-label" for="lName"><fmt:message key="profile.lastname" /></label>
-                <input name="lName" class="form-control" required>
+                <input name="lName" class="form-control" id="lName" required>
                 <div class="invalid-feedback">
                     <fmt:message key="login.lnamecapch" />
                 </div>
             </div>
 
             <div class = "form-group was-validated">
-                <label class="password" for="lName"><fmt:message key="login.password" /></label>
-                <input name="password" type="password" class="form-control" required>
+                <label class="password" for="password"><fmt:message key="login.password" /></label>
+                <input name="password" type="password" class="form-control" id="password" required>
                 <div class="invalid-feedback">
                     <fmt:message key="login.passcapch" />
                 </div>

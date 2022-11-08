@@ -18,15 +18,11 @@ public class LoginCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException, IllegalAccessException {
         UserDAO userDAO = getDaoFactory().getUserDAO();
-        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
-        List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        //DB get User
-        //Logic if admin -> admin.jsp if clien -> client.jsp
-        //User to session
         log.log(Level.DEBUG, "email: " + email);
+
         User user = userDAO.findByEmail(email);
         log.log(Level.INFO, "LOGIN user: " + user);
 
@@ -35,8 +31,6 @@ public class LoginCommand implements Command{
                 log.log(Level.WARN, "User"+user.getEmail()+" is blocked by manager");
                 throw new IllegalAccessException("You are blocked by manager");
             }
-
-            req.getSession().setAttribute("topicList",topicList);
 
             if(user.getPassword().equals(password)) {
                 req.getSession().setAttribute("user", user);

@@ -11,8 +11,7 @@ import java.util.List;
 public interface CourseDAO {
 
     int MIN_DURATION = 14;
-    List<String> topicList = Arrays.asList("programming", "languages", "science", "soft skills");
-
+    //List<String> topicList = Arrays.asList("programming", "languages", "science", "soft skills");
 
     void create(Course course, String lang) throws SQLException, DBException;
 

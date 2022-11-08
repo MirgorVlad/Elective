@@ -38,7 +38,7 @@ public class ShowJournal extends TagSupport {
         pageCount = (int) Math.ceil(1.0*course.countDays() / limit);
         String page = pageContext.getRequest().getParameter("page");
         try {
-            String out = "<h1>"+bundle.getString("journal.week")+page+"</h1>" +
+            String out = "<h1>"+bundle.getString("journal.week")+" " +page+"</h1>" +
                     "<table border=\"1\">" +
                             printTable() +
                          "</table>";

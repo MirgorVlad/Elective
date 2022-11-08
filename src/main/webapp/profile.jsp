@@ -87,12 +87,5 @@
             </div>
         </div>
     </div>
-
-   
-    <%-- <img src="files/profile_img.jpg" alt="profile_image">
-    <p>First name: ${requestScope.currentUser.firstName}</p>
-    <p>Last name: ${requestScope.currentUser.lastName}</p>
-    <p>Email: ${requestScope.currentUser.email}</p>
-    <p>Role: ${requestScope.currentUser.role}</p>--%>
 </body>
 </html>

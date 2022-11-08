@@ -1,4 +1,4 @@
-package com.elective;
+package com.elective.filter;
 
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;

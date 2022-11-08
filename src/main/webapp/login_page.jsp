@@ -25,7 +25,7 @@
 
             <div class = "form-group was-validated">
                 <label class="form-label" for="email"><fmt:message key="profile.email" /></label>
-                <input class="form-control" name="email" type="email" required>
+                <input class="form-control" name="email" type="email" id="email" required>
                 <div class="invalid-feedback">
                     <fmt:message key="login.emailcapch" />
                 </div>
@@ -33,7 +33,7 @@
 
             <div class = "form-group was-validated">
                 <label class="form-label" for="password"><fmt:message key="login.password" /></label>
-                 <input class="form-control" name="password" type="password" required>
+                 <input class="form-control" name="password" type="password"  id="password" required>
                  <div class="invalid-feedback">
                      <fmt:message key="login.passcapch" />
                 </div>

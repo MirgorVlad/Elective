@@ -17,7 +17,6 @@
         <ex:showjournal course="${course}" studentsList="${studentsList}"/>
         
 
-        <%--<a href="edit_journal.jsp?courseId=${course.id}">Edit</a>--%>
         <c:if test="${course.finished eq true}">
             <h2 style="color:red;">Course is finished</h2>
         </c:if>
@@ -25,6 +24,8 @@
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Set grade</button>
         </c:if>
     </div>
+
+    <!--Edit journal-->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
           <div class="modal-content">

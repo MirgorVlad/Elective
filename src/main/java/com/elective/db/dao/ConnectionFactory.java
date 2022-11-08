@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
-    private static  DataSource dataSource;
+    private static final DataSource dataSource;
 
     private ConnectionFactory(){
     }

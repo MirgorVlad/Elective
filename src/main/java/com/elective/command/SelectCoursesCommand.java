@@ -28,7 +28,6 @@ public class SelectCoursesCommand implements Command{
         log.log(Level.INFO, "Selected courses by topic - " + topic + "; teacher - " + teacher);
         log.log(Level.DEBUG, courseList);
 
-        //req.getSession().removeAttribute("coursesList");
         req.getSession().setAttribute("coursesList", courseList);
         return ReferencePages.VIEW_COURSES_LIST;
     }

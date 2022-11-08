@@ -32,14 +32,13 @@ public class ShowCourses extends TagSupport {
         user = (User)session.getAttribute("user");
         getLocale(session);
         initOut();
-        //locale = setLocale((String) session.getAttribute("lang"), pageContext.getRequest(), pageContext.getResponse());
 
         try {
             pageContext.getOut().write(
                    getOutTable()
             );
         } catch (IOException | ServletException e) {
-            throw new RuntimeException("Problem is here", e);
+            throw new RuntimeException(e);
         }
         return SKIP_BODY;
     }

@@ -26,9 +26,6 @@ public class Controller extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        req.setCharacterEncoding("UTF-8");
         String address = ReferencePages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);
@@ -42,6 +39,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         String address = ReferencePages.ERROR_PAGE;
         try {
             address = getAndExecuteCommand(req, resp);

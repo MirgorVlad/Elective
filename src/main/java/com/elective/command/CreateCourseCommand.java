@@ -28,8 +28,7 @@ public class CreateCourseCommand implements Command{
         CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         UserDAO userDAO = getDaoFactory().getUserDAO();
         String name = req.getParameter("name");
-        System.out.println(name);
-        System.out.println(req.getCharacterEncoding());
+
         String topic = req.getParameter("topics");
         String desc = req.getParameter("description");
         String tEmail = req.getParameter("teacherEmail");

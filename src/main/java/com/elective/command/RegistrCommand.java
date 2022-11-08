@@ -18,8 +18,6 @@ public class RegistrCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException, DBException {
         UserDAO userDAO = getDaoFactory().getUserDAO();
-        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
-        List<String> topicList = courseDAO.getTopicList((String) req.getSession().getAttribute("lang"));
         String page = null;
 
         String email = req.getParameter("email");
@@ -48,8 +46,6 @@ public class RegistrCommand implements Command{
             page = ReferencePages.TEACHER_PAGE;
         if(user.getRole().equals(UserDAO.STUDENT_ROLE))
             page =  ReferencePages.STUDENT_PAGE;
-
-        req.getSession().setAttribute("topicList", topicList);
 
         return page;
     }

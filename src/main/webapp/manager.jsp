@@ -34,9 +34,7 @@
       </div>
     </div>
 
-<%-- ------------------------------------------ --%>
-
-    <%--<a href="create_course.jsp" class="nav-link" data-bs-toggle="modal">Create course</a>--%>
+    <!--Creating course window-->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -89,8 +87,6 @@
           </div>
         </div>
     </div>
-
-
 
 </body>
 </html>

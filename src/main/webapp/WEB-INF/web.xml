@@ -10,7 +10,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
   <display-name>Archetype Created Web Application</display-name>
   <filter>
     <filter-name>securityfilter</filter-name>
-    <filter-class>com.elective.SecurityFilter</filter-class>
+    <filter-class>com.elective.filter.SecurityFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>securityfilter</filter-name>
@@ -18,7 +18,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
   </filter-mapping>
   <filter>
     <filter-name>localefilter</filter-name>
-    <filter-class>com.elective.SessionLocaleFilter</filter-class>
+    <filter-class>com.elective.filter.SessionLocaleFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>localefilter</filter-name>
@@ -26,7 +26,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
   </filter-mapping>
   <filter>
     <filter-name>EncodingFilter</filter-name>
-    <filter-class>com.elective.EncodingFilter</filter-class>
+    <filter-class>com.elective.filter.EncodingFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -36,12 +36,16 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 
   <filter>
     <filter-name>updatefilter</filter-name>
-    <filter-class>com.elective.UpdateResourcesFilter</filter-class>
+    <filter-class>com.elective.filter.UpdateResourcesFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>updatefilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+  <listener>
+    <listener-class>com.elective.listener.CountUserListener</listener-class>
+  </listener>
 
     <description>MySQL Elective</description>
     <resource-ref>
