@@ -32,6 +32,7 @@ public class CommandContainer {
         commands.put("sortCourses", new SortCoursesCommand());
         commands.put("selectCourses", new SelectCoursesCommand());
         commands.put("viewAllUsers", new ViewAllUsersCommand());
+        commands.put("finalTest", new FinalTestCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

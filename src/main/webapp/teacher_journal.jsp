@@ -23,6 +23,9 @@
         <c:if test="${course.finished ne true}">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Set grade</button>
         </c:if>
+        <c:if test="${course.finished ne true}">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#FinalModal">Final test</button>
+        </c:if>
     </div>
 
     <!--Edit journal-->
@@ -58,6 +61,37 @@
             </form>
             </div>
           </div>
+        </div>
+    </div>
+
+    <!--Final project logic-->
+    <div class="modal" id="FinalModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Final Test</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="controller?" method="post">
+                        <input type="hidden" name="command" value="finalTest">
+                        <input type="hidden" name="courseId" value="${param.courseId}">
+                        <div class="mb-3">
+                            <label class="form-label" >Date: </label>
+                            <input name="testDate" class="form-control" type="date">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" >Start time: </label>
+                            <input name="sTime" class="form-control" type="time">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Finish time: </label>
+                            <input name="fTime" class="form-control" type="time">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Start</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </body>
