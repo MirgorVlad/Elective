@@ -73,20 +73,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="controller?" method="post">
+                    <form action="controller?" method="post" onsubmit="return sayHello()">
                         <input type="hidden" name="command" value="finalTest">
                         <input type="hidden" name="courseId" value="${param.courseId}">
                         <div class="mb-3">
                             <label class="form-label" >Date: </label>
-                            <input name="testDate" class="form-control" type="date">
+                            <input name="testDate" class="form-control" type="date" id="dateInput">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" >Start time: </label>
-                            <input name="sTime" class="form-control" type="time">
+                            <input name="sTime" class="form-control" type="time"  id="startInput">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Finish time: </label>
-                            <input name="fTime" class="form-control" type="time">
+                            <input name="fTime" class="form-control" type="time"  id="finishInput">
                         </div>
                         <button type="submit" class="btn btn-primary">Start</button>
                     </form>
@@ -94,5 +94,7 @@
             </div>
         </div>
     </div>
+
+    <script src="bootstrap/js/journal.js"></script>
 </body>
 </html>

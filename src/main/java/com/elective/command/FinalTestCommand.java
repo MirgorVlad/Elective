@@ -1,68 +1,63 @@
 package com.elective.command;
 
+import com.elective.Mailer;
 import com.elective.ReferencePages;
-import com.elective.db.dao.DAOFactory;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.annotation.WebServlet;
+import com.elective.db.dao.CourseDAO;
+import com.elective.db.dao.DBException;
+import com.elective.db.dao.UserDAO;
+import com.elective.db.entity.Course;
+import com.elective.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.PrintWriter;
-import java.sql.Time;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
 public class FinalTestCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        CourseDAO courseDAO = getDaoFactory().getCourseDAO();
+
         String date = req.getParameter("testDate");
         String start = req.getParameter("sTime");
         String finish = req.getParameter("fTime");
+        int courseId = Integer.parseInt(req.getParameter("courseId"));
 
-        Date startDate = new Date();
-        startDate.setTime(getMillisFromEpoch(date, start));
+        Date sendInTime = new Date();
+        sendInTime.setTime(getMillisFromEpoch(date, start) - 3600000);
 
-        final String username = "mirgorodskiy295@gmail.com";
-        final String password = "gcmhpcqjpwuxtscd";
+        List<Integer> userList = courseDAO.findStudentsInCourse(courseId);
+        Course course = courseDAO.findById(courseId);
 
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        informStudents(sendInTime, userList, course, date, start);
 
-        Session session = Session.getInstance(props,
-                new Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("mirgorodskiy295@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("mirgorodskiy295@gmail.com"));
-            message.setSubject("A testing mail header !!!");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n No spam to my email, please!");
-
-            Transport.send(message);
-
-            System.out.println("Done");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
 
         return ReferencePages.TEACHER_PAGE;
     }
+
+    private void informStudents(Date sendInTime, List<Integer> userList, Course course, String date, String time)
+            throws SQLException, DBException {
+
+        UserDAO userDAO = getDaoFactory().getUserDAO();
+        for(int userId : userList){
+            User user = userDAO.findById(userId);
+
+            //send now
+            Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nFinal Test will start at " + time + " on " + date);
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nTest will start in a hour!!");
+                }
+            };
+            //send an hour before
+            timer.schedule(timerTask, sendInTime);
+        }
+    }
+
 
     private long getMillisFromEpoch(String date, String time) throws ParseException {
         Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -71,5 +66,4 @@ public class FinalTestCommand implements Command{
         long startTime = startTimeHour + startTimeMinute;
         return startDate.getTime() + startTime;
     }
-
 }
