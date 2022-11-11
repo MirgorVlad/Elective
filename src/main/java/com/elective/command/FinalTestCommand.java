@@ -45,7 +45,7 @@ public class FinalTestCommand implements Command{
             User user = userDAO.findById(userId);
 
             //send now
-            Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nFinal Test will start at " + time + " on " + date);
+            //Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nFinal Test will start at " + time + " on " + date);
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
@@ -54,7 +54,7 @@ public class FinalTestCommand implements Command{
                 }
             };
             //send an hour before
-            timer.schedule(timerTask, sendInTime);
+            //timer.schedule(timerTask, sendInTime);
         }
     }
 
