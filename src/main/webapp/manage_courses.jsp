@@ -19,8 +19,20 @@
     <%@include file="menu.jsp" %>
 
     <div class="center">
+        <div>
         <h3><fmt:message key="manager.manage" /></h3>
+        <form action="controller">
+            <input type="hidden" name="command" value="manageCourses">
+            <label for="name">Find by name: </label>
+            <input type="text" id="name" name="name" >
+            <input type="submit" value="Find">
+        </form>
+        </div>
     <co:showcourses coursesList="${coursesList}"/>
+        <c:forEach begin="1" end="${pageCount}" var="pageNum">
+            <a href="controller?command=manageCourses&page=${pageNum}">${pageNum}</a>
+        </c:forEach>
     </div>
+
 </body>
 </html>

@@ -26,7 +26,7 @@ public class FinalTestCommand implements Command{
         int courseId = Integer.parseInt(req.getParameter("courseId"));
 
         Date sendInTime = new Date();
-        sendInTime.setTime(getMillisFromEpoch(date, start) - 3600000);
+        sendInTime.setTime(getMillisFromEpoch(date, start));
 
         List<Integer> userList = courseDAO.findStudentsInCourse(courseId);
         Course course = courseDAO.findById(courseId);
@@ -45,16 +45,18 @@ public class FinalTestCommand implements Command{
             User user = userDAO.findById(userId);
 
             //send now
-            //Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nFinal Test will start at " + time + " on " + date);
+
+    //        Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nFinal Test will start at " + time + " on " + date);
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nTest will start in a hour!!");
+                    Mailer.send(user.getEmail(), "Final test", "Course: "+course.getName()+"\nTest is starting!!!!!!");
                 }
             };
             //send an hour before
-            //timer.schedule(timerTask, sendInTime);
+
+    //        timer.schedule(timerTask, sendInTime);
         }
     }
 

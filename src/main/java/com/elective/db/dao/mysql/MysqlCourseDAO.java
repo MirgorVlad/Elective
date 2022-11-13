@@ -318,6 +318,93 @@ public class MysqlCourseDAO implements CourseDAO {
         return courses;
     }
 
+    @Override
+    public List<Course> getCourses(int start, int total) throws DBException {
+        List<Course> courses = new ArrayList<>();
+        ResultSet rs;
+        try(Connection con = getConnection();
+            PreparedStatement pstm = con.prepareStatement(SQLQueris.GET_COURSES_PORTION)) {
+            pstm.setInt(1, start-1);
+            pstm.setInt(2, total);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                courses.add(getCourse(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return courses;
+    }
+
+    @Override
+    public double countCourses() throws SQLException {
+        int count = 0;
+        try(Connection con = getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(SQLQueris.COUNT_COURSES)) {
+            if (rs.next()){
+                count = rs.getInt("courses");
+            }
+            log.log(Level.DEBUG, "Count all courses");
+        }
+        return count;
+    }
+
+    @Override
+    public double countCoursesForTeacher(int teacher) throws SQLException {
+        int count = 0;
+        ResultSet rs = null;
+        try(Connection con = getConnection();
+            PreparedStatement statement = con.prepareStatement(SQLQueris.COUNT_COURSES_FOR_TEACHER)) {
+            statement.setInt(1, teacher);
+            rs = statement.executeQuery();
+            if (rs.next()){
+                count = rs.getInt("courses");
+            }
+            log.log(Level.DEBUG, "Count courses for teacher " + teacher);
+        }
+        return count;
+    }
+
+    @Override
+    public Course findCoursesByName(String name) throws SQLException, DBException {
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement pstmt = con.prepareStatement(SQLQueris.FIND_COURSE_BY_NAME)) {
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+
+
+            while (rs.next()) {
+                log.log(Level.DEBUG, "Find course by name: " + name);
+                return getCourse(rs);
+            }
+        } finally {
+            if (rs != null)
+                rs.close();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Course> getCoursesForTeacher(int teacher, int start, int total) throws DBException {
+        List<Course> courses = new ArrayList<>();
+        ResultSet rs;
+        try(Connection con = getConnection();
+            PreparedStatement pstm = con.prepareStatement(SQLQueris.GET_COURSES_PORTION_FOR_TEACHER)) {
+            pstm.setInt(1, teacher);
+            pstm.setInt(2, start-1);
+            pstm.setInt(3, total);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                courses.add(getCourse(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return courses;
+    }
+
 
     public Course getCourse(ResultSet rs) throws SQLException, DBException {
         Course course = new Course();

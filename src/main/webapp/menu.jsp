@@ -36,7 +36,7 @@
         <ul class="navbar-nav mr-auto mb-2">
           <li class="nav-item">
             <c:if test="${user.role eq 'manager'}">
-              <a href="controller?command=manageCourses" class="nav-link"><fmt:message key="menu.manage" /></a>
+              <a href="controller?command=manageCourses&page=1" class="nav-link"><fmt:message key="menu.manage" /></a>
             </c:if>
             <c:if test="${(user.role eq 'teacher') or (user.role eq 'student')}">
               <a href="controller?command=viewCoursesList" class="nav-link"><fmt:message key="menu.allcourses" /></a>
@@ -44,10 +44,10 @@
           </li>
           <li class="nav-item">
             <c:if test="${user.role eq 'manager'}">
-              <a href="controller?command=viewAllUsers" class="nav-link"><fmt:message key="menu.users" /></a>
+              <a href="controller?command=viewAllUsers&page=1" class="nav-link"><fmt:message key="menu.users" /></a>
             </c:if>
             <c:if test="${user.role eq 'teacher'}">
-              <a href="controller?command=viewTeacherAvailableCourses" class="nav-link"><fmt:message key="menu.mycourses" /></a>
+              <a href="controller?command=viewTeacherAvailableCourses&page=1" class="nav-link"><fmt:message key="menu.mycourses" /></a>
             </c:if>
             <c:if test="${user.role eq 'student'}">
               <a href="controller?command=viewStudentAvailableCourses" class="nav-link"><fmt:message key="menu.mycourses" /></a>

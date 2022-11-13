@@ -20,7 +20,16 @@
 
     <div class="center">
         <h3><fmt:message key="courses.my" /></h3>
+        <form action="controller">
+            <input type="hidden" name="command" value="viewTeacherAvailableCourses">
+            <label for="name">Find by name: </label>
+            <input type="text" id="name" name="name" >
+            <input type="submit" value="Find">
+        </form>
         <co:showcourses coursesList="${coursesList}"/>
+        <c:forEach begin="1" end="${pageCount}" var="pageNum">
+            <a href="controller?command=viewTeacherAvailableCourses&page=${pageNum}">${pageNum}</a>
+        </c:forEach>
     </div>
 </body>
 </html>

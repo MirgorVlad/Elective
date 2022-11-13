@@ -88,6 +88,7 @@ public class ShowCourses extends TagSupport {
                     "      <th><a href=\"controller?command=deleteCourse&courseId="+course.getId()+"\">"+bundle.getString("course.delete")+"</a></th>\n" +
                     " </tr>";
         }
+        table +="</table>";
         return table;
     }
 
@@ -193,7 +194,7 @@ public class ShowCourses extends TagSupport {
                     "      <th><a href=\"controller?command=showJournal&courseId="+ course.getId() + "&page=1\">"+bundle.getString("course.journal")+"</a></th>\n" +
                     " </tr>";
         }
-        return table;
+        return table += "</table>";
     }
 
     private void initOut(){

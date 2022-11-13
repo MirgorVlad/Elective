@@ -12,6 +12,8 @@ public interface UserDAO {
     String STUDENT_ROLE = "student";
     String MANAGER_ROLE = "manager";
 
+    int countUsers() throws SQLException;
+
     void insert(User user) throws SQLException, DBException;
 
     List<User> getAll() throws SQLException, DBException;
@@ -29,4 +31,6 @@ public interface UserDAO {
     boolean isStudent(Connection con, int id) throws SQLException;
     boolean isTeacher(int id) throws SQLException;
     boolean isManager(Connection con, int id) throws SQLException;
+
+    List<User> getUsers(int pageid, int total) throws DBException;
 }

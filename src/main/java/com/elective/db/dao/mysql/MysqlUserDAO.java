@@ -21,6 +21,20 @@ public class MysqlUserDAO implements UserDAO {
     }
 
     @Override
+    public int countUsers() throws SQLException {
+        int count = 0;
+        try(Connection con = getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(SQLQueris.COUNT_USERS)) {
+            if (rs.next()){
+                count = rs.getInt("users");
+            }
+            log.log(Level.DEBUG, "Count all users");
+        }
+        return count;
+    }
+
+    @Override
     public void insert(User user) throws SQLException, DBException {
 
         PreparedStatement pstmt = null;
@@ -164,6 +178,24 @@ public class MysqlUserDAO implements UserDAO {
                 rs.close();
             }
         }
+    }
+
+    @Override
+    public List<User> getUsers(int start, int total) throws DBException {
+        List<User> users = new ArrayList<>();
+        ResultSet rs;
+        try(Connection con = getConnection();
+        PreparedStatement pstm = con.prepareStatement(SQLQueris.GET_USERS_PORTION)) {
+            pstm.setInt(1, start-1);
+            pstm.setInt(2, total);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                users.add(createUser(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return users;
     }
 
     public boolean isTeacher(int id) throws SQLException {

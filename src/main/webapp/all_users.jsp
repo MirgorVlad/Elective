@@ -18,8 +18,20 @@
     <%@include file="menu.jsp" %>
 
     <div class="center">
-        <h3><fmt:message key="manager.allusers" /></h3>
+        <div class="line">
+            <h3><fmt:message key="manager.allusers" /></h3>
+            <form action="controller">
+                <input type="hidden" name="command" value="viewAllUsers">
+                <label for="userLogin">Find by login: </label>
+                <input type="email" id="userLogin" name="userLogin" >
+                <input type="submit" value="Find">
+            </form>
+        </div>
         <u:showusers userList="${userList}"/>
+        <c:forEach begin="1" end="${pageCount}" var="pageNum">
+            <a href="controller?command=viewAllUsers&page=${pageNum}">${pageNum}</a>
+        </c:forEach>
+
     </div>
 </body>
 </html>

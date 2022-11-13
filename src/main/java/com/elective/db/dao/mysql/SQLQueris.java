@@ -33,6 +33,13 @@ public class SQLQueris {
     public static final String DELETE_JOURNAL_COURSE_FOR_USER = "DELETE FROM journal WHERE student_id = ? AND course_id = ?";
     public static final String GET_TOPICS = "SELECT * FROM topics WHERE language = ?";
     public static final String FIND_COURSE_BY_LANG = "SELECT * FROM courses WHERE language = ?";
+    public static final String COUNT_USERS = "SELECT COUNT(*) AS users FROM users";
+    public static final String COUNT_COURSES = "SELECT COUNT(*) AS courses FROM courses";
+    public static final String GET_USERS_PORTION = "SELECT * FROM users LIMIT ? , ?";
+    public static final String GET_COURSES_PORTION = "SELECT * FROM courses LIMIT ? , ?";
+    public static final String FIND_COURSE_BY_NAME = "SELECT * FROM courses WHERE name = ?";
+    public static final String GET_COURSES_PORTION_FOR_TEACHER = "SELECT * FROM courses WHERE teacher = ? LIMIT ? , ?";
+    public static final String COUNT_COURSES_FOR_TEACHER = "SELECT COUNT(*) AS courses FROM courses WHERE teacher = ?";
 
     private SQLQueris(){
     }
