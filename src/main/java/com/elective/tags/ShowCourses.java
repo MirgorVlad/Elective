@@ -21,9 +21,17 @@ public class ShowCourses extends TagSupport {
     private List<Course> coursesList;
     private User user = null;
     private String out;
+    private String purpose;
+
+    private final String notBegun = "notBegun";
+    private final String continues = "continues";
+    private final String finished = "finished";
 
     public void setCoursesList(List<Course> courseList){
         this.coursesList = courseList;
+    }
+    public void setPurpose(String purpose){
+        this.purpose = purpose;
     }
 
     @Override
@@ -93,6 +101,12 @@ public class ShowCourses extends TagSupport {
     }
 
     private String studentTable() throws IOException, ServletException {
+        if(purpose.equals(notBegun))
+            return studentTableThatNotBegun();
+        if(purpose.equals(continues))
+            return studentTableThatInProgress();
+        if(purpose.equals(finished))
+            return studentTableThatFinished();
         return studentTableThatNotBegun() + "<br/>"+ studentTableThatInProgress() + "<br/>"+ studentTableThatFinished();
     }
 

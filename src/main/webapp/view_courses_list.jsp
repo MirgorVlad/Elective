@@ -45,7 +45,12 @@
                         <select name="topics" id="topics" class="form-control">
                             <option value="all"><fmt:message key="sidenav.all" /></option>
                             <c:forEach items="${topicList}" var="topic">
-                                <option value="${topic}">${topic}</option>
+                                <c:if test="${lang ne 'eng' and lang ne null}">
+                                    <option value="<fmt:message key="${topic}" />">${topic}</option>
+                                </c:if>
+                                <c:if test="${lang eq 'eng' or lang eq null}">
+                                    <option value="${topic}">${topic}</option>
+                                </c:if>
                             </c:forEach>
                         </select>
 

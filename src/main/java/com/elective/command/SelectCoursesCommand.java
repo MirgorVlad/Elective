@@ -22,7 +22,7 @@ public class SelectCoursesCommand implements Command{
         String teacher = req.getParameter("teachers");
         String lang = req.getParameter("languages");
         List<Course> courseList;
-
+        System.out.println(topic);
         courseList = generateList(topic, teacher, lang);
 
         log.log(Level.INFO, "Selected courses by topic - " + topic + "; teacher - " + teacher);
@@ -38,8 +38,9 @@ public class SelectCoursesCommand implements Command{
         List<Course> courseListByLang;
         if(topic.equals("all"))
             courseListByTopic = courseDAO.getAll();
-        else
+        else {
             courseListByTopic = courseDAO.getCoursesByTopic(topic);
+        }
         if(teacher.equals("all"))
             courseListByTeacher = courseListByTopic;
         else

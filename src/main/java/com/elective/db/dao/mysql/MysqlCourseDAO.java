@@ -293,6 +293,7 @@ public class MysqlCourseDAO implements CourseDAO {
             if (rs != null)
                 rs.close();
         }
+        System.out.println(topics);
         return topics;
     }
 
