@@ -1,11 +1,9 @@
 package com.elective.db.dao;
 
 import com.elective.db.entity.Course;
-import com.elective.db.entity.User;
+import com.elective.db.entity.Material;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public interface CourseDAO {
@@ -50,4 +48,8 @@ public interface CourseDAO {
 
     List<Course> getCoursesForTeacher(int teacher, int pageid, int total) throws DBException;
     double countCoursesForTeacher(int teacher) throws SQLException;
+
+    void saveMaterial(int courseId, String title, String text, String path, String type) throws SQLException, DBException;
+
+    List<Material> getAllMaterials(int courseId, String lection) throws SQLException, DBException;
 }

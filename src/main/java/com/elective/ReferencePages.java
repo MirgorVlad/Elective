@@ -19,5 +19,7 @@ public abstract class ReferencePages {
     public static final String TEACHER_JOURNAL = "teacher_journal.jsp";
     public static final String VIEW_ALL_USERS = "all_users.jsp";
     public static final String ACCESS_ERROR = "error_access.jsp";
+    public static final String MATERIALS = "materials.jsp";
+    public static final String ADD_LECTION = "add_lection.jsp";
 }
 

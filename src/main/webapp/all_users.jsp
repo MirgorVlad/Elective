@@ -28,10 +28,11 @@
             </form>
         </div>
         <u:showusers userList="${userList}"/>
-        <c:forEach begin="1" end="${pageCount}" var="pageNum">
-            <a href="controller?command=viewAllUsers&page=${pageNum}">${pageNum}</a>
-        </c:forEach>
-
+        <c:if test="${pageCount ne 1}">
+            <c:forEach begin="1" end="${pageCount}" var="pageNum">
+                <a href="controller?command=viewAllUsers&page=${pageNum}">${pageNum}</a>
+            </c:forEach>
+        </c:if>
     </div>
 </body>
 </html>

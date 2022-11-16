@@ -33,6 +33,8 @@ public class CommandContainer {
         commands.put("selectCourses", new SelectCoursesCommand());
         commands.put("viewAllUsers", new ViewAllUsersCommand());
         commands.put("finalTest", new FinalTestCommand());
+        commands.put("showMaterials", new ShowMaterialsCommand());
+        commands.put("addMaterials", new UploadMaterialToCourseCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

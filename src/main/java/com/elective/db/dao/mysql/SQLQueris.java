@@ -40,6 +40,8 @@ public class SQLQueris {
     public static final String FIND_COURSE_BY_NAME = "SELECT * FROM courses WHERE name = ?";
     public static final String GET_COURSES_PORTION_FOR_TEACHER = "SELECT * FROM courses WHERE teacher = ? LIMIT ? , ?";
     public static final String COUNT_COURSES_FOR_TEACHER = "SELECT COUNT(*) AS courses FROM courses WHERE teacher = ?";
+    public static final String INSERT_MATERIAL = "INSERT INTO materials VALUES (?, ?,?,?, (SELECT id FROM material_type WHERE name = ?))" ;
+    public static final String SELECT_MATERIALS = "SELECT * FROM materials WHERE type = (SELECT id FROM material_type WHERE name = ?)";
 
     private SQLQueris(){
     }

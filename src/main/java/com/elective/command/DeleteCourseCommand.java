@@ -17,10 +17,12 @@ public class DeleteCourseCommand implements Command{
         CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
 
+        String page = req.getParameter("page");
+
         log.log(Level.INFO, "DELETE course id: "+ courseId);
 
         courseDAO.deleteById(courseId);
 
-        return "controller?command=manageCourses";
+        return "controller?command=manageCourses&page=1";
     }
 }

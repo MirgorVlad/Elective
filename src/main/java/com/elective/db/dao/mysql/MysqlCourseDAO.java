@@ -5,6 +5,7 @@ import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
+import com.elective.db.entity.Material;
 import com.elective.db.entity.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -368,6 +369,42 @@ public class MysqlCourseDAO implements CourseDAO {
     }
 
     @Override
+    public void saveMaterial(int courseId, String title, String text, String path, String type) throws SQLException, DBException {
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_MATERIAL, Statement.RETURN_GENERATED_KEYS)) {
+
+            int k = 1;
+            pstmt.setInt(k++, courseId);
+            pstmt.setString(k++, title);
+            pstmt.setString(k++, text);
+            pstmt.setString(k++, path);
+            pstmt.setString(k++, type);
+
+            if (pstmt.executeUpdate() > 0)
+                log.log(Level.DEBUG, "Material " + title + " inserted");
+            else
+                throw new DBException("Cannot insert material");
+        }
+    }
+
+    @Override
+    public List<Material> getAllMaterials(int courseId, String type) throws SQLException, DBException {
+        List<Material> materials = new ArrayList<>();
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_MATERIALS, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, type);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                materials.add(getMaterial(rs, type));
+            }
+            log.log(Level.DEBUG, "Get " + type + " for course " + courseId);
+        }
+        return materials;
+    }
+
+    @Override
     public Course findCoursesByName(String name) throws SQLException, DBException {
         ResultSet rs = null;
         try (Connection con = getConnection();
@@ -420,6 +457,17 @@ public class MysqlCourseDAO implements CourseDAO {
         course.setTeacher(teacher);
         course.setTopic(rs.getString("topic"));
         return course;
+    }
+
+    public Material getMaterial(ResultSet rs, String type) throws SQLException, DBException {
+        Material material = new Material();
+
+       material.setType(type);
+       material.setName(rs.getString("name"));
+       material.setDescription(rs.getString("description"));
+       material.setPath(rs.getString("path"));
+
+        return material;
     }
 
 

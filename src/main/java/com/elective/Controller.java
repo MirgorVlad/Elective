@@ -6,6 +6,7 @@ import com.elective.command.CommandContainer;
 import com.elective.command.ViewAllCoursesCommand;
 import com.elective.db.dao.DBException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import org.apache.logging.log4j.Level;
@@ -19,6 +20,11 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
 @WebServlet("/controller")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024, // 1 MB
+        maxFileSize = 1024 * 1024 * 10,      // 10 MB
+        maxRequestSize = 1024 * 1024 * 100   // 100 MB
+)
 public class Controller extends HttpServlet {
     static Logger log = LogManager.getLogger(Controller.class);
 

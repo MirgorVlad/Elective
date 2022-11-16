@@ -32,6 +32,7 @@
                     <c:if test="${course.finished eq true}">
                         <h2 style="color: red"><fmt:message key="course.isfinished"/></h2>
                     </c:if>
+                    <div class="buttons">
                      <c:if test="${user.role eq 'student'}" >
                         <c:if test="${isJoined ne true}" >
                             <c:if test="${course.finished ne true}">
@@ -48,6 +49,17 @@
                     <c:if test="${user.role eq 'teacher'}">
                         <c:if test="${user.email eq course.teacher.email}">
                             <a href = "controller?command=showJournal&courseId=${course.id}&page=1" class="btn btn-outline-primary"><fmt:message key="course.viewjournal"/>l</a>
+                        </c:if>
+                    </c:if>
+                    </div>
+                    <c:if test="${user.role eq 'student'}">
+                        <c:if test="${isJoined eq true}" >
+                            <a href = "controller?command=showMaterials&courseId=${course.id}" id="materials"><fmt:message key="course.materials"/></a>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${user.role eq 'teacher'}">
+                        <c:if test="${course.teacher.email eq user.email}" >
+                            <a href = "controller?command=showMaterials&courseId=${course.id}" id="materials"><fmt:message key="course.materials"/></a>
                         </c:if>
                     </c:if>
                 </div>
