@@ -27,7 +27,7 @@
                 <br/>
                 <br/>
                 <c:forEach var="lection" items="${lectionList}">
-                    <h4><a href="view_material.jsp?material=${lection.name}">${lection.name}</a></h4>
+                    <h4><a href="controller?command=viewMaterial&material=${lection.name}&courseId=${course.id}&type=lection">${lection.name}</a></h4>
                     <p>${lection.description}</p>
                     <hr/>
                 </c:forEach>

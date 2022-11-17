@@ -52,4 +52,6 @@ public interface CourseDAO {
     void saveMaterial(int courseId, String title, String text, String path, String type) throws SQLException, DBException;
 
     List<Material> getAllMaterials(int courseId, String lection) throws SQLException, DBException;
+
+    Material findMaterialByName(int courseId, String material, String type) throws SQLException, DBException;
 }

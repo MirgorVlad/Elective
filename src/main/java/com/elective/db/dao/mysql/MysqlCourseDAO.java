@@ -394,7 +394,8 @@ public class MysqlCourseDAO implements CourseDAO {
         ResultSet rs = null;
         try (Connection con = getConnection();
              PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_MATERIALS, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, type);
+            statement.setInt(1, courseId);
+            statement.setString(2, type);
             rs = statement.executeQuery();
             while (rs.next()) {
                 materials.add(getMaterial(rs, type));
@@ -402,6 +403,23 @@ public class MysqlCourseDAO implements CourseDAO {
             log.log(Level.DEBUG, "Get " + type + " for course " + courseId);
         }
         return materials;
+    }
+
+    @Override
+    public Material findMaterialByName(int courseId, String material, String type) throws SQLException, DBException {
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement statement = con.prepareStatement(SQLQueris.FIND_MATERIAL)) {
+            statement.setInt(1, courseId);
+            statement.setString(2, material);
+            rs = statement.executeQuery();
+            if (rs.next()) {
+                return getMaterial(rs, type);
+            } else{
+                log.log(Level.ERROR, "Can't Get " + type + " for course " + courseId);
+                throw new DBException("Can't find material " + material);
+            }
+        }
     }
 
     @Override
