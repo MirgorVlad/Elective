@@ -15,9 +15,17 @@ public class ShowMaterialsCommand implements Command{
         CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         int courseId = Integer.parseInt(req.getParameter("courseId"));
 
+
         List<Material> lectionList = courseDAO.getAllMaterials(courseId, Material.LECTION);
+        List<Material> videoList = courseDAO.getAllMaterials(courseId, Material.VIDEO);
 
         for(Material mat : lectionList){
+            String desc =  mat.getDescription();
+            if(desc.length() > 120)
+                mat.setDescription(desc.substring(0,120));
+        }
+
+        for(Material mat : videoList){
             String desc =  mat.getDescription();
             if(desc.length() > 120)
                 mat.setDescription(desc.substring(0,120));
@@ -26,6 +34,7 @@ public class ShowMaterialsCommand implements Command{
         Course course = courseDAO.findById(courseId);
         req.setAttribute("course", course);
         req.setAttribute("lectionList", lectionList);
+        req.setAttribute("videoList", videoList);
 
         return ReferencePages.MATERIALS;
     }

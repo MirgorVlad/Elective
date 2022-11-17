@@ -13,7 +13,7 @@ public class ViewMaterialCommand implements Command{
         String materialName = req.getParameter("material");
         String type = req.getParameter("type");
         int courseId = Integer.parseInt(req.getParameter("courseId"));
-
+        System.out.println(materialName);
         Material material = courseDAO.findMaterialByName(courseId, materialName, type);
 
         req.setAttribute("material", material);

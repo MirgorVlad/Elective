@@ -33,7 +33,18 @@
                 </c:forEach>
             </div>
             <div class="tabs__content " data-tab="2">
-               <h2>Videos</h2>
+                <c:if test="${user.role eq 'teacher'}">
+                    <c:if test="${user.email eq course.teacher.email}">
+                        <a href="add_video.jsp?courseId=${param.courseId}"><img src="files/add.png" alt="add" width="20px"> Add video</a>
+                    </c:if>
+                </c:if>
+                <br/>
+                <br/>
+                <c:forEach var="video" items="${videoList}">
+                    <h4><a href="controller?command=viewMaterial&material=${video.name}&courseId=${course.id}&type=video">${video.name}</a></h4>
+                    <p>${video.description}</p>
+                    <hr/>
+                </c:forEach>
             </div>
             <div class="tabs__content " data-tab="3">
                 <h2>Assignments</h2>

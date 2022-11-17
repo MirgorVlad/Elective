@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -11,7 +12,12 @@
         <div class="container">
             <h1>${material.name}</h1>
             <p> ${material.description}</p>
-            <a href="controller?command=downloadMaterial&courseId=${param.courseId}&material=${param.material}&type=${material.type}">Download this lection</a>
+            <c:if test="${material.type eq 'lection'}">
+                <a href="controller?command=downloadMaterial&courseId=${param.courseId}&material=${param.material}&type=${material.type}">Download this lection</a>
+            </c:if>
+            <c:if test="${material.type eq 'video'}">
+                <a href="${material.path}">${material.path}</a>
+            </c:if>
         </div>
     </div>
 </body>
