@@ -1,5 +1,6 @@
 package com.elective.db.dao;
 
+import com.elective.db.entity.Assignment;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.Material;
 
@@ -54,4 +55,14 @@ public interface CourseDAO {
     List<Material> getAllMaterials(int courseId, String lection) throws SQLException, DBException;
 
     Material findMaterialByName(int courseId, String material, String type) throws SQLException, DBException;
+
+    void deleteMaterial(int courseId, String material) throws SQLException, DBException;
+
+    void addAssignment(Assignment assignment) throws SQLException, DBException;
+
+    List<Assignment> getAllAssignments(int courseId) throws SQLException;
+
+    Assignment findAssignmentByName(int courseId, String materialName) throws SQLException, DBException;
+
+    void deleteAssignment(int courseId, String material) throws SQLException, DBException;
 }

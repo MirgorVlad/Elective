@@ -37,6 +37,7 @@ public class CommandContainer {
         commands.put("addMaterials", new UploadMaterialToCourseCommand());
         commands.put("viewMaterial", new ViewMaterialCommand());
         commands.put("downloadMaterial", new DownloadMaterialCommand());
+        commands.put("deleteMaterial", new DeleteMaterialCommand());
     }
     public static Command getCommand(String commandName) {
         return commands.get(commandName);

@@ -3,6 +3,7 @@ package com.elective.db.entity;
 public class Material {
     public static final String LECTION = "lection";
     public static final String VIDEO = "video";
+    public static final String ASSIGNMENT = "assignment";
 
     private String name;
     private String description;

@@ -12,11 +12,14 @@
         <div class="container">
             <h1>${material.name}</h1>
             <p> ${material.description}</p>
-            <c:if test="${material.type eq 'lection'}">
+            <c:if test="${type eq 'lection'}">
                 <a href="controller?command=downloadMaterial&courseId=${param.courseId}&material=${param.material}&type=${material.type}">Download this lection</a>
             </c:if>
-            <c:if test="${material.type eq 'video'}">
+            <c:if test="${type eq 'video'}">
                 <a href="${material.path}">${material.path}</a>
+            </c:if>
+            <c:if test="${type eq 'assignment'}">
+                <p>Deadline: ${material.deadline}</p>
             </c:if>
         </div>
     </div>

@@ -43,6 +43,11 @@ public class SQLQueris {
     public static final String INSERT_MATERIAL = "INSERT INTO materials VALUES (?, ?,?,?, (SELECT id FROM material_type WHERE name = ?))" ;
     public static final String SELECT_MATERIALS = "SELECT * FROM materials WHERE course_id = ? AND type = (SELECT id FROM material_type WHERE name = ?)";
     public static final String FIND_MATERIAL = "SELECT * FROM materials WHERE course_id = ? AND name = ?";
+    public static final String DELETE_MATERIAL = "DELETE FROM materials WHERE course_id = ? AND name = ?";
+    public static final String INSERT_ASSIGNMENT = "INSERT INTO assignments VALUES (DEFAULT, ?, ?, ?, ?)";
+    public static final String SELECT_ASSIGNMENTS = "SELECT * FROM assignments WHERE course_id = ?";
+    public static final String FIND_ASSIGNMENT = "SELECT * FROM assignments WHERE course_id = ? AND name = ?";
+    public static final String DELETE_ASSIGNMENT = "DELETE FROM assignments WHERE course_id = ? AND name = ?";
 
     private SQLQueris(){
     }

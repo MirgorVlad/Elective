@@ -3,3 +3,16 @@
     margin-top: 20px;
 }
 
+.material-section{
+    float: left;
+    display: inline-block;
+}
+
+.close{
+    float: right;
+    display: inline-block;
+}
+
+form{
+    margin-top: 15px;
+}

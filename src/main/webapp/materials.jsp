@@ -27,8 +27,15 @@
                 <br/>
                 <br/>
                 <c:forEach var="lection" items="${lectionList}">
+                <div class="material-section">
                     <h4><a href="controller?command=viewMaterial&material=${lection.name}&courseId=${course.id}&type=lection">${lection.name}</a></h4>
                     <p>${lection.description}</p>
+                </div>
+                    <c:if test="${user.role eq 'teacher'}">
+                        <div class="close">
+                            <a href="controller?command=deleteMaterial&material=${lection.name}&courseId=${course.id}&type=lection">X</a>
+                        </div>
+                    </c:if>
                     <hr/>
                 </c:forEach>
             </div>
@@ -41,13 +48,38 @@
                 <br/>
                 <br/>
                 <c:forEach var="video" items="${videoList}">
-                    <h4><a href="controller?command=viewMaterial&material=${video.name}&courseId=${course.id}&type=video">${video.name}</a></h4>
-                    <p>${video.description}</p>
+                    <div class="material-section">
+                        <h4><a href="controller?command=viewMaterial&material=${video.name}&courseId=${course.id}&type=video">${video.name}</a></h4>
+                        <p>${video.description}</p>
+                    </div>
+                    <c:if test="${user.role eq 'teacher'}">
+                        <div class="close">
+                            <a href="controller?command=deleteMaterial&material=${video.name}&courseId=${course.id}&type=video">X</a>
+                        </div>
+                    </c:if>
                     <hr/>
                 </c:forEach>
             </div>
             <div class="tabs__content " data-tab="3">
-                <h2>Assignments</h2>
+                <c:if test="${user.role eq 'teacher'}">
+                    <c:if test="${user.email eq course.teacher.email}">
+                        <a href="add_assignment.jsp?courseId=${param.courseId}"><img src="files/add.png" alt="add" width="20px"> Add assignment</a>
+                    </c:if>
+                </c:if>
+                <br/>
+                <br/>
+                <c:forEach var="assignment" items="${assignmentList}">
+                    <div class="material-section">
+                        <h4><a href="controller?command=viewMaterial&material=${assignment.name}&courseId=${course.id}&type=assignment">${assignment.name}</a></h4>
+                        <p>${assignment.description}</p>
+                    </div>
+                    <c:if test="${user.role eq 'teacher'}">
+                        <div class="close">
+                            <a href="controller?command=deleteMaterial&material=${assignment.name}&courseId=${course.id}&type=assignment">X</a>
+                        </div>
+                    </c:if>
+                    <hr/>
+                </c:forEach>
             </div>
         </div>
     </div>

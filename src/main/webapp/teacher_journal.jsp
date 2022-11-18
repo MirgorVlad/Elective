@@ -73,7 +73,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="controller?" method="post" onsubmit="return sayHello()">
+                    <form action="controller?" method="post" onsubmit="return checkDate()">
                         <input type="hidden" name="command" value="finalTest">
                         <input type="hidden" name="courseId" value="${param.courseId}">
                         <div class="mb-3">

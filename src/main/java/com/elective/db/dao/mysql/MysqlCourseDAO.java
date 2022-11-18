@@ -4,6 +4,7 @@ import com.elective.db.dao.ConnectionFactory;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
+import com.elective.db.entity.Assignment;
 import com.elective.db.entity.Course;
 import com.elective.db.entity.Material;
 import com.elective.db.entity.User;
@@ -370,17 +371,14 @@ public class MysqlCourseDAO implements CourseDAO {
 
     @Override
     public void saveMaterial(int courseId, String title, String text, String path, String type) throws SQLException, DBException {
-        ResultSet rs = null;
         try (Connection con = getConnection();
              PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_MATERIAL, Statement.RETURN_GENERATED_KEYS)) {
-
             int k = 1;
             pstmt.setInt(k++, courseId);
             pstmt.setString(k++, title);
             pstmt.setString(k++, text);
             pstmt.setString(k++, path);
             pstmt.setString(k++, type);
-
             if (pstmt.executeUpdate() > 0)
                 log.log(Level.DEBUG, "Material " + title + " inserted");
             else
@@ -420,6 +418,96 @@ public class MysqlCourseDAO implements CourseDAO {
                 throw new DBException("Can't find material " + material);
             }
         }
+    }
+
+    @Override
+    public void deleteMaterial(int courseId, String material) throws SQLException, DBException {
+        try (Connection con = getConnection();
+             PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_MATERIAL)) {
+            pstmt.setInt(1, courseId);
+            pstmt.setString(2, material);
+
+            log.log(Level.DEBUG, "Delete material " + material + " from course " + courseId);
+
+            if (pstmt.executeUpdate() == 0) {
+                log.log(Level.WARN, "Cannot delete  material " + material);
+                throw new DBException("Cannot delete material");
+            }
+        }
+    }
+
+    @Override
+    public void addAssignment(Assignment assignment) throws SQLException, DBException {
+        try (Connection con = getConnection();
+             PreparedStatement pstmt = con.prepareStatement(SQLQueris.INSERT_ASSIGNMENT)) {
+            int k = 1;
+            pstmt.setInt(k++, assignment.getCourse());
+            pstmt.setString(k++, assignment.getName());
+            pstmt.setString(k++, assignment.getDescription());
+            pstmt.setDate(k++, assignment.getDeadline());
+            if (pstmt.executeUpdate() > 0)
+                log.log(Level.DEBUG, "Assignment " + assignment.getName() + " added");
+            else
+                throw new DBException("Cannot add assignment");
+        }
+    }
+
+    @Override
+    public List<Assignment> getAllAssignments(int courseId) throws SQLException {
+        List<Assignment> assignments = new ArrayList<>();
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_ASSIGNMENTS)) {
+            statement.setInt(1, courseId);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                assignments.add(getAssignment(rs));
+            }
+            log.log(Level.DEBUG, "Get assignments for course " + courseId);
+        }
+        return assignments;
+    }
+
+    @Override
+    public Assignment findAssignmentByName(int courseId, String materialName) throws SQLException, DBException {
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement statement = con.prepareStatement(SQLQueris.FIND_ASSIGNMENT)) {
+            statement.setInt(1, courseId);
+            statement.setString(2, materialName);
+            rs = statement.executeQuery();
+            if (rs.next()) {
+                return getAssignment(rs);
+            } else{
+                log.log(Level.ERROR, "Can't Get assignment for course " + courseId);
+                throw new DBException("Can't find assignment for course " + courseId);
+            }
+        }
+    }
+
+    @Override
+    public void deleteAssignment(int courseId, String material) throws SQLException, DBException {
+        try (Connection con = getConnection();
+             PreparedStatement pstmt = con.prepareStatement(SQLQueris.DELETE_ASSIGNMENT)) {
+            pstmt.setInt(1, courseId);
+            pstmt.setString(2, material);
+
+            log.log(Level.DEBUG, "Delete assignment " + material + " from course " + courseId);
+
+            if (pstmt.executeUpdate() == 0) {
+                log.log(Level.WARN, "Cannot delete  assignment " + material);
+                throw new DBException("Cannot delete assignment");
+            }
+        }
+    }
+
+    private Assignment getAssignment(ResultSet rs) throws SQLException {
+        Assignment assignment = new Assignment();
+        assignment.setName(rs.getString("name"));
+        assignment.setDescription(rs.getString("description"));
+        assignment.setCourse(rs.getInt("course_id"));
+        assignment.setDeadline(rs.getDate("deadline"));
+        return assignment;
     }
 
     @Override
