@@ -3,16 +3,40 @@
     margin-top: 20px;
 }
 
-.material-section{
-    float: left;
-    display: inline-block;
-}
-
-.close{
-    float: right;
-    display: inline-block;
+.row{
+    margin-top: 20px;
 }
 
 form{
-    margin-top: 15px;
+    margin-top: 20px;
+}
+
+.material-content{
+    display: block;
+}
+
+.adding{
+    margin-bottom: 20px;
+}
+
+.material-section{
+    display: inline-block;
+}
+.close{
+    display: inline-block;
+    float: right;
+    margin-top: 10px;
+}
+
+.modal-header{
+    background: #007bff;
+    color: #fff;
+}
+table{
+    width: 100%;
+    text-align: center;
+    padding: 10px 15px;
+}
+th, td{
+    padding: 10px 15px;
 }

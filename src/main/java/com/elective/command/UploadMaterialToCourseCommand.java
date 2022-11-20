@@ -1,17 +1,17 @@
 package com.elective.command;
 
-import com.elective.Mailer;
-import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.entity.Assignment;
 import com.elective.db.entity.Material;
+import com.elective.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
 import java.io.FileInputStream;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Properties;
 
 public class UploadMaterialToCourseCommand implements Command{
@@ -24,14 +24,31 @@ public class UploadMaterialToCourseCommand implements Command{
         String text = req.getParameter("description");
         String videoPath = req.getParameter("videoPath");
         String deadline = req.getParameter("deadline");
+        String assignmentFile = req.getParameter("assignment");
+        User user = (User)req.getSession().getAttribute("user");
 
         if(videoPath != null){
             courseDAO.saveMaterial(courseId, title, text, videoPath, Material.VIDEO);
         }
-        if(deadline != null){
+        else if(deadline != null){
             Date date = Date.valueOf(deadline);
-            Assignment assignment = createAssignment(courseId, title, text, date);
+            Assignment assignment = createAssignment(courseId, title, text, date, user, null);
             courseDAO.addAssignment(assignment);
+        }
+        else if(assignmentFile != null){
+            Properties props = new Properties();
+            props.load(new FileInputStream(DAOFactory.class.getResource("/").getPath() + "app.properties"));
+            String uploads = props.getProperty("upload.assignment");
+
+            Part filePart = req.getPart("assignmentFile");
+            String fileName = filePart.getSubmittedFileName();
+
+            String path = uploads + fileName;
+            for (Part part : req.getParts()) {
+                part.write(path);
+            }
+
+            courseDAO.addAssignment(createAssignment(courseId, title, null, Date.valueOf(LocalDate.now()), user, path));
         }
         else {
             Properties props = new Properties();
@@ -52,13 +69,15 @@ public class UploadMaterialToCourseCommand implements Command{
         return "controller?command=showMaterials&courseId=" + courseId;
     }
 
-    private Assignment createAssignment(int courseId, String title, String text, Date deadline) {
+    private Assignment createAssignment(int courseId, String title, String text, Date deadline, User user, String path) {
         Assignment assignment = new Assignment();
 
         assignment.setCourse(courseId);
         assignment.setName(title);
         assignment.setDeadline(deadline);
         assignment.setDescription(text);
+        assignment.setPath(path);
+        assignment.setUser(user);
 
         return assignment;
     }

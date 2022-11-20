@@ -445,6 +445,8 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setString(k++, assignment.getName());
             pstmt.setString(k++, assignment.getDescription());
             pstmt.setDate(k++, assignment.getDeadline());
+            pstmt.setString(k++, assignment.getPath());
+            pstmt.setInt(k++, assignment.getUser().getId());
             if (pstmt.executeUpdate() > 0)
                 log.log(Level.DEBUG, "Assignment " + assignment.getName() + " added");
             else
@@ -453,7 +455,7 @@ public class MysqlCourseDAO implements CourseDAO {
     }
 
     @Override
-    public List<Assignment> getAllAssignments(int courseId) throws SQLException {
+    public List<Assignment> getAllAssignments(int courseId) throws SQLException, DBException {
         List<Assignment> assignments = new ArrayList<>();
         ResultSet rs = null;
         try (Connection con = getConnection();
@@ -461,7 +463,12 @@ public class MysqlCourseDAO implements CourseDAO {
             statement.setInt(1, courseId);
             rs = statement.executeQuery();
             while (rs.next()) {
-                assignments.add(getAssignment(rs));
+                Assignment assignment = getAssignment(rs);
+                User user = assignment.getUser();
+                if(user != null) {
+                    if (user.getRole().equals(UserDAO.TEACHER_ROLE))
+                        assignments.add(assignment);
+                }
             }
             log.log(Level.DEBUG, "Get assignments for course " + courseId);
         }
@@ -475,6 +482,24 @@ public class MysqlCourseDAO implements CourseDAO {
              PreparedStatement statement = con.prepareStatement(SQLQueris.FIND_ASSIGNMENT)) {
             statement.setInt(1, courseId);
             statement.setString(2, materialName);
+            rs = statement.executeQuery();
+            if (rs.next()) {
+                return getAssignment(rs);
+            } else{
+                log.log(Level.ERROR, "Can't Get assignment for course " + courseId);
+                throw new DBException("Can't find assignment for course " + courseId);
+            }
+        }
+    }
+
+    @Override
+    public Assignment findSolutionByName(int courseId, String materialName, int studentId) throws SQLException, DBException {
+        ResultSet rs = null;
+        try (Connection con = getConnection();
+             PreparedStatement statement = con.prepareStatement(SQLQueris.FIND_SOLUTION)) {
+            statement.setInt(1, courseId);
+            statement.setString(2, materialName);
+            statement.setInt(3, studentId);
             rs = statement.executeQuery();
             if (rs.next()) {
                 return getAssignment(rs);
@@ -501,12 +526,36 @@ public class MysqlCourseDAO implements CourseDAO {
         }
     }
 
-    private Assignment getAssignment(ResultSet rs) throws SQLException {
+    @Override
+    public List<Assignment> getSolutions(int courseId, String materialName) throws SQLException, DBException {
+        List<Assignment> solutions = new ArrayList<>();
+        try (Connection con = getConnection();
+             Statement statement = con.createStatement();
+             ResultSet rs = statement.executeQuery(SQLQueris.SELECT_SOLUTIONS)){
+
+            while (rs.next()) {
+                Assignment assignment = getAssignment(rs);
+                User user = assignment.getUser();
+                if(user != null) {
+                    if (user.getRole().equals(UserDAO.STUDENT_ROLE))
+                        solutions.add(assignment);
+                }
+            }
+            log.log(Level.DEBUG, "Get assignments for course " + courseId);
+        }
+        return solutions;
+    }
+
+    private Assignment getAssignment(ResultSet rs) throws SQLException, DBException {
         Assignment assignment = new Assignment();
         assignment.setName(rs.getString("name"));
         assignment.setDescription(rs.getString("description"));
         assignment.setCourse(rs.getInt("course_id"));
         assignment.setDeadline(rs.getDate("deadline"));
+        assignment.setPath(rs.getString("path"));
+
+        User user = userDAO.findById(rs.getInt("user_id"));
+        assignment.setUser(user);
         return assignment;
     }
 

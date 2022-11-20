@@ -7,6 +7,36 @@ public class Assignment {
     private String description;
     private Date deadline;
     private int course;
+    private User user;
+    private String path;
+
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                ", course=" + course +
+                ", user=" + user +
+                ", path='" + path + '\'' +
+                '}';
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public String getName() {
         return name;

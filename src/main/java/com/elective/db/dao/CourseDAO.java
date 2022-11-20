@@ -60,9 +60,12 @@ public interface CourseDAO {
 
     void addAssignment(Assignment assignment) throws SQLException, DBException;
 
-    List<Assignment> getAllAssignments(int courseId) throws SQLException;
+    List<Assignment> getAllAssignments(int courseId) throws SQLException, DBException;
 
     Assignment findAssignmentByName(int courseId, String materialName) throws SQLException, DBException;
+    Assignment findSolutionByName(int courseId, String materialName, int studentId) throws SQLException, DBException;
 
     void deleteAssignment(int courseId, String material) throws SQLException, DBException;
+
+    List<Assignment> getSolutions(int courseId, String materialName) throws SQLException, DBException;
 }
