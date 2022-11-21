@@ -23,9 +23,9 @@
         <h3><fmt:message key="manager.manage" /></h3>
         <form action="controller">
             <input type="hidden" name="command" value="manageCourses">
-            <label for="name">Find by name: </label>
+            <label for="name"><fmt:message key="course.findbyname" />: </label>
             <input type="text" id="name" name="name" >
-            <input type="submit" value="Find">
+            <input type="submit" value="<fmt:message key="course.find" />">
         </form>
         </div>
     <co:showcourses coursesList="${coursesList}"/>

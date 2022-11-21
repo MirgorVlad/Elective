@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="messages"/>
 
-<html>
+<html lang="${lang}">
 <head>
     <title>Materials</title>
     <link href="bootstrap/css/tabs.css" rel="stylesheet">
@@ -17,14 +20,14 @@
         <!--<h1>Materials</h1> -->
         <div class="tabs">
             <div class="tabs__sidebar">
-                <button class="tabs__button tabs__button--active left_p" data-for-tab="1">Lections</button>
-                <button class="tabs__button  center_p" data-for-tab="2">Video</button>
-                <button class="tabs__button right_p" data-for-tab="3">Assignments</button>
+                <button class="tabs__button tabs__button--active left_p" data-for-tab="1"><fmt:message key="material.lection" /></button>
+                <button class="tabs__button  center_p" data-for-tab="2"><fmt:message key="material.video" /></button>
+                <button class="tabs__button right_p" data-for-tab="3"><fmt:message key="material.assignment" /></button>
             </div>
             <div class="tabs__content tabs__content--active" data-tab="1">
                 <c:if test="${user.role eq 'teacher'}">
                     <c:if test="${user.email eq course.teacher.email}">
-                        <a href="add_lection.jsp?courseId=${param.courseId}" class="adding"><img src="files/add.png" alt="add" width="20px"> Add lection</a>
+                        <a href="add_lection.jsp?courseId=${param.courseId}" class="adding"><img src="files/add.png" alt="add" width="20px"><fmt:message key="material.addlection" /></a>
                         <br/>
                     </c:if>
                 </c:if>
@@ -47,7 +50,7 @@
             <div class="tabs__content " data-tab="2">
                 <c:if test="${user.role eq 'teacher'}">
                     <c:if test="${user.email eq course.teacher.email}">
-                        <a href="add_video.jsp?courseId=${param.courseId}" class="adding"><img src="files/add.png" alt="add" width="20px" > Add video</a>
+                        <a href="add_video.jsp?courseId=${param.courseId}" class="adding"><img src="files/add.png" alt="add" width="20px" ><fmt:message key="material.addvideo" /></a>
                         <br/>
                     </c:if>
                 </c:if>
@@ -70,7 +73,7 @@
             <div class="tabs__content " data-tab="3">
                 <c:if test="${user.role eq 'teacher'}">
                     <c:if test="${user.email eq course.teacher.email}">
-                        <a href="add_assignment.jsp?courseId=${param.courseId}" class="adding"><img src="files/add.png" alt="add" width="20px"> Add assignment</a>
+                        <a href="add_assignment.jsp?courseId=${param.courseId}" class="adding"><img src="files/add.png" alt="add" width="20px"><fmt:message key="material.addassignment" /></a>
                         <br/>
                     </c:if>
                 </c:if>

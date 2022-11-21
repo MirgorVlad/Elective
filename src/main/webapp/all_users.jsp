@@ -22,9 +22,9 @@
             <h3><fmt:message key="manager.allusers" /></h3>
             <form action="controller">
                 <input type="hidden" name="command" value="viewAllUsers">
-                <label for="userLogin">Find by login: </label>
+                <label for="userLogin"><fmt:message key="user.findbylogin" />: </label>
                 <input type="email" id="userLogin" name="userLogin" >
-                <input type="submit" value="Find">
+                <input type="submit" value="<fmt:message key="user.find" />">
             </form>
         </div>
         <u:showusers userList="${userList}"/>

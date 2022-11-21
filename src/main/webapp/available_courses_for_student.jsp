@@ -20,9 +20,9 @@
     <div class="center">
         <div class="tabs">
             <div class="tabs__sidebar">
-                <button class="tabs__button  left_p" data-for-tab="1">Not begun yet</button>
-                <button class="tabs__button tabs__button--active center_p" data-for-tab="2">In Progress</button>
-                <button class="tabs__button right_p" data-for-tab="3">Finished</button>
+                <button class="tabs__button  left_p" data-for-tab="1"><fmt:message key="course.notstart" /></button>
+                <button class="tabs__button tabs__button--active center_p" data-for-tab="2"><fmt:message key="course.inprogress" /></button>
+                <button class="tabs__button right_p" data-for-tab="3"><fmt:message key="course.finished" /></button>
             </div>
             <div class="tabs__content " data-tab="1">
                 <co:showcourses coursesList="${coursesList}" purpose="notBegun"/>
