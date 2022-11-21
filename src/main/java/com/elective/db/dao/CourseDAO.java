@@ -41,7 +41,7 @@ public interface CourseDAO {
 
     List<Course> findCoursesByLang(String lang) throws SQLException, DBException;
 
-    List<Course> getCourses(int start, int total) throws DBException;
+    List<Course> getCourses(int start, int total) throws DBException, SQLException;
 
     double countCourses() throws SQLException;
 

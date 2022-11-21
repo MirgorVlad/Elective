@@ -322,9 +322,9 @@ public class MysqlCourseDAO implements CourseDAO {
     }
 
     @Override
-    public List<Course> getCourses(int start, int total) throws DBException {
+    public List<Course> getCourses(int start, int total) throws DBException, SQLException {
         List<Course> courses = new ArrayList<>();
-        ResultSet rs;
+        ResultSet rs = null;
         try(Connection con = getConnection();
             PreparedStatement pstm = con.prepareStatement(SQLQueris.GET_COURSES_PORTION)) {
             pstm.setInt(1, start-1);
@@ -335,6 +335,10 @@ public class MysqlCourseDAO implements CourseDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
         }
         return courses;
     }
@@ -365,6 +369,10 @@ public class MysqlCourseDAO implements CourseDAO {
                 count = rs.getInt("courses");
             }
             log.log(Level.DEBUG, "Count courses for teacher " + teacher);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
         }
         return count;
     }
@@ -399,6 +407,10 @@ public class MysqlCourseDAO implements CourseDAO {
                 materials.add(getMaterial(rs, type));
             }
             log.log(Level.DEBUG, "Get " + type + " for course " + courseId);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
         }
         return materials;
     }
@@ -416,6 +428,10 @@ public class MysqlCourseDAO implements CourseDAO {
             } else{
                 log.log(Level.ERROR, "Can't Get " + type + " for course " + courseId);
                 throw new DBException("Can't find material " + material);
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
             }
         }
     }
@@ -471,6 +487,10 @@ public class MysqlCourseDAO implements CourseDAO {
                 }
             }
             log.log(Level.DEBUG, "Get assignments for course " + courseId);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
         }
         return assignments;
     }
@@ -489,6 +509,10 @@ public class MysqlCourseDAO implements CourseDAO {
                 log.log(Level.ERROR, "Can't Get assignment for course " + courseId);
                 throw new DBException("Can't find assignment for course " + courseId);
             }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
         }
     }
 
@@ -506,6 +530,10 @@ public class MysqlCourseDAO implements CourseDAO {
             } else{
                 log.log(Level.ERROR, "Can't Get assignment for course " + courseId);
                 throw new DBException("Can't find assignment for course " + courseId);
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
             }
         }
     }
@@ -529,10 +557,12 @@ public class MysqlCourseDAO implements CourseDAO {
     @Override
     public List<Assignment> getSolutions(int courseId, String materialName) throws SQLException, DBException {
         List<Assignment> solutions = new ArrayList<>();
+        ResultSet rs = null;
         try (Connection con = getConnection();
-             Statement statement = con.createStatement();
-             ResultSet rs = statement.executeQuery(SQLQueris.SELECT_SOLUTIONS)){
-
+             PreparedStatement statement = con.prepareStatement(SQLQueris.SELECT_SOLUTIONS)){
+            statement.setInt(1, courseId);
+            statement.setString(2, materialName);
+            rs = statement.executeQuery();
             while (rs.next()) {
                 Assignment assignment = getAssignment(rs);
                 User user = assignment.getUser();
@@ -542,6 +572,11 @@ public class MysqlCourseDAO implements CourseDAO {
                 }
             }
             log.log(Level.DEBUG, "Get assignments for course " + courseId);
+        }
+        finally {
+            if(rs != null){
+                rs.close();
+            }
         }
         return solutions;
     }

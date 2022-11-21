@@ -48,7 +48,7 @@ public class SQLQueris {
     public static final String SELECT_ASSIGNMENTS = "SELECT * FROM assignments WHERE course_id = ?";
     public static final String FIND_ASSIGNMENT = "SELECT * FROM assignments WHERE course_id = ? AND name = ?";
     public static final String DELETE_ASSIGNMENT = "DELETE FROM assignments WHERE course_id = ? AND name = ?";
-    public static final String SELECT_SOLUTIONS = "SELECT * FROM assignments WHERE path IS NOT NULL";
+    public static final String SELECT_SOLUTIONS = "SELECT * FROM assignments WHERE course_id = ? AND name = ? AND path IS NOT NULL";
     public static final String FIND_SOLUTION = "SELECT * FROM assignments WHERE course_id = ? AND name = ? AND user_id = ? AND path IS NOT NULL";
 
     private SQLQueris(){
