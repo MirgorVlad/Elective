@@ -1,9 +1,7 @@
 package com.elective;
 
 import com.elective.db.dao.UserDAO;
-import com.elective.db.entity.Course;
-import com.elective.db.entity.Journal;
-import com.elective.db.entity.User;
+import com.elective.db.entity.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -25,6 +23,31 @@ public class Generator {
         return user;
     }
 
+    public Assignment createRandomAssignment(String path){
+        Assignment assignment = new Assignment();
+        assignment.setName(generateString(10));
+        assignment.setDescription(generateString(50));
+        assignment.setCourse(rand.nextInt(100));
+        assignment.setDeadline(new Date(12345));
+
+        if(path == null)
+            assignment.setPath(generateString(20));
+        else
+            assignment.setPath(path);
+
+        return assignment;
+    }
+
+
+    public Material createRandomMaterial(String type, String path){
+        Material material = new Material();
+        material.setName(generateString(10));
+        material.setDescription(generateString(50));
+        material.setPath(path);
+        material.setType(type);
+        return material;
+    }
+
     public Course createRandomCourse(User teacher) {
         Course course = new Course();
         course.setId(rand.nextInt(100));
@@ -41,6 +64,7 @@ public class Generator {
 
         return course;
     }
+
 
     public Course createRandomCourse(User teacher, Date start, Date finish) {
         Course course = new Course();

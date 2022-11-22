@@ -4,6 +4,7 @@ public class Material {
     public static final String LECTION = "lection";
     public static final String VIDEO = "video";
     public static final String ASSIGNMENT = "assignment";
+    public static final String SOLUTION = "solution";
 
     private String name;
     private String description;
