@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Implementation of Command interface that perform displaying all available Courses
+ */
 public class ViewAllCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(ViewAllCoursesCommand.class);
     @Override

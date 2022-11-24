@@ -6,6 +6,9 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
+/**
+ * This class perform sending emails for Users
+ */
 public class Mailer {
     public static void send(String to,String subject,String msg){
 

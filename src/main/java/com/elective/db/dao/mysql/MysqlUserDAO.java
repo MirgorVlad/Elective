@@ -12,7 +12,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Implementation of UserDAO interface for MySQL
+ */
 public class MysqlUserDAO implements UserDAO {
     static Logger log = LogManager.getLogger(MysqlUserDAO.class);
 

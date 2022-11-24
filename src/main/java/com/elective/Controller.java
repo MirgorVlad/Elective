@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
+/**
+ * Controller layer of application
+ */
 @WebServlet("/controller")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024, // 1 MB

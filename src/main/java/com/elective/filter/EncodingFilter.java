@@ -4,7 +4,9 @@ package com.elective.filter;
 import jakarta.servlet.*;
 
 import java.io.IOException;
-
+/**
+ * This filter sets page encoding to UTF-8
+ */
 public class EncodingFilter implements Filter {
 
     @Override

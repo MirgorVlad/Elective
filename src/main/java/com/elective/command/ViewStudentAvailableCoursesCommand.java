@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Implementation of Command interface that perform displaying available Courses for appropriate User student
+ */
 public class ViewStudentAvailableCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(ViewStudentAvailableCoursesCommand.class);
     @Override

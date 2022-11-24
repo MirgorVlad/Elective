@@ -13,7 +13,9 @@ import java.io.FileInputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Properties;
-
+/**
+ * Implementation of Command interface that perform uploading Material to page
+ */
 public class UploadMaterialToCourseCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

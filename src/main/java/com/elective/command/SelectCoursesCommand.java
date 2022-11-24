@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Implementation of Command interface that perform selecting appropriate Courses for displaying on page
+ */
 public class SelectCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(SelectCoursesCommand.class);
     private final CourseDAO courseDAO = getDaoFactory().getCourseDAO();

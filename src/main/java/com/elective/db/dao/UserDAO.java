@@ -5,7 +5,9 @@ import com.elective.db.entity.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Interface defines the User DAO objects' API
+ */
 public interface UserDAO {
 
     String TEACHER_ROLE = "teacher";

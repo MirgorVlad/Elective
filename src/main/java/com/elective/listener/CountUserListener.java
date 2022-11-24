@@ -4,7 +4,9 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
 
-
+/**
+ * This filter counts users in system
+ */
 public class CountUserListener implements HttpSessionListener {
     ServletContext ctx=null;
     static int total=0,current=0;

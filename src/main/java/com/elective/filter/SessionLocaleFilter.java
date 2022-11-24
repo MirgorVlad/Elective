@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * This filter sets locale for page
+ */
 public class SessionLocaleFilter implements Filter {
 
     @Override

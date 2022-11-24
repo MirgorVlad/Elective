@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
+/**
+ * Implementation of Command interface that perform sorting appropriate Courses for displaying on page
+ */
 public class SortCoursesCommand implements Command{
     static Logger log = LogManager.getLogger(SortCoursesCommand.class);
 

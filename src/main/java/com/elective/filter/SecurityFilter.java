@@ -10,7 +10,9 @@ import org.apache.logging.log4j.Logger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * This filter monitors user access to data allowed for them
+ */
 public class SecurityFilter implements Filter {
     static Logger log = LogManager.getLogger(SecurityFilter.class);
 

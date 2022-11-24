@@ -9,7 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
-
+/**
+ * Implementation of Command interface that perform deleting a Course  for User teacher
+ */
 public class DeleteCourseCommand implements Command{
     static Logger log = LogManager.getLogger(DeleteCourseCommand.class);
     @Override

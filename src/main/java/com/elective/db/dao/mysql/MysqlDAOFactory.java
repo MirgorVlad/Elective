@@ -4,7 +4,9 @@ import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.JournalDAO;
 import com.elective.db.dao.UserDAO;
-
+/**
+ * Implementation DAOFactory for MySQL
+ */
 public class MysqlDAOFactory extends DAOFactory {
     @Override
     public UserDAO getUserDAO() {

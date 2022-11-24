@@ -3,6 +3,10 @@ package com.elective.command;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Container that stores command name and appropriate command implementation
+ */
+
 public class CommandContainer {
 
     private CommandContainer(){

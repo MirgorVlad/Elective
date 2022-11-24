@@ -1,7 +1,9 @@
 package com.elective.db.entity;
 
 import java.sql.Date;
-
+/**
+ * Journal entity
+ */
 public class Journal {
     private Course course;
     private User student;

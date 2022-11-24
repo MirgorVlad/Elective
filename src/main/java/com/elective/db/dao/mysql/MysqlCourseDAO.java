@@ -16,6 +16,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of CourseDAO interface for MySQL
+ */
 public class MysqlCourseDAO implements CourseDAO {
     static Logger log = LogManager.getLogger(MysqlCourseDAO.class);
     private final UserDAO userDAO = MysqlDAOFactory.getInstance().getUserDAO();

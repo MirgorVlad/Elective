@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
-
+/**
+ * Implementation of Command interface that perform displaying Materials for appropriate Course
+ */
 public class ShowMaterialsCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

@@ -5,7 +5,9 @@ import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
-
+/**
+ * Course entity
+ */
 public class Course implements Serializable {
 
     private int id;

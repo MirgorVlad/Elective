@@ -6,15 +6,12 @@ import com.elective.db.dao.CourseDAO;
 import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.entity.Course;
-import com.elective.db.entity.Material;
 import com.elective.db.entity.User;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 

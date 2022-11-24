@@ -13,7 +13,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * This filter sets resources needed for page
+ */
 public class UpdateResourcesFilter implements Filter {
     static Logger log = LogManager.getLogger(UpdateResourcesFilter.class);
     CourseDAO courseDAO;

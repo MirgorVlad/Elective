@@ -1,8 +1,9 @@
 package com.elective.db.entity;
-
 import java.io.Serializable;
 import java.util.Objects;
-
+/**
+ * Assignment entity
+ */
 public class User implements Serializable {
 
     private int id;

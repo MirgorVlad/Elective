@@ -11,7 +11,9 @@ import org.apache.logging.log4j.Logger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-
+/**
+ * Implementation of Command interface that perform joining to Course for User student
+ */
 public class JoinToCourseCommand implements Command{
     static Logger log = LogManager.getLogger(JoinToCourseCommand.class);
     @Override

@@ -10,6 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
+/**
+ * Interface Command defines the command objects' API
+ * encapsulate all the information required for command execution
+ */
 public interface Command {
 
     DAOFactory daoFactory = MysqlDAOFactory.getInstance();

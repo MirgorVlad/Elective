@@ -14,7 +14,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.*;
-
+/**
+ * Implementation of Command interface that perform starting Test for all students in current Course
+ * and sending emails
+ */
 public class FinalTestCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

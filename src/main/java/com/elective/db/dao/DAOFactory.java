@@ -11,6 +11,9 @@ import java.lang.reflect.Constructor;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Return appropriate DAO implementation
+ */
 public abstract class DAOFactory {
 
     private static DAOFactory instance;

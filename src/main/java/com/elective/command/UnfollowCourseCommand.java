@@ -12,7 +12,9 @@ import org.apache.logging.log4j.Logger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-
+/**
+ * Implementation of Command interface that perform unfollowing Users from Course
+ */
 public class UnfollowCourseCommand implements Command{
     static Logger log = LogManager.getLogger(UnfollowCourseCommand.class);
     @Override

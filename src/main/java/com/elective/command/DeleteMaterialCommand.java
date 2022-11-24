@@ -4,7 +4,9 @@ import com.elective.db.dao.CourseDAO;
 import com.elective.db.entity.Material;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+/**
+ * Implementation of Command interface that perform deleting a Material for User teacher
+ */
 public class DeleteMaterialCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

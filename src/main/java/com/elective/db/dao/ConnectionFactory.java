@@ -7,7 +7,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-
+/**
+ * Return Connection from Tomcat connection pool
+ */
 public class ConnectionFactory {
 
     private static final DataSource dataSource;

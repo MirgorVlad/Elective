@@ -1,5 +1,7 @@
 package com.elective.db.entity;
-
+/**
+ * Material entity
+ */
 public class Material {
     public static final String LECTION = "lection";
     public static final String VIDEO = "video";

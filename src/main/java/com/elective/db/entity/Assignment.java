@@ -2,6 +2,9 @@ package com.elective.db.entity;
 
 import java.sql.Date;
 
+/**
+ * Assignment entity
+ */
 public class Assignment {
     private String name;
     private String description;

@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Implementation of Command interface that perform to log in to account
+ */
 public class LoginCommand implements Command{
     static Logger log = LogManager.getLogger(LoginCommand.class);
     @Override

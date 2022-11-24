@@ -5,7 +5,9 @@ import com.elective.db.dao.DBException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-
+/**
+ * Implementation of Command interface that perform to log out from account
+ */
 public class LogoutCommand implements Command{
 
     @Override

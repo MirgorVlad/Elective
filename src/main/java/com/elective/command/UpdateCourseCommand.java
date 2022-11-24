@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-
+/**
+ * Implementation of Command interface that perform updating Course
+ */
 public class UpdateCourseCommand implements Command{
     static Logger log = LogManager.getLogger(UpdateCourseCommand.class);
     @Override

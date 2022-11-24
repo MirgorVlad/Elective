@@ -7,6 +7,9 @@ import com.elective.db.entity.Material;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Interface defines the Course DAO objects' API
+ */
 public interface CourseDAO {
 
     int MIN_DURATION = 14;

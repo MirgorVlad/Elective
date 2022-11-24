@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.FileInputStream;
 import java.io.OutputStream;
-
+/**
+ * Implementation of Command interface that perform downloading Material from page
+ */
 public class DownloadMaterialCommand implements Command{
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

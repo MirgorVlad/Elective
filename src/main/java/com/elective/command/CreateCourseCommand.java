@@ -20,6 +20,9 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Implementation of Command interface that perform creating a Course for User teacher
+ */
 public class CreateCourseCommand implements Command{
     static Logger log = LogManager.getLogger(CreateCourseCommand.class);
 

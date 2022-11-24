@@ -9,7 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-
+/**
+ * Implementation of JournalDAO interface for MySQL
+ */
 public class MysqlJournalDAO implements JournalDAO {
     static Logger log = LogManager.getLogger(MysqlJournalDAO.class);
 
