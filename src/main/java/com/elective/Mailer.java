@@ -10,6 +10,12 @@ import jakarta.mail.internet.MimeMessage;
  * This class perform sending emails for Users
  */
 public class Mailer {
+    /**
+     * Sending emails for user before test
+     * @param to user email
+     * @param subject title of email
+     * @param msg text of message
+     */
     public static void send(String to,String subject,String msg){
 
         final String user="mirgorodskiy295@gmail.com";

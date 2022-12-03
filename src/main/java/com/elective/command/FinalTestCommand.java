@@ -40,6 +40,14 @@ public class FinalTestCommand implements Command{
         return ReferencePages.TEACHER_PAGE;
     }
 
+    /**
+     * Send email for students
+     * @param sendInTime time to send
+     * @param userList list of users
+     * @param course course where test
+     * @param date date of test
+     * @param time time of test
+     */
     private void informStudents(Date sendInTime, List<Integer> userList, Course course, String date, String time)
             throws SQLException, DBException {
 
@@ -63,7 +71,11 @@ public class FinalTestCommand implements Command{
         }
     }
 
-
+    /**
+     * Get milliseconds since epoch started to passed time
+     * @param date date
+     * @param time time
+     */
     private long getMillisFromEpoch(String date, String time) throws ParseException {
         Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
         long startTimeHour = LocalTime.parse(time).getHour() * 60 * 60 * 1000;

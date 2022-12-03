@@ -155,9 +155,6 @@ public interface CourseDAO {
      * Get all materials from course
      * @param courseId course id
      * @param lection name
-     * @return
-     * @throws SQLException
-     * @throws DBException
      */
     List<Material> getAllMaterials(int courseId, String lection) throws SQLException, DBException;
 

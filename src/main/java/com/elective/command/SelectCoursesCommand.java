@@ -34,6 +34,12 @@ public class SelectCoursesCommand implements Command{
         return ReferencePages.VIEW_COURSES_LIST;
     }
 
+    /**
+     * Generate final list of courses with all selected
+     * @param topic courses topic
+     * @param teacher courses teacher
+     * @param lang courses language
+     */
     private List<Course> generateList(String topic, String teacher, String lang) throws DBException, SQLException {
         List<Course> courseListByTopic;
         List<Course> courseListByTeacher;

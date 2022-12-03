@@ -59,6 +59,9 @@ public class Controller extends HttpServlet {
         resp.sendRedirect(address);
     }
 
+    /**
+     * Get command from Command pattern and return result
+     */
     private String getAndExecuteCommand(HttpServletRequest req, HttpServletResponse resp)
             throws Exception {
         String commandName = req.getParameter("command");
