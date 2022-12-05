@@ -213,4 +213,7 @@ public interface CourseDAO {
      * @param materialName solution name
      */
     List<Assignment> getSolutions(int courseId, String materialName) throws SQLException, DBException;
+
+    String getImage(int courseId) throws SQLException;
+
 }

@@ -19,7 +19,7 @@
    <div class="container">
             <div class="row">
                 <div class="col-md-8" style="margin-left:-120px;">
-                    <img src="files/course_img.webp" alt="course_image" class="d-block w-200">
+                    <img src="${course.image}" alt="course_image" class="d-block w-200">
                 </div>
                 <div class="col-md-3 w-200">
                     <p class="newarrival"></p>

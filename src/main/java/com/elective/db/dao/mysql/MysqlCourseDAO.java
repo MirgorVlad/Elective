@@ -45,9 +45,10 @@ public class MysqlCourseDAO implements CourseDAO {
             pstmt.setDate(k++, course.getFinishDate());
             pstmt.setInt(k++, course.getTeacher().getId());
             pstmt.setString(k++, course.getTopic());
+            pstmt.setString(k++, course.getImage());
 
             if (pstmt.executeUpdate() > 0) {
-                log.log(Level.DEBUG, "Course " + course.getName() + " created");
+                log.log(Level.INFO, "Course " + course.getName() + " created");
                 setCourseID(rs, pstmt, course);
             } else
                 throw new DBException("Cannot insert course");
@@ -584,6 +585,27 @@ public class MysqlCourseDAO implements CourseDAO {
         return solutions;
     }
 
+    @Override
+    public String getImage(int courseId) throws SQLException {
+        ResultSet rs = null;
+        try(Connection con = getConnection();
+            PreparedStatement pstm = con.prepareStatement(SQLQueris.GET_COURSE_IMAGE)) {
+            pstm.setInt(1, courseId);
+            rs = pstm.executeQuery();
+            if (rs.next()){
+                return rs.getString("image");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+        }
+        return null;
+    }
+
+
     private Assignment getAssignment(ResultSet rs) throws SQLException, DBException {
         Assignment assignment = new Assignment();
         assignment.setName(rs.getString("name"));
@@ -649,6 +671,7 @@ public class MysqlCourseDAO implements CourseDAO {
         course.setFinishDate(rs.getDate("finish"));
         course.setTeacher(teacher);
         course.setTopic(rs.getString("topic"));
+        course.setImage(rs.getString("image"));
         return course;
     }
 
@@ -683,6 +706,7 @@ public class MysqlCourseDAO implements CourseDAO {
         rs = pstmt.getGeneratedKeys();
         if (rs.next()) {
             int courseID = rs.getInt(1);
+            log.log(Level.INFO, "set Id for new user");
             course.setId(courseID);
         }
     }

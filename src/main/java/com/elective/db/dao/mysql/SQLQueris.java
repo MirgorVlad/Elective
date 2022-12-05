@@ -10,7 +10,7 @@ public class SQLQueris {
     public static final String FIND_TEACHER = "SELECT * FROM teachers WHERE user_id = ?";
     public static final String FIND_STUDENT = "SELECT * FROM students WHERE user_id = ?";
     public static final String FIND_MANAGER = "SELECT * FROM managers WHERE user_id = ?";
-    public static final String INSERT_COURSE = "INSERT INTO courses values(DEFAULT, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_COURSE = "INSERT INTO courses values(DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String SELECT_ALL_COURSES = "SELECT * FROM courses";
     public static final String DELETE_COURSE_BY_ID = "DELETE FROM courses WHERE id = ?";
     public static final String FIND_COURSE_BY_ID = "SELECT * FROM courses WHERE id = ?";
@@ -50,6 +50,8 @@ public class SQLQueris {
     public static final String DELETE_ASSIGNMENT = "DELETE FROM assignments WHERE course_id = ? AND name = ?";
     public static final String SELECT_SOLUTIONS = "SELECT * FROM assignments WHERE course_id = ? AND name = ? AND path IS NOT NULL";
     public static final String FIND_SOLUTION = "SELECT * FROM assignments WHERE course_id = ? AND name = ? AND user_id = ? AND path IS NOT NULL";
+    public static final String GET_COURSE_IMAGE = "SELECT image FROM courses WHERE id = ?";
+    public static final String SET_COURSE_IMAGE = "UPDATE courses SET image = ? WHERE id = ?";
 
     private SQLQueris(){
     }

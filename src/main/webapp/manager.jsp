@@ -43,7 +43,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <form action="controller?" method="post">
+              <form action="controller?" method="post" enctype="multipart/form-data">
                 <input name="command" value="createCourse" type="hidden">
                 <div class="mb-3">
                   <label class="form-label"><fmt:message key="course.name" /></label>
@@ -79,6 +79,10 @@
                   <label class="form-label"><fmt:message key="course.description" /></label>
                   <textarea name="description" class="form-control"></textarea>
                 </div>
+                  <div class="mb-3">
+                      <label class="form-label"><fmt:message key="course.image" /></label>
+                      <input type="file" name="file" class="form-control" size="100"/>
+                  </div>
                   <div class="mb-3">
                       <fmt:message key="manager.create.lang" />:
                       <input type="radio" id="eng"  name="language" value="eng" class="form-radio-input" required>

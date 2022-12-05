@@ -2,23 +2,27 @@ package com.elective.command;
 
 import com.elective.ReferencePages;
 import com.elective.db.dao.CourseDAO;
+import com.elective.db.dao.DAOFactory;
 import com.elective.db.dao.DBException;
 import com.elective.db.dao.UserDAO;
 import com.elective.db.dao.mysql.MysqlCourseDAO;
 import com.elective.db.entity.Course;
+import com.elective.db.entity.Material;
 import com.elective.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Properties;
 
 /**
  * Implementation of Command interface that perform creating a Course for User teacher
@@ -55,9 +59,24 @@ public class CreateCourseCommand implements Command{
             throw new IllegalArgumentException("Course must last at least " + CourseDAO.MIN_DURATION + " days, but get only " + course.countDays());
         }
 
+        //uploading image
+        Properties props = new Properties();
+        props.load(new FileInputStream(DAOFactory.class.getResource("/").getPath() + "app.properties"));
+        String uploads = props.getProperty("upload.image");
+
+        Part filePart = req.getPart("file");
+        String fileName = filePart.getSubmittedFileName();
+
+        String path = uploads + fileName;
+        for (Part part : req.getParts()) {
+            part.write(path);
+        }
+        course.setImage("img/" + fileName);
+
         log.log(Level.INFO, "Course created: " + course.getName());
         log.log(Level.DEBUG, "name: " + name + "; topic: " + topic + "; " + "teacher:  " + tEmail + "; start: " + startDate +
                 "; finish:  " + finishDate);
+
         courseDAO.create(course, lang);
 
 

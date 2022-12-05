@@ -17,6 +17,8 @@ public class Course implements Serializable {
     private User teacher;
     private Date startDate;
     private Date finishDate;
+    private String image;
+
 
     @Override
     public boolean equals(Object o) {
@@ -24,6 +26,14 @@ public class Course implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
         return id == course.id && Objects.equals(name, course.name) && Objects.equals(topic, course.topic) && Objects.equals(description, course.description) && Objects.equals(teacher, course.teacher) && Objects.equals(startDate, course.startDate) && Objects.equals(finishDate, course.finishDate);
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
