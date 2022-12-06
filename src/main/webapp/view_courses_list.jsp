@@ -89,8 +89,8 @@
                 <div class="row">
                     <c:forEach var="course" items="${coursesList}">
                         <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="card mb-5 shadow-sm">
-                                <img src="files/course_img.webp" alt="course_image" class="img-fluid">
+                            <div class="card mb-5 shadow-sm" style="height: 600px;">
+                                <img src="${course.image}" alt="course_image" class="img-fluid">
 
                                 <div class="card-body">
                                     <div class="card-title">

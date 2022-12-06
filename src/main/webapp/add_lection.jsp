@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Lection</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="bootstrap/css/materials.css">
 </head>
 <body>

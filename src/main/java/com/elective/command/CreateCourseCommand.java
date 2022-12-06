@@ -17,8 +17,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -35,7 +39,6 @@ public class CreateCourseCommand implements Command{
         CourseDAO courseDAO = getDaoFactory().getCourseDAO();
         UserDAO userDAO = getDaoFactory().getUserDAO();
         String name = req.getParameter("name");
-
         String topic = req.getParameter("topics");
         String desc = req.getParameter("description");
         String tEmail = req.getParameter("teacherEmail");
@@ -66,18 +69,17 @@ public class CreateCourseCommand implements Command{
 
         Part filePart = req.getPart("file");
         String fileName = filePart.getSubmittedFileName();
-
         String path = uploads + fileName;
-        for (Part part : req.getParts()) {
-            part.write(path);
-        }
-        course.setImage("img/" + fileName);
+        InputStream in = filePart.getInputStream();
+        Files.copy(in, Paths.get(path));
+
+        course.setImage("img" + File.separator + fileName);
+        courseDAO.create(course, lang);
+
 
         log.log(Level.INFO, "Course created: " + course.getName());
         log.log(Level.DEBUG, "name: " + name + "; topic: " + topic + "; " + "teacher:  " + tEmail + "; start: " + startDate +
                 "; finish:  " + finishDate);
-
-        courseDAO.create(course, lang);
 
 
         return ReferencePages.MANAGER_PAGE;
